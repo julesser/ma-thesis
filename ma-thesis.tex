@@ -1,0 +1,186 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                             %
+%  TITEL:  Abschlussarbeit 																                    %
+%          --- Hauptdokument ---                                              %
+%                                                                             %
+%  DATEI:  AbschlussLatex.tex                                                 %
+%                                                                             %
+%  DATUM:  01.07.2017                                                         %
+%                                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%--- Vorspann ----------------------------------------------------------------%
+
+\documentclass[fontsize = 12pt,					%Schriftgröße
+               paper = a4,						%Papierformat
+               headings = small,				%Größe der Überschriften
+               open=right,						%Abschnitte beginnen rechts
+               cleardoublepage = empty,			%leere Seiten ohne Kopfzeile
+			   BCOR = 10mm,						%Binde Korrektur
+               captions = tableheading,			%Tabellen mit Überschriften
+               bibliography = totoc,			%Literatur- ins Inhaltsverzeichnis
+               listof = totoc,					%Verzeichnisse ins Inhaltsverzeichnis (totoc)
+               twoside = false,					%doppelseitiges Layout
+               american]						%Dokumentklasse
+              {scrbook}							
+
+ 
+%--- Kopf- und Fußzeilen -----------------------------------------------------%
+
+\usepackage{scrpage2}
+\usepackage{scrhack}
+\pagestyle{scrheadings}
+\automark[section]{chapter}
+\addtokomafont{pageheadfoot}{\normalfont\sffamily}
+\addtokomafont{pagenumber}{\normalfont\sffamily\bfseries}
+\setheadsepline{0.4pt}
+\clearscrheadfoot
+\cehead[]{\leftmark}
+\cohead[]{\rightmark}
+\ohead[]{\pagemark}
+\ofoot[\pagemark]{}
+
+
+%--- Tabellen- und Abbildungsbeschreibungen ----------------------------------%
+
+\addtokomafont{caption}{\small}
+\addtokomafont{captionlabel}{\sffamily\bfseries}
+
+
+%--- Gliederungstiefe (Bezifferung/Inhaltsverzeichnis) -----------------------%
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{1}
+
+
+%--- Eingabekodierung --------------------------------------------------------%
+
+%------ Linux ----------------------------------------------------------------%
+%\usepackage[latin1]{inputenc}
+
+%------ Windows --------------------------------------------------------------%
+\usepackage[ansinew]{inputenc}
+
+
+%--- Schrift -----------------------------------------------------------------%
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+% Spezielles Seitenlayout:
+\usepackage[Sonny]{fncychap}		%Sonny/Lenny/Glenn/Conny/Rejne/Bjarne
+\ChTitleVar{\LARGE\bfseries}
+\ChNameVar{\large\bfseries}
+
+%--- Math stuff --------------------------------------------------------------%
+\usepackage{amsmath}
+
+\usepackage{bm}
+\usepackage{mathtools}
+\newcommand{\myM}[1]{\bm{\mathit{#1}}} %Bold, italic, capital expression of matrices; vectors bold, italic, small
+
+%--- Weitere Pakete ----------------------------------------------------------%
+\usepackage{setspace}            % Zeilenabstand einstellbar
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage[table,xcdraw]{xcolor} %tabellen mit farben
+\usepackage[export]{adjustbox} %für die größe von bildern
+\usepackage{listings} %statt verbatim?
+\usepackage{bibgerm}
+\usepackage{float}        % u.a. genaue Plazierung von Gleitobjekten mit H
+\usepackage{textcomp} 		%für \textregistred in Überschrift
+\usepackage{tabularx}
+\renewcommand{\bf}{\normalfont \bfseries} 
+\usepackage{fancyvrb}  %zur Darstellung von Quelltexten
+\usepackage[main=american,ngerman]{babel}
+\usepackage[babel]{csquotes}
+\usepackage{siunitx}  % degree symbol by \ang{degrees}
+\usepackage[acronym,nonumberlist,nopostdot]{glossaries} % acronym option für seperates Glossar und Abkürzungsliste -> sonst zusammen
+\clubpenalty = 10000             % Schusterjungen und Hurenkinder vermeiden
+\widowpenalty = 10000            % siehe dazu 
+\displaywidowpenalty = 10000     % http://www.cs.uu.nl/wais/html/na-dir/de-tex-faq/part5.html
+
+%Literatur
+\usepackage{cite}                % Sortierte und zusammengefasste Zitatnummern 
+\usepackage[numbers]{natbib}     % Refernz mit nummern UND \citauthor{} möglich 
+\typearea[current]{current}      % Neuberechnung des Satzspiegels mit alten Werten nach ?nderung von Zeilenabstand,etc
+\renewcommand{\arraystretch}{1.2} %Tabellenhöhe vergrößern
+\usepackage{subcaption}			%For subtables (table a and table b automatically)
+
+%\renewcommand{\thesubfigure}{\arabic{subfigure}} %makes subcaptions in figs/tbls 1,2,3 instead a,b,c
+\makeglossaries					%Erstelle generell Glossare
+\input{tex/_glossary_data}			%include .tex data with definitions 
+\usepackage{cleveref}
+\captionsetup[subfigure]{subrefformat=simple,labelformat=simple}
+%%%%%%%% Hints for glossary:
+%%%%%%% main.tex needs to be updated manually with "makeglossaries bachelor_thesis" in console %%%%%%
+% call in text with \gls{label} or \glspl for plural (Gls/Glspl for capital)
+
+
+%--- Hauptdokument -----------------------------------------------------------%
+
+\begin{document}
+\renewcommand*{\chapterpagestyle}{empty}
+
+\frontmatter
+
+%-----Titelblatt, Abstract, Kurzfassung, Inhaltsverzeichnis, Figuren, Tabellen,Terms (röm. Ziffern)-----
+\include{tex/_title}
+\include{tex/_declaration}
+\include{tex/_abstract}
+\include{tex/_kurzfassung}
+\printglossary[title=List of Symbols]
+\printglossary[type=\acronymtype,title=Acronyms]		         
+\tableofcontents             
+\listoffigures 
+\listoftables 
+
+
+%-----Hauptkapitel-----
+\mainmatter             % numerische Ziffern
+\clearpage
+\pagestyle{scrheadings}  % Kopfzeilen
+\thispagestyle{scrheadings}  % Kopfzeilen
+%\include{tex/chapter1}
+%\include{tex/chapter2}
+%\include{tex/chapter3}
+%\include{tex/chapter4}
+%\include{tex/chapter5}
+
+\chapter{Introduction}\label{c1}
+\section{Motivation}
+\section{Related Work}
+\section{Contribution}
+\section{Structure}
+
+\chapter{Background}
+\section{Dynamics of Legged Locomotion}
+\section{Trajectory Optimization}
+\section{Differential Dynamic Programming}
+
+\chapter{Dynamic Bipedal Walking}
+%\section{Optimal Control Problem Formulation}
+%\section{Dynamical Constraints}
+%\section{Validation of Trajectories}
+
+\chapter{Highly-Dynamic Movements}
+\chapter{Experimental Validation}
+\chapter{Conclusion and Outlook}
+
+
+
+%-----Anhang-----
+%\include{tex/_appendix}
+%%% style is changed only once, need to reopen texstudio for change %%%
+%\bibliographystyle{plain} %Verzeichnis nach Autor sortiert, Referenzen numerisch
+%\bibliographystyle{abbrv} %Verzeichnis nach Autor sortiert, Vornamen abgekürzt 
+%\bibliographystyle{alpha} %Verzeichnis nach Autor sortiert, Referenzen aus Autorenkürzel
+\bibliographystyle{unsrtnat} %Verzeichnis nach Zitierreihenfolge sortiert und kompatibel mit natbib package
+
+\bibliography{tex/_bibfile}	%refer to .bib file in folder
+%\nocite{*}				 % Alle Quelleneinträge anzeigen, auch wenn sie nicht im Text referenziert sind
+\end{document}

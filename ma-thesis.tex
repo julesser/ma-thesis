@@ -16,15 +16,15 @@
 
 \documentclass[fontsize = 12pt,					%Schriftgröße
                paper = a4,						%Papierformat
-               headings = small,				%Größe der Überschriften
+               headings = small,					%Größe der Überschriften
                open=right,						%Abschnitte beginnen rechts
                cleardoublepage = empty,			%leere Seiten ohne Kopfzeile
 			   BCOR = 10mm,						%Binde Korrektur
                captions = tableheading,			%Tabellen mit Überschriften
-               bibliography = totoc,			%Literatur- ins Inhaltsverzeichnis
+               bibliography = totoc,				%Literatur- ins Inhaltsverzeichnis
                listof = totoc,					%Verzeichnisse ins Inhaltsverzeichnis (totoc)
                twoside = false,					%doppelseitiges Layout
-               american]						%Dokumentklasse
+               american]							%Dokumentklasse
               {scrbook}							
 
  
@@ -99,7 +99,7 @@
 \usepackage[main=american,ngerman]{babel}
 \usepackage[babel]{csquotes}
 \usepackage{siunitx}  % degree symbol by \ang{degrees}
-\usepackage[acronym,nonumberlist,nopostdot]{glossaries} % acronym option für seperates Glossar und Abkürzungsliste -> sonst zusammen
+\usepackage[acronym,nonumberlist,nopostdot, automake]{glossaries} % acronym option für seperates Glossar und Abkürzungsliste -> sonst zusammen
 \clubpenalty = 10000             % Schusterjungen und Hurenkinder vermeiden
 \widowpenalty = 10000            % siehe dazu 
 \displaywidowpenalty = 10000     % http://www.cs.uu.nl/wais/html/na-dir/de-tex-faq/part5.html
@@ -113,11 +113,10 @@
 
 %\renewcommand{\thesubfigure}{\arabic{subfigure}} %makes subcaptions in figs/tbls 1,2,3 instead a,b,c
 \makeglossaries					%Erstelle generell Glossare
-\input{tex/_glossary_data}			%include .tex data with definitions 
+\include{tex/_glossary_data}		%include .tex data with definitions 
 \usepackage{cleveref}
 \captionsetup[subfigure]{subrefformat=simple,labelformat=simple}
 %%%%%%%% Hints for glossary:
-%%%%%%% main.tex needs to be updated manually with "makeglossaries bachelor_thesis" in console %%%%%%
 % call in text with \gls{label} or \glspl for plural (Gls/Glspl for capital)
 
 
@@ -146,7 +145,6 @@
 \pagestyle{scrheadings}  % Kopfzeilen
 \thispagestyle{scrheadings}  % Kopfzeilen
 %\include{tex/chapter1}
-%\include{tex/chapter2}
 %\include{tex/chapter3}
 %\include{tex/chapter4}
 %\include{tex/chapter5}
@@ -154,33 +152,42 @@
 \chapter{Introduction}\label{c1}
 \section{Motivation}
 \section{Related Work}
+%\subsection{Model Induced Design} (Passive Dynamic Walking, Template Models)
+%\subsection{Traditional Legged Locomotion Planning}
+%\subsection{Trajectory Optimization} (Sequential, Simultaneous OR Direct, Indirect, DDP)
+%\subsection{Series-Parallel Hybrid Robots}
 \section{Contribution}
 \section{Structure}
 
-\chapter{Background}
-\section{Dynamics of Legged Locomotion}
-\section{Trajectory Optimization}
-\section{Differential Dynamic Programming}
+\include{tex/chapter2}
 
 \chapter{Dynamic Bipedal Walking}
-%\section{Optimal Control Problem Formulation}
-%\section{Dynamical Constraints}
-%\section{Validation of Trajectories}
+\section{Formulation of the Optimization Problem}
+\section{Inequality Constraints for Physical Compliance}
+\section{Trajectories for Increasing Mechanism Complexity}
 
 \chapter{Highly-Dynamic Movements}
+\section{Formulation of the Optimization Problems}
+\section{Trajectories for Increasing Task Complexity}
+\section{Identification of Limits in System Design}
+
 \chapter{Experimental Validation}
+\section{Validation in Real-Time Physics Simulation}
+\section{Validation on the RH5 Humanoid Robot}
+
 \chapter{Conclusion and Outlook}
+\section{Summary}
+\section{Future Directions}
 
 
 
 %-----Anhang-----
-%\include{tex/_appendix}
+\include{tex/_appendix}
 %%% style is changed only once, need to reopen texstudio for change %%%
 %\bibliographystyle{plain} %Verzeichnis nach Autor sortiert, Referenzen numerisch
 %\bibliographystyle{abbrv} %Verzeichnis nach Autor sortiert, Vornamen abgekürzt 
 %\bibliographystyle{alpha} %Verzeichnis nach Autor sortiert, Referenzen aus Autorenkürzel
 \bibliographystyle{unsrtnat} %Verzeichnis nach Zitierreihenfolge sortiert und kompatibel mit natbib package
-
 \bibliography{tex/_bibfile}	%refer to .bib file in folder
 %\nocite{*}				 % Alle Quelleneinträge anzeigen, auch wenn sie nicht im Text referenziert sind
 \end{document}

@@ -31,8 +31,50 @@ The discrete time dynamics of a system can be modeled as a generic function $\my
 \myM{x}_{i+1}=\myM{f}(\myM{x}_i,\myM{u}_i), 
 \end{equation}
 which describes the evolution of the state $\myM{x}\in \myM{R}^n$ from time $i$ to $i+1$, given the control $u\in \myM{R}^m$. A valid trajectory $\{\myM{X}, \myM{U}\}$ is a sequence of states $\myM{X}=\{\myM{x}_0, \myM{x}_1, ..., \myM{x}_N\}$ and control inputs $\myM{U}=\{\myM{u}_0, \myM{u}_1, ..., \myM{u}_N\}$ satisfying \cref{eqn:discreteDynamics}.
-
+\begin{equation}\label{eqn:totalCost}
+J(\myM{x}_0, \myM{U})=\sum_{i=0}^{N-1}l(\myM{x}_i,\myM{u}_i)+l_f(\myM{x}_N)
+\end{equation}
+\begin{equation}\label{eqn:minControl}
+\myM{U}^*=\argmin_U J(\myM{x}_0, \myM{U})
+\end{equation}
+\begin{equation}\label{costToGo}
+J_i(\myM{x}, \myM{U}_i)=\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j)+l_f(\myM{x}_N)
+\end{equation}
+\begin{equation}\label{eqn:value}
+V_i(\myM{x})=\min_{\myM{U}_i}J_i(\myM{x}, \myM{U}_i)
+\end{equation}
+\begin{equation}
+V(\myM{x})=\min_{\myM{u}}[l(\myM{x}, \myM{u})+V'(\myM{f}(\myM{x},\myM{u}))]
+\end{equation}
 \subsection{Quadratic Approximation}
+\begin{equation}\label{eqn:Q}
+Q(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du))
+\end{equation}
+\begin{subequations}\label{eqn:dQ}
+\begin{align}
+Q_{\bx} &= l_{\bx}+\bfun_{\bx}^T V_{\bx}^\prime \\
+Q_{\bu} &= l_{\bu}+\bfun_{\bu}^T V_{\bx}^\prime \\
+Q_{\bx\bx} &= l_{\bx\bx}+\bfun_{\bx}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bx\bx}  \\
+Q_{\bu\bx} &= l_{\bu\bx}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bu\bx} \\
+Q_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bu}+V_{\bx}^\prime\cdot\bfun_{\bu\bu} 
+\end{align}
+\end{subequations}
+\begin{equation}
+\du^*(\dx)=\argmin_{\du}Q(\dx,\du)=\myM{k}+\myM{K}\
+\end{equation}
+\begin{equation}
+\myM{k}=-Q_{\bu\bu}^{-1}Q_{\bu}\quad and \quad \myM{K}=-Q_{\bu\bu}^{-1}Q_{\bu\bx}
+\end{equation}
+\begin{subequations}\label{eqn:quadraticV}
+\begin{align}
+ \Delta V &= -\dfrac{1}{2}\myM{k}^TQ_{\bu\bu}\myM{k} \\
+ V_{\bx} &= Q_{\bx}-\myM{K}^TQ_{\bu\bu}\myM{k} \\
+ V_{\bx\bx} &= Q_{\bx\bx}-\myM{K}^TQ_{\bu\bu}\myM{\myM{K}}
+\end{align}
+\end{subequations}
+
+
+
 \subsection{Line Search and Regularization}
 
 \section{DDP With Constrained Robot Dynamics}
@@ -43,3 +85,15 @@ which describes the evolution of the state $\myM{x}\in \myM{R}^n$ from time $i$ 
 Rigid contacts can be formulated as holonomic scleronomic constraints to the robot dynamics. 
 
 \section{The RH5 Humanoid Robot}
+
+
+
+
+
+
+
+
+
+
+
+

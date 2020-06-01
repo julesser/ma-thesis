@@ -9,79 +9,129 @@ The second chapter provides the reader with fundamentals on the mathematical mod
 
 \section{Modeling and Control of Legged Robots}
 \subsection{Terminology}
-\subsubsection{Three Dimensions of Motion}
-\subsubsection{Gait Analysis (Double Support, Gait Phases ..)}
+%\subsubsection{Three Dimensions of Motion}
+%\subsubsection{Gait Analysis (Double Support, Gait Phases ..)}
 \subsection{Dynamics}
 \subsection{Stability Analysis}
 \subsection{Motion Generation}
 \subsection{Motion Control}
-\subsubsection{Kinematic Control (High-gain joint position trajectory tracking)}
-\subsubsection{Impedance Control with Joint Space Inverse Dynamics (Low-gain joint control with model compensation)}
-\subsubsection{Task Space Inverse Dynamics Control (Directly regulating in «task space»)}
-\subsubsection{Virtual Model Control (Dynamic control of a quasistatic system)}
+%\subsubsection{Kinematic Control (High-gain joint position trajectory tracking)}
+%\subsubsection{Impedance Control with Joint Space Inverse Dynamics (Low-gain joint control with model compensation)}
+%\subsubsection{Task Space Inverse Dynamics Control (Directly regulating in «task space»)}
+%\subsubsection{Virtual Model Control (Dynamic control of a quasistatic system)}
 \subsection{Efficient Walking}
 
-\section{Trajectory Optimization}
-
 \section{Differential Dynamic Programming (DDP)}
-This section describes the basics of DDP, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{MAYNE1966} \citep{MAYNE1966}.
-\subsection{Local Dynamic Programming}
-The discrete time dynamics of a system can be modeled as a generic function $\myM{f}$
+
+This section describes the basics of \gls{DDP}, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{mayne1966} \citep{mayne1966}. A modern description of the algorithm using the same notations as below can be found in \cite{tassa2012synthesis, tassa2014control}.
+\subsection{Finite Horizon Optimal Control}
+We consider a system with discrete-time dynamics, which can be modeled as a generic function $\myM{f}$
 \begin{equation}\label{eqn:discreteDynamics}
 \myM{x}_{i+1}=\myM{f}(\myM{x}_i,\myM{u}_i), 
 \end{equation}
-which describes the evolution of the state $\myM{x}\in \myM{R}^n$ from time $i$ to $i+1$, given the control $u\in \myM{R}^m$. A valid trajectory $\{\myM{X}, \myM{U}\}$ is a sequence of states $\myM{X}=\{\myM{x}_0, \myM{x}_1, ..., \myM{x}_N\}$ and control inputs $\myM{U}=\{\myM{u}_0, \myM{u}_1, ..., \myM{u}_N\}$ satisfying \cref{eqn:discreteDynamics}.
-\begin{equation}\label{eqn:totalCost}
-J(\myM{x}_0, \myM{U})=\sum_{i=0}^{N-1}l(\myM{x}_i,\myM{u}_i)+l_f(\myM{x}_N)
+that describes the evolution of the state $\myM{x}\in \myM{R}^n$ from time $i$ to $i+1$, given the control $\myM{u}\in \myM{R}^m$. A complete trajectory $\{\myM{X}, \myM{U}\}$ is a sequence of states $\myM{X}=\{\myM{x}_0, \myM{x}_1, ..., \myM{x}_N\}$ and control inputs $\myM{U}=\{\myM{u}_0, \myM{u}_1, ..., \myM{u}_N\}$ satisfying \cref{eqn:discreteDynamics}.
+The \textit{total cost} $J$ of a trajectory can be written as the sum of running costs $l$ and a final cost $l_f$ starting from the initial state $\myM{x_0}$ and applying the control sequence $\myM{U}$ along the finite time-horizon:     
+\begin{equation*}\label{eqn:totalCost}
+J(\myM{x}_0, \myM{U})=\sum_{i=0}^{N-1}l(\myM{x}_i,\myM{u}_i)+l_f(\myM{x}_N).
+\end{equation*}
+As dicussed in \cref{c1}, \textit{indirect} methods such \gls{DDP} represent the trajectory implicitly solely via the optimal controls $\myM{U}$. The states $\myM{X}$ are obtained from forward simulation of the system dynamics, i.e. integration \cref{eqn:discreteDynamics}. Consequently, the solution of the optimal control problem is the minimizing control sequence 
+\begin{equation*}\label{eqn:minControl}
+\myM{U}^*=\argmin_U J(\myM{x}_0, \myM{U}). 
+\end{equation*}
+
+\subsection{Local Dynamic Programming}
+Let $\myM{U}_i\equiv\{\myM{u}_i,\myM{u}_{i+1}...,\myM{u}_{N-1}\}$ be the partial control sequence, the \textit{cost-to-go} $J_i$ is the partial sum of costs from $i$ to $N$: 
+\begin{equation*}\label{costToGo}
+J_i(\myM{x}, \myM{U}_i)=\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j)+l_f(\myM{x}_N).
+\end{equation*}
+The \textit{Value function} at time $i$ is the optimal cost-to-go starting at $\myM{x}$ given the minimizing control sequence 
+\begin{equation*}\label{eqn:value}
+V_i(\myM{x})=\min_{\myM{U}_i}J_i(\myM{x}, \myM{U}_i),
+\end{equation*}
+and the Value at the final time is defined as $V_N(\myM{x})\equiv l_f(\myM{x}_N)$. The Dynamic Programming Principle \citep{bellman1966dynamic} reduces the minimization over an entire sequence of controls to a sequence of minimizations over a single control, proceeding backwards in time: 
+\begin{equation}\label{eqn:bellman}
+V(\myM{x})=\min_{\myM{u}}[l(\myM{x}, \myM{u})+V'(\myM{f}(\myM{x},\myM{u}))].
 \end{equation}
-\begin{equation}\label{eqn:minControl}
-\myM{U}^*=\argmin_U J(\myM{x}_0, \myM{U})
-\end{equation}
-\begin{equation}\label{costToGo}
-J_i(\myM{x}, \myM{U}_i)=\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j)+l_f(\myM{x}_N)
-\end{equation}
-\begin{equation}\label{eqn:value}
-V_i(\myM{x})=\min_{\myM{U}_i}J_i(\myM{x}, \myM{U}_i)
-\end{equation}
-\begin{equation}
-V(\myM{x})=\min_{\myM{u}}[l(\myM{x}, \myM{u})+V'(\myM{f}(\myM{x},\myM{u}))]
-\end{equation}
+Note that \cref{eqn:bellman} is referred to as the \textit{Bellman equation} for \textit{discrete-time} optimization problems \citep{kirk2004optimal}. For reasons of readability, the time index $i$ is omitted and $V'$ introduced to denote the Value at the next time step. The interested reader may note that the analogous equation for the case of \textit{continuous-time} is a partial differential equation called the \textit{Hamilton-Jacobi-Bellman equation} \citep{underactuatedCourse2020, kamien2012dynamic}.
+
 \subsection{Quadratic Approximation}
+\gls{DDP} locally computes the optimal state and control sequences of the \gls{OC} problem derived with \cref{eqn:bellman} by iteratively performing a forward and backward pass. The \textit{backward pass} on the trajectory generates a new control sequence and is followed by a \textit{forward pass} to compute and evaluate the new trajectory.
+
+Let $Q(\dx,\du)$ be the variation in the argument on the right-hand side of \cref{eqn:bellman} around the $i-th (\bx,\bu)$ pair
 \begin{equation}\label{eqn:Q}
-Q(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du))
+Q(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du)).
 \end{equation}
-\begin{subequations}\label{eqn:dQ}
+The \gls{DDP} algorithm uses a quadratic approximation of this differential change. The quadratic Taylor expansion of $Q(\dx,\du)$ leads to
+\begin{equation}\label{eqn:QApprox}
+Q(\dx,\du) \approx \dfrac{1}{2} 
+\begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix}^T 
+\begin{bmatrix} 0 & Q_{\bx}^T & Q_{\bu}^T \\
+Q_{\bx} & Q_{\bx\bx} & Q_{\bx\bu} \\
+Q_{\bu} & Q_{\bu\bx} & Q_{\bu\bu} \end{bmatrix}
+\begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix},
+\end{equation}
+where the coefficients can be computed to 
+\begin{subequations}\label{eqn:QApproxCoeff}
 \begin{align}
 Q_{\bx} &= l_{\bx}+\bfun_{\bx}^T V_{\bx}^\prime \\
 Q_{\bu} &= l_{\bu}+\bfun_{\bu}^T V_{\bx}^\prime \\
-Q_{\bx\bx} &= l_{\bx\bx}+\bfun_{\bx}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bx\bx}  \\
-Q_{\bu\bx} &= l_{\bu\bx}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bu\bx} \\
-Q_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bu}+V_{\bx}^\prime\cdot\bfun_{\bu\bu} 
+Q_{\bx\bx} &= l_{\bx\bx}+\bfun_{\bx}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bx\bx}  \label{subeqn:Qxx}\\
+Q_{\bu\bx} &= l_{\bu\bx}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bu\bx} \label{subeqn:Qux}\\
+Q_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bu}+V_{\bx}^\prime\cdot\bfun_{\bu\bu} \label{subeqn:Quu}.
 \end{align}
 \end{subequations}
-\begin{equation}
-\du^*(\dx)=\argmin_{\du}Q(\dx,\du)=\myM{k}+\myM{K}\
-\end{equation}
-\begin{equation}
-\myM{k}=-Q_{\bu\bu}^{-1}Q_{\bu}\quad and \quad \myM{K}=-Q_{\bu\bu}^{-1}Q_{\bu\bx}
-\end{equation}
-\begin{subequations}\label{eqn:quadraticV}
-\begin{align}
+The last terms of \crefrange{subeqn:Qxx}{subeqn:Quu} denote the product of a vector with a tensor. 
+
+\subsection{Backward Pass}
+The first algorithmic step of \gls{DDP}, namely the backward pass, involves computing a new control sequence on the given trajectory and consequently determining the search direction of a a step in the numerical optimization. To this end, the quadratic approximation obtained from \cref{eqn:QApprox}, minimized with respect to $\du$ for some state perturbation $\dx$, results in
+\begin{equation*}
+\du^*(\dx)=\argmin_{\du}Q(\dx,\du)=-Q_{\bu\bu}^{-1}(Q_{\bu}+Q_{\bu\bx}\dx),
+\end{equation*}
+giving us an open-loop term $\myM{k}$ and a feedback gain term $\myM{K}$:
+\begin{equation*}
+\myM{k}=-Q_{\bu\bu}^{-1}Q_{\bu}\quad and \quad \myM{K}=-Q_{\bu\bu}^{-1}Q_{\bu\bx}.
+\end{equation*}
+The resulting locally-linear feedback policy can be again inserted into \cref{eqn:QApprox} leading to a quadratic model of the Value at time $i$: 
+\begin{align*}
  \Delta V &= -\dfrac{1}{2}\myM{k}^TQ_{\bu\bu}\myM{k} \\
  V_{\bx} &= Q_{\bx}-\myM{K}^TQ_{\bu\bu}\myM{k} \\
- V_{\bx\bx} &= Q_{\bx\bx}-\myM{K}^TQ_{\bu\bu}\myM{\myM{K}}
-\end{align}
-\end{subequations}
+ V_{\bx\bx} &= Q_{\bx\bx}-\myM{K}^TQ_{\bu\bu}\myM{\myM{K}}.
+\end{align*}
+
+\subsection{Forward Pass}
+After computing the feedback policy in the backward pass, the forward pass computes a corresponding trajectory by integrating the dynamics via
+\begin{align*}
+\hat{\bx}_0 		&=\bx_0 \\
+\hat{\bu}_i 		&=\bu_i+\alpha\myM{k}_i+\myM{K}_i(\hat{\bx}_i-\bx_i) \\
+\hat{\bx}_{i+1}	&=\bfun(\hat{\bx}_i,\hat{\bu}_i),
+\end{align*}
+where $\hat{\bx}_i,\hat{\bu}_i$ are the new state-control sequences. The step size of the numerical optimization is described by the backtracking line search parameter $\alpha$, which iteratively is reduced starting from 1. The backward and forward passes of the \gls{DDP} algorithm are iterated until convergence to the (locally) optimal trajectory.  
+
+\subsection{Numerical Characteristics}
+Like Newton's method, \gls{DDP} is a second-order algorithm \citep{liao1992advantages} and consequently takes large steps towards the minimum. With these types of algorithms, regularization and line-search often are required to achieve convergence \cite{liao1991convergence}. 
+
+\textit{Line-search} is one of the basic iterative approaches from numerical optimization in order to find a local minimum of an objective function. Backtracking line-search especially determines the step length, namely the control modification, by some search parameter.
+
+\textit{Regularization} uses \#\#\#\#\# F I L L \#\#\#\#\#
+
+The interested reader can find a more extensive introduction to numerical optimization in e.g. \cite{nocedal2006numerical} and \citeauthor{tassa2012synthesis}  
+provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
 
 
-\subsection{Line Search and Regularization}
+
+
+
+  
+
 
 \section{DDP With Constrained Robot Dynamics}
+
 \subsection{Handling Tasks}
 \subsection{Contact Dynamics}
 \subsection{Karush-Kuhn-Tucker (KKT) Conditions}
 \subsection{KKT-Based DDP Algorithm}
+\subsection{Feasibility-Prone DDP}
 Rigid contacts can be formulated as holonomic scleronomic constraints to the robot dynamics. 
 
 \section{The RH5 Humanoid Robot}

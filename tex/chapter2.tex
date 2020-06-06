@@ -21,7 +21,9 @@ The second chapter provides the reader with fundamentals on the mathematical mod
 %\subsubsection{Virtual Model Control (Dynamic control of a quasistatic system)}
 \subsection{Efficient Walking}
 
-\section{Differential Dynamic Programming (DDP)}
+\section{Differential Dynamic Programming (DDP)}\label{sec:DDP}
+
+
 
 This section describes the basics of \gls{DDP}, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{mayne1966} \citep{mayne1966}. A modern description of the algorithm using the same notations as below can be found in \cite{tassa2012synthesis, tassa2014control}.
 \subsection{Finite Horizon Optimal Control}
@@ -125,14 +127,39 @@ provide details and extension on these characteristics in the context of the \gl
   
 
 
-\section{DDP With Constrained Robot Dynamics}
+\section{DDP With Constrained Robot Dynamics}\label{sec:ConstrainedDDP}
+By nature, the \gls{DDP} algorithm presented in \cref{sec:DDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the controls allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. Since physically consistent bipedal locomotion is highly dependent on making contacts with the ground, this section provides details on the above mentioned approach.  
 
-\subsection{Handling Tasks}
 \subsection{Contact Dynamics}
+In the case of rigid contact dynamics, \gls{DDP} assumes a set of given contacts of the system with the environment. Then, an equality constrained dynamics can be incorporated by formulating rigid contacts as holonomic constraints to the robot dynamics. In other words, the contact points are assumed to have a fixed position on the ground. 
+
+The unconstrained robot dynamics can be represented as 
+\begin{equation}\label{eq:unconstrainedDynamics}
+\myM{M}\dot{\myM{v}}_{free}=\myM{S\tau}-\myM{b}, 
+\end{equation}
+with the joint-space intertia matrix $\myM{M}\in \myM{R}^{nxn}$ and the unconstrained acceleration vector $\dot{\myM{v}}_{free}$. The right-hand side of \cref{eq:unconstrainedDynamics} represents the n-dimensional force-bias vector accounting for the control $\myM{\tau}$, the Coriolis and gravitational effects $\myM{b}$ and the selection matrix $\myM{S}$ of actuated joints. 
+
+In order to incorporate the rigid contact constraints to the robot dynamics, one can apply the Gauss principle of least constraint \cite{udwadia1992new}. The idea is to minimize the deviation in acceleration between the constrained and unconstrained motion:
+\begin{equation}\label{eq:gaussMinimization}
+\begin{aligned} & \dot{\myM{v}} = \underset{\myM{a}}{\arg\min} & & \frac{1}{2}\,\|\dot{\myM{v}}-\dot{\myM{v}}_{free}\|_{\myM{M}} \\ & \textrm{subject to} & & \myM{J}_{c} \dot{\myM{v}} + \dot{\myM{J}}_c \myM{v} = \myM{0}, \end{aligned}
+\end{equation}
+where $\myM{M}$ formally represents the metric tensor over the configuration manifold $\myM{q}$. In order to express the holonomic contact constraint $\phi(\myM{q})$ in the acceleration space, it needs to be differentiated twice. Consequently, the contact condition can be seen as a second-order kinematic constraints on the contact surface position where $\myM{J}_{c}= \begin{bmatrix} \myM{J}_{c_1} & \cdots & \myM{J}_{c}\end{bmatrix}$ is a stack of $f$ contact Jacobians. 
+
+     
 \subsection{Karush-Kuhn-Tucker (KKT) Conditions}
+The Gauss minimization in \cref{eq:gaussMinimization} corresponds to an 
+equality-constrained quadratic optimization problem. The optimal solutions ($\dot{\myM{v}},\myM{\lambda}$) must satisfy the so-called \gls{KKT} conditions given by
+\begin{equation}\label{eq:KKTConditions}
+\left[\begin{matrix}\myM{M} & \myM{J}^{\top}_c \\{\myM{J}_{c}} & \myM{0}\end{matrix}\right] \left[\begin{matrix} \dot{\myM{v}} \\ -\boldsymbol{\lambda} \end{matrix}\right] = \left[\begin{matrix} \boldsymbol{\tau}_b \\ -\dot{\myM{J}}_c \myM{v}\end{matrix}\right].
+\end{equation}
+These dual variables $\myM{\lambda}^k$ can be seen as external wrenches at the contact level. For a given robot state and applied torques, \cref{eq:KKTConditions} allows a direct computation of the contact forces. To this end, the contact constraints can be solved analytically at the level of dynamics instead of introducing additional constraints in the whole-body optimization \cite{saab2013dynamic}.  
+
+
 \subsection{KKT-Based DDP Algorithm}
 \subsection{Feasibility-Prone DDP}
-Rigid contacts can be formulated as holonomic scleronomic constraints to the robot dynamics. 
+%Name Box-FDDP and relate it to Box-DDP
+
+\subsection{Handling Tasks}
 
 \section{The RH5 Humanoid Robot}
 

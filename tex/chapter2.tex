@@ -22,9 +22,6 @@ The second chapter provides the reader with fundamentals on the mathematical mod
 \subsection{Efficient Walking}
 
 \section{Differential Dynamic Programming (DDP)}\label{sec:DDP}
-
-
-
 This section describes the basics of \gls{DDP}, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{mayne1966} \citep{mayne1966}. A modern description of the algorithm using the same notations as below can be found in \cite{tassa2012synthesis, tassa2014control}.
 \subsection{Finite Horizon Optimal Control}
 We consider a system with discrete-time dynamics, which can be modeled as a generic function $\myM{f}$
@@ -33,9 +30,9 @@ We consider a system with discrete-time dynamics, which can be modeled as a gene
 \end{equation}
 that describes the evolution of the state $\myM{x}\in \myM{R}^n$ from time $i$ to $i+1$, given the control $\myM{u}\in \myM{R}^m$. A complete trajectory $\{\myM{X}, \myM{U}\}$ is a sequence of states $\myM{X}=\{\myM{x}_0, \myM{x}_1, ..., \myM{x}_N\}$ and control inputs $\myM{U}=\{\myM{u}_0, \myM{u}_1, ..., \myM{u}_N\}$ satisfying \cref{eqn:discreteDynamics}.
 The \textit{total cost} $J$ of a trajectory can be written as the sum of running costs $l$ and a final cost $l_f$ starting from the initial state $\myM{x_0}$ and applying the control sequence $\myM{U}$ along the finite time-horizon:     
-\begin{equation*}\label{eqn:totalCost}
-J(\myM{x}_0, \myM{U})=\sum_{i=0}^{N-1}l(\myM{x}_i,\myM{u}_i)+l_f(\myM{x}_N).
-\end{equation*}
+\begin{equation}\label{eqn:totalCost}
+J(\myM{x}_0, \myM{U})=l_f(\myM{x}_N)+\sum_{i=0}^{N-1}l(\myM{x}_i,\myM{u}_i).
+\end{equation}
 As dicussed in \cref{c1}, \textit{indirect} methods such \gls{DDP} represent the trajectory implicitly solely via the optimal controls $\myM{U}$. The states $\myM{X}$ are obtained from forward simulation of the system dynamics, i.e. integration \cref{eqn:discreteDynamics}. Consequently, the solution of the optimal control problem is the minimizing control sequence 
 \begin{equation*}\label{eqn:minControl}
 \myM{U}^*=\argmin_U J(\myM{x}_0, \myM{U}). 
@@ -43,9 +40,9 @@ As dicussed in \cref{c1}, \textit{indirect} methods such \gls{DDP} represent the
 
 \subsection{Local Dynamic Programming}
 Let $\myM{U}_i\equiv\{\myM{u}_i,\myM{u}_{i+1}...,\myM{u}_{N-1}\}$ be the partial control sequence, the \textit{cost-to-go} $J_i$ is the partial sum of costs from $i$ to $N$: 
-\begin{equation*}\label{costToGo}
-J_i(\myM{x}, \myM{U}_i)=\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j)+l_f(\myM{x}_N).
-\end{equation*}
+\begin{equation}\label{eqn:costToGo}
+J_i(\myM{x}, \myM{U}_i)=l_f(\myM{x}_N)+\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j).
+\end{equation}
 The \textit{Value function} at time $i$ is the optimal cost-to-go starting at $\myM{x}$ given the minimizing control sequence 
 \begin{equation*}\label{eqn:value}
 V_i(\myM{x})=\min_{\myM{U}_i}J_i(\myM{x}, \myM{U}_i),
@@ -59,27 +56,27 @@ Note that \cref{eqn:bellman} is referred to as the \textit{Bellman equation} for
 \subsection{Quadratic Approximation}
 \gls{DDP} locally computes the optimal state and control sequences of the \gls{OC} problem derived with \cref{eqn:bellman} by iteratively performing a forward and backward pass. The \textit{backward pass} on the trajectory generates a new control sequence and is followed by a \textit{forward pass} to compute and evaluate the new trajectory.
 
-Let $Q(\dx,\du)$ be the variation in the argument on the right-hand side of \cref{eqn:bellman} around the $i-th (\bx,\bu)$ pair
+Let $\bQ(\dx,\du)$ be the variation in the argument on the right-hand side of \cref{eqn:bellman} around the $i-th (\bx,\bu)$ pair
 \begin{equation}\label{eqn:Q}
-Q(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du)).
+\bQ(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du)).
 \end{equation}
 The \gls{DDP} algorithm uses a quadratic approximation of this differential change. The quadratic Taylor expansion of $Q(\dx,\du)$ leads to
 \begin{equation}\label{eqn:QApprox}
-Q(\dx,\du) \approx \dfrac{1}{2} 
+\bQ(\dx,\du) \approx \dfrac{1}{2} 
 \begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix}^T 
-\begin{bmatrix} 0 & Q_{\bx}^T & Q_{\bu}^T \\
-Q_{\bx} & Q_{\bx\bx} & Q_{\bx\bu} \\
-Q_{\bu} & Q_{\bu\bx} & Q_{\bu\bu} \end{bmatrix}
+\begin{bmatrix} 0 & \bQ_{\bx}^T & \bQ_{\bu}^T \\
+\bQ_{\bx} & \bQ_{\bx\bx} & \bQ_{\bx\bu} \\
+\bQ_{\bu} & \bQ_{\bu\bx} & \bQ_{\bu\bu} \end{bmatrix}
 \begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix},
 \end{equation}
 where the coefficients can be computed to 
 \begin{subequations}\label{eqn:QApproxCoeff}
 \begin{align}
-Q_{\bx} &= l_{\bx}+\bfun_{\bx}^T V_{\bx}^\prime \\
-Q_{\bu} &= l_{\bu}+\bfun_{\bu}^T V_{\bx}^\prime \\
-Q_{\bx\bx} &= l_{\bx\bx}+\bfun_{\bx}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bx\bx}  \label{subeqn:Qxx}\\
-Q_{\bu\bx} &= l_{\bu\bx}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bx}+V_{\bx}^\prime\cdot\bfun_{\bu\bx} \label{subeqn:Qux}\\
-Q_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T V_{\bx\bx}^\prime\bfun_{\bu}+V_{\bx}^\prime\cdot\bfun_{\bu\bu} \label{subeqn:Quu}.
+\bQ_{\bx} &= l_{\bx}+\bfun_{\bx}^T \bV_{\bx}^\prime, \\
+\bQ_{\bu} &= l_{\bu}+\bfun_{\bu}^T \bV_{\bx}^\prime, \\
+\bQ_{\bx\bx} &= l_{\bx\bx}+\bfun_{\bx}^T \bV_{\bx\bx}^\prime\bfun_{\bx}+\bV_{\bx}^\prime\cdot\bfun_{\bx\bx}  \label{subeqn:Qxx},\\
+\bQ_{\bu\bx} &= l_{\bu\bx}+\bfun_{\bu}^T \bV_{\bx\bx}^\prime\bfun_{\bx}+\bV_{\bx}^\prime\cdot\bfun_{\bu\bx} \label{subeqn:Qux},\\
+\bQ_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T \bV_{\bx\bx}^\prime\bfun_{\bu}+\bV_{\bx}^\prime\cdot\bfun_{\bu\bu} \label{subeqn:Quu}.
 \end{align}
 \end{subequations}
 The last terms of \crefrange{subeqn:Qxx}{subeqn:Quu} denote the product of a vector with a tensor. 
@@ -87,17 +84,17 @@ The last terms of \crefrange{subeqn:Qxx}{subeqn:Quu} denote the product of a vec
 \subsection{Backward Pass}
 The first algorithmic step of \gls{DDP}, namely the backward pass, involves computing a new control sequence on the given trajectory and consequently determining the search direction of a a step in the numerical optimization. To this end, the quadratic approximation obtained from \cref{eqn:QApprox}, minimized with respect to $\du$ for some state perturbation $\dx$, results in
 \begin{equation*}
-\du^*(\dx)=\argmin_{\du}Q(\dx,\du)=-Q_{\bu\bu}^{-1}(Q_{\bu}+Q_{\bu\bx}\dx),
+\du^*(\dx)=\argmin_{\du}\bQ(\dx,\du)=-\bQ_{\bu\bu}^{-1}(\bQ_{\bu}+\bQ_{\bu\bx}\dx),
 \end{equation*}
 giving us an open-loop term $\myM{k}$ and a feedback gain term $\myM{K}$:
 \begin{equation*}
-\myM{k}=-Q_{\bu\bu}^{-1}Q_{\bu}\quad and \quad \myM{K}=-Q_{\bu\bu}^{-1}Q_{\bu\bx}.
+\myM{k}=-\bQ_{\bu\bu}^{-1}\bQ_{\bu}\quad and \quad \myM{K}=-\bQ_{\bu\bu}^{-1}\bQ_{\bu\bx}.
 \end{equation*}
 The resulting locally-linear feedback policy can be again inserted into \cref{eqn:QApprox} leading to a quadratic model of the Value at time $i$: 
 \begin{align*}
- \Delta V &= -\dfrac{1}{2}\myM{k}^TQ_{\bu\bu}\myM{k} \\
- V_{\bx} &= Q_{\bx}-\myM{K}^TQ_{\bu\bu}\myM{k} \\
- V_{\bx\bx} &= Q_{\bx\bx}-\myM{K}^TQ_{\bu\bu}\myM{\myM{K}}.
+ \Delta \bV &= -\dfrac{1}{2}\myM{k}^T\bQ_{\bu\bu}\myM{k} \\
+ \bV_{\bx} &= \bQ_{\bx}-\myM{K}^T\bQ_{\bu\bu}\myM{k} \\
+ \bV_{\bx\bx} &= \bQ_{\bx\bx}-\myM{K}^T\bQ_{\bu\bu}\myM{\myM{K}}.
 \end{align*}
 
 \subsection{Forward Pass}
@@ -119,14 +116,6 @@ Like Newton's method, \gls{DDP} is a second-order algorithm \citep{liao1992advan
 The interested reader can find a more extensive introduction to numerical optimization in e.g. \cite{nocedal2006numerical} and \citeauthor{tassa2012synthesis}  
 provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
-
-
-
-
-
-  
-
-
 \section{DDP With Constrained Robot Dynamics}\label{sec:ConstrainedDDP}
 By nature, the \gls{DDP} algorithm presented in \cref{sec:DDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the controls allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. Since physically consistent bipedal locomotion is highly dependent on making contacts with the ground, this section provides details on the above mentioned approach.  
 
@@ -134,28 +123,51 @@ By nature, the \gls{DDP} algorithm presented in \cref{sec:DDP} does not take int
 In the case of rigid contact dynamics, \gls{DDP} assumes a set of given contacts of the system with the environment. Then, an equality constrained dynamics can be incorporated by formulating rigid contacts as holonomic constraints to the robot dynamics. In other words, the contact points are assumed to have a fixed position on the ground. 
 
 The unconstrained robot dynamics can be represented as 
-\begin{equation}\label{eq:unconstrainedDynamics}
+\begin{equation}\label{eqn:unconstrainedDynamics}
 \myM{M}\dot{\myM{v}}_{free}=\myM{S\tau}-\myM{b}, 
 \end{equation}
-with the joint-space intertia matrix $\myM{M}\in \myM{R}^{nxn}$ and the unconstrained acceleration vector $\dot{\myM{v}}_{free}$. The right-hand side of \cref{eq:unconstrainedDynamics} represents the n-dimensional force-bias vector accounting for the control $\myM{\tau}$, the Coriolis and gravitational effects $\myM{b}$ and the selection matrix $\myM{S}$ of actuated joints. 
+with the joint-space intertia matrix $\myM{M}\in \myM{R}^{nxn}$ and the unconstrained acceleration vector $\dot{\myM{v}}_{free}$. The right-hand side of \cref{eqn:unconstrainedDynamics} represents the n-dimensional force-bias vector accounting for the control $\myM{\tau}$, the Coriolis and gravitational effects $\myM{b}$ and the selection matrix $\myM{S}$ of actuated joints. 
 
 In order to incorporate the rigid contact constraints to the robot dynamics, one can apply the Gauss principle of least constraint \cite{udwadia1992new}. The idea is to minimize the deviation in acceleration between the constrained and unconstrained motion:
-\begin{equation}\label{eq:gaussMinimization}
+\begin{equation}\label{eqn:gaussMinimization}
 \begin{aligned} & \dot{\myM{v}} = \underset{\myM{a}}{\arg\min} & & \frac{1}{2}\,\|\dot{\myM{v}}-\dot{\myM{v}}_{free}\|_{\myM{M}} \\ & \textrm{subject to} & & \myM{J}_{c} \dot{\myM{v}} + \dot{\myM{J}}_c \myM{v} = \myM{0}, \end{aligned}
 \end{equation}
 where $\myM{M}$ formally represents the metric tensor over the configuration manifold $\myM{q}$. In order to express the holonomic contact constraint $\phi(\myM{q})$ in the acceleration space, it needs to be differentiated twice. Consequently, the contact condition can be seen as a second-order kinematic constraints on the contact surface position where $\myM{J}_{c}= \begin{bmatrix} \myM{J}_{c_1} & \cdots & \myM{J}_{c}\end{bmatrix}$ is a stack of $f$ contact Jacobians. 
 
-     
 \subsection{Karush-Kuhn-Tucker (KKT) Conditions}
-The Gauss minimization in \cref{eq:gaussMinimization} corresponds to an 
+The Gauss minimization in \cref{eqn:gaussMinimization} corresponds to an 
 equality-constrained quadratic optimization problem. The optimal solutions ($\dot{\myM{v}},\myM{\lambda}$) must satisfy the so-called \gls{KKT} conditions given by
-\begin{equation}\label{eq:KKTConditions}
+\begin{equation}\label{eqn:KKTConditions}
 \left[\begin{matrix}\myM{M} & \myM{J}^{\top}_c \\{\myM{J}_{c}} & \myM{0}\end{matrix}\right] \left[\begin{matrix} \dot{\myM{v}} \\ -\boldsymbol{\lambda} \end{matrix}\right] = \left[\begin{matrix} \boldsymbol{\tau}_b \\ -\dot{\myM{J}}_c \myM{v}\end{matrix}\right].
 \end{equation}
-These dual variables $\myM{\lambda}^k$ can be seen as external wrenches at the contact level. For a given robot state and applied torques, \cref{eq:KKTConditions} allows a direct computation of the contact forces. To this end, the contact constraints can be solved analytically at the level of dynamics instead of introducing additional constraints in the whole-body optimization \cite{saab2013dynamic}.  
-
+These dual variables $\myM{\lambda}^k$ can be seen as external wrenches at the contact level. For a given robot state and applied torques, \cref{eqn:KKTConditions} allows a direct computation of the contact forces. To this end, the contact constraints can be solved analytically at the level of dynamics instead of introducing additional constraints in the whole-body optimization \cite{saab2013dynamic}.  
 
 \subsection{KKT-Based DDP Algorithm}
+The \gls{KKT} dynamics from \cref{eqn:KKTConditions} can be expressed as a function of the state $\bx_i$ and the control $\bu_i$:
+\begin{align}\label{eqn:KKTFunctions}
+\begin{split}
+\bx_{i+1}&=\bfun(\bx_i,\bu_i),\\
+\myM{\lambda}_i&=\myM{g}(\bx_i,\bu_i),
+\end{split}
+\end{align}
+where the concatenation of the configuration vector and its tangent velocity forms the state $\bx=(\bq,\bv)$, $\bu$ is the input torque vector and $\myM{g}(\cdot)$ is the optimal solution of \cref{eqn:KKTConditions}.
+
+Supposing a sequence of predefined contacts, the cost-to-go of the \gls{DDP} backward-pass and its respective Hessians (compare \cref{eqn:costToGo} and \ref{eqn:QApproxCoeff}) turn into:
+\begin{equation*}\label{eqn:CostToGoUpdated}
+J_i(\myM{x}, \myM{U}_i)=l_f(\myM{x}_N)+\sum_{j=i}^{N-1}l(\myM{x}_j,\myM{u}_j,\myM{\lambda}_j)
+\end{equation*}
+with the control inputs $\myM{U}_i$ acting on the system dynamics at time $i$, and first-order approximation of $\myM{g}(\cdot)$ and $\myM{f}(\cdot)$ as
+\begin{align}\label{eqn:QApproxCoeffUpdated}
+\begin{split}
+\bQ_{\bx} &= \bl_{\bx}+\myM{g}_{\bx}^T\bl_{\myM{\lambda}}+\bfun_{\bx}^T \bV_{\bx}^\prime, \\
+\bQ_{\bu} &= \bl_{\bu}+\myM{g}_{\bu}^T\bl_{\myM{\lambda}}+\bfun_{\bu}^T \bV_{\bx}^\prime, \\
+\bQ_{\bx\bx} &\approx \bl_{\bx\bx}+\myM{g}_{\bx}^T\bl_{\myM{\lambda\lambda}}\myM{g}_{\bx}+\bfun_{\bx}^T \bV_{\bx\bx}^\prime\bfun_{\bx},\\
+\bQ_{\bu\bx} &\approx \bl_{\bu\bx}+\myM{g}_{\bu}^T\bl_{\myM{\lambda\lambda}}\myM{g}_{\bx}+\bfun_{\bu}^T \bV_{\bx\bx}^\prime\bfun_{\bx},\\
+\bQ_{\bu\bu} &\approx \bl_{\bu\bu}+\myM{g}_{\bu}^T\bl_{\myM{\lambda\lambda}}\myM{g}_{\bu}+\bfun_{\bu}^T \bV_{\bx\bx}^\prime\bfun_{\bu}.
+\end{split}
+\end{align}
+Consequently, the \gls{KKT}-based \gls{DDP} algorithm utilizes the set of \cref{eqn:QApproxCoeffUpdated} inside the backward-pass to incorporate the rigid contacts forces, while the updated system dynamics from \cref{eqn:KKTFunctions} is utilized during the forward-pass of the algorithm. 
+
 \subsection{Feasibility-Prone DDP}
 %Name Box-FDDP and relate it to Box-DDP
 

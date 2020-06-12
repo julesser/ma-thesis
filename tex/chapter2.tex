@@ -9,10 +9,50 @@ The second chapter provides the reader with fundamentals on the mathematical mod
 
 \section{Modeling and Control of Legged Robots}
 \subsection{Terminology}
+Terminology originally summarized in \cite{vukobratovic2007towards}; see \cite{dekker2009zero} for clear overview of these. 
 %\subsubsection{Three Dimensions of Motion}
 %\subsubsection{Gait Analysis (Double Support, Gait Phases ..)}
+
 \subsection{Dynamics}
+\subsubsection{Equations of Motion}
+See https://scaron.info/teaching/equations-of-motion.html
+\begin{equation*} \label{eqn:EoMAbstract}
+F(\bq(t),\bdq(t),\bddq(t),\bu(t),t)=0
+\end{equation*}
+\begin{equation*} \label{eqn:EoMManipulator}
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\btau+\btau_g(\bq)
+\end{equation*}
+\begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{f}_i
+\end{equation*}
+\begin{equation*} \label{eqn:EoMLeggedRobotSurfaceContact}
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{w}_i
+\end{equation*}
+with the contact wrench $w_i$ stacked as 
+$$\myM{w}_i=\{\myM{f}_i,\myM{w}_i\}.$$
+
+\subsection{Contact Modeling}
+\subsection{Friction Cones}
+\subsection{Wrench Friction Cones}
+\subsection{Contact Stability}
+
 \subsection{Stability Analysis}
+Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
+\subsubsection{Floor Projection of the Center of Mass (FCoM)}
+\subsubsection{Zero-Moment Point (ZMP)}
+Introduction in \cite{vukobratovic1972stability}, reviewed in \cite{vukobratovic2004zero}, made popular with \cite{kajita2003biped}.
+Assumptions:
+\begin{itemize}
+\item One planar contact are (i.e. no multiple surfaces like on rough terrain)
+\item Sufficiently high friction to prevent sliding of the feet
+\end{itemize}
+\begin{equation*} 
+\myM{OC}=\dfrac{\btau_O^P\times\myM{n}}{\myM{n}\cdot\bfun^p}
+\end{equation*}
+\subsubsection{Center of Pressure (CoP)}
+\subsubsection{Coincidence of ZMP and CoP}
+
+
 \subsection{Motion Generation}
 \subsection{Motion Control}
 %\subsubsection{Kinematic Control (High-gain joint position trajectory tracking)}

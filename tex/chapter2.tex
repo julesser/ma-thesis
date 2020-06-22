@@ -7,21 +7,61 @@
 \chapter{Background: Optimal Bipedal Locomotion}\label{c2}
 The second chapter provides the reader with fundamentals on the mathematical modeling of legged robots, outlines how motion generation can be formulated as optimization problem and introduces the class of algorithms used within this thesis. 
 
-\section{Modeling and Control of Legged Robots}
+%\section{Modeling and Control of Legged Robots}
+\section{Foundations of Bipedal Locomotion}
 \subsection{Terminology}
-Terminology originally summarized in \cite{vukobratovic2007towards}; see \cite{dekker2009zero} for clear overview of these. 
-%\subsubsection{Three Dimensions of Motion}
-%\subsubsection{Gait Analysis (Double Support, Gait Phases ..)}
+In order to describe the locomotion of a humanoid robot, some specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking, comprehensively summarized by \citeauthor{dekker2009zero} \cite{vukobratovic2007towards, dekker2009zero}.\\\\
+\textbf{Walk}\\
+Walk can be defined as: "\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}".\\\\
+\textbf{Run}\\
+Run in turn is characterized by  a movement where partially both feet leaving the ground at the same time.\\\\
+\textbf{Gait}\\
+The way each human walks and runs is unique, hence gait can be defined as: "\textit{Manner of walking or running}".\\\\
+\textbf{Periodic gait}\\
+If a gait is realized by repeating each locomotion phase in an identical way, the gait is referred to as \textit{periodic}.\\\\
+\textbf{Symmetric gait}\\
+If the left and right leg move in an identical but time-shifted manner, the gait is referred to as \textit{symmetric}.\\\\
+\textbf{Double Support}\\
+A situation where the humanoid has two isolated contact surfaces with the ground.\\\\
+\textbf{Single Support}\\
+A situation where  the humanoid has only one contact surface with the ground.\\\\
+\textbf{Support Polygon}\\%TODO: Maybe add figure to illustrate single vs double support
+The support polygon is formed by the \textit{convex hull} about the ground contact points.    \\\\
+\textbf{Swing foot}\\
+This term refers to the leg that is performing a step, i.e. moving through the air.\\\\
+\textbf{Supporting foot}\\
+This term refers to the leg that is in contact with the ground, supporting all the weight of the humanoid. 
 
 \subsection{Dynamics}
-\subsubsection{Equations of Motion}
-See https://scaron.info/teaching/equations-of-motion.html
-\begin{equation*} \label{eqn:EoMAbstract}
-F(\bq(t),\bdq(t),\bddq(t),\bu(t),t)=0
-\end{equation*}
-\begin{equation*} \label{eqn:EoMManipulator}
-\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\btau+\btau_g(\bq)
-\end{equation*}
+In this section we will introduce the equations of motion for a manipulator as well as for  floating base systems. A concise introduction to this topic is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
+\subsubsection{General Formulation}
+Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} are written as: 
+\begin{equation} \label{eqn:EoMGeneral}
+F(\bq(t),\bdq(t),\bddq(t),\bu(t),t)=0,
+\end{equation}
+where 
+\begin{itemize}
+\item \myM{t} is the time variable, 
+\item \myM{q} is the vector of generalized coordinates,
+\item $\dot{\myM{q}}$ is the first time derivative (velocity) of \myM{q}, 
+\item $\dot{\dot{\myM{q}}}$ is the second time derivative (acceleration) of \myM{q} and
+\item \myM{u} is the vector of control inputs. 
+\end{itemize}
+Consequently, the \gls{EoM} provide a mapping between the control space on the one hand and the state space of robot on the other hand. Typical methods for computing the closed-form solution of the \gls{EoM} are e.g. the classical \textit{Newton-Euler} method or the \textit{Lagrange method}, where the former is based on principles for conservation of linear and angular momenta and the latter utilizes energy-based functions expressed in generalized coordinates. 
+\subsubsection{Manipulator Equations}
+For applications with fixed-based robots, e.g. a robotic manipulator, the multi-body dynamics can be formulated as
+\begin{equation} \label{eqn:EoMManipulator}
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\btau+\btau_g(\bq),
+\end{equation}
+where 
+\begin{itemize}
+\item $\myM{M}(\bq)$ is the generalized inertia matrix, 
+\item $\myM{C}(\bq)$ is the coriolis tensor, 
+\item $\btau$ is the vector of actuated joint torques and 
+\item $\btau_g(\bq)$ is the vector of external joint torques caused by gravity.
+\end{itemize}
+In contrast to the general formulation \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used to calculate the acceleration $\bddq$ based on the given state $(\bq, \bdq)$, also known as \gls{FD}, as well as the \gls{ID}.
+\subsubsection{Floating Base Systems}
 \begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
 \myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{f}_i
 \end{equation*}
@@ -38,6 +78,15 @@ $$\myM{w}_i=\{\myM{f}_i,\myM{w}_i\}.$$
 
 \subsection{Stability Analysis}
 Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
+%\subsubsection{Stability Criteria}
+%\subsubsection{Gait Classification} 
+%->Statically stable, dynamically stable; check difference stable and balanced!
+
+\subsubsection{Terminology}
+See \cite{vukobratovic2007towards} for definitions; also covered in \cite[Ch.48.3.7]{siciliano2016springer}.
+\textbf{Statically balanced}\\
+
+\textbf{Dynamically balanced}
 \subsubsection{Floor Projection of the Center of Mass (FCoM)}
 \subsubsection{Zero-Moment Point (ZMP)}
 Introduction in \cite{vukobratovic1972stability}, reviewed in \cite{vukobratovic2004zero}, made popular with \cite{kajita2003biped}.

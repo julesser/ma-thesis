@@ -43,8 +43,8 @@ where
 \begin{itemize}
 \item \myM{t} is the time variable, 
 \item \myM{q} is the vector of generalized coordinates,
-\item $\dot{\myM{q}}$ is the first time derivative (velocity) of \myM{q}, 
-\item $\dot{\dot{\myM{q}}}$ is the second time derivative (acceleration) of \myM{q} and
+\item $\bdq$ is the first time derivative (velocity) of \myM{q}, 
+\item $\bddq$ is the second time derivative (acceleration) of \myM{q} and
 \item \myM{u} is the vector of control inputs. 
 \end{itemize}
 Consequently, the \gls{EoM} provide a mapping between the control space on the one hand and the state space of robot on the other hand. Typical methods for computing the closed-form solution of the \gls{EoM} are e.g. the classical \textit{Newton-Euler} method or the \textit{Lagrange method}, where the former is based on principles for conservation of linear and angular momenta and the latter utilizes energy-based functions expressed in generalized coordinates. 
@@ -61,15 +61,25 @@ where
 \item $\btau_g(\bq)$ is the vector of external joint torques caused by gravity.
 \end{itemize}
 In contrast to the general formulation \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used to calculate the acceleration $\bddq$ based on the given state $(\bq, \bdq)$, also known as \gls{FD}, as well as the \gls{ID}.
-\subsubsection{Floating Base Systems}
+\subsubsection{Floating Base Systems (Legged Robots)}
+A floating base system is characterized by having a base that is free to move, rather than being fixed in space. Consequently, the vector of generalized coordinates $\bq$ not only contains the joints angles, but also accounts for the position and orientation of the floating base. Legged robots belong to this category of rigid-body systems as they make and brake contacts with their environment in order to move. Contrary to manipulators, contacts need to be actively enforced by kinematic contact constraints for legged robots. There are namely two different types of contact constraints that can be applied: point contacts (3d) or surface contacts (6d). 
+For the case of point contacts, the dynamics of the floating base system become
 \begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
-\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{f}_i
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{f}_i,
 \end{equation*}
+where 
+\begin{itemize}
+\item \myM{S} is the selection matrix of actuated joints,
+\item $\myM{J}_{C_i}$ is the Jacobian at the location of a contact point $C_i$ and
+\item $\bfun_i$ is the contact force acting at the contact point $C_i$.
+\end{itemize}
+For the case of surface contacts, such as a flat foot on the floor, modeling a point contact is not sufficient since it only constrains the translation. In order to also account for the rotational constraints enforced by the geometry one could take into account multiple point contacts. A non-redundant alternative is to model more general frame contact constraints as
 \begin{equation*} \label{eqn:EoMLeggedRobotSurfaceContact}
-\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{w}_i
+\myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{w}_i,
 \end{equation*}
-with the contact wrench $w_i$ stacked as 
-$$\myM{w}_i=\{\myM{f}_i,\myM{w}_i\}.$$
+where $\myM{w}_i$ is referred to as the \textit{contact wrench} acting on the contact link $i$. This wrench stacks the resultant $\bfun_i$ of contact forces and the moment $\myM{m}_i$ exerted by these forces around the contact frame as
+$$\myM{w}_i=\{\myM{f}_i,\myM{m}_i\}.$$ 
+For more details on contact wrenches and spatial vector algebra in general, the interested reader is referred to e.g. \cite[Ch.2]{featherstone2014rigid}.
 
 \subsection{Contact Modeling}
 \subsection{Friction Cones}

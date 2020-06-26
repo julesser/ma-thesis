@@ -10,7 +10,7 @@ The second chapter provides the reader with fundamentals on the mathematical mod
 %\section{Modeling and Control of Legged Robots}
 \section{Foundations of Bipedal Locomotion}
 \subsection{Terminology}
-In order to describe the locomotion of a humanoid robot, some specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking, comprehensively summarized by \citeauthor{dekker2009zero} \cite{vukobratovic2007towards, dekker2009zero}.\\\\
+In order to describe the locomotion of a humanoid robot, some specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking, concisely summarized by \citeauthor{dekker2009zero} \cite{vukobratovic2007towards, dekker2009zero}.\\\\
 \textbf{Walk}\\
 Walk can be defined as: "\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}".\\\\
 \textbf{Run}\\
@@ -81,24 +81,29 @@ where $\myM{w}_i$ is referred to as the \textit{contact wrench} acting on the co
 $$\myM{w}_i=\{\myM{f}_i,\myM{m}_i\}.$$ 
 For more details on contact wrenches and spatial vector algebra in general, the interested reader is referred to e.g. \cite[Ch.2]{featherstone2014rigid}.
 
-\subsection{Contact Modeling}
-\subsection{Friction Cones}
-\subsection{Wrench Friction Cones}
-\subsection{Contact Stability}
+%\subsection{Motion Generation}
+%\subsection{Motion Control}
+%\subsubsection{Kinematic Control (High-gain joint position trajectory tracking)}
+%\subsubsection{Impedance Control with Joint Space Inverse Dynamics (Low-gain joint control with model compensation)}
+%\subsubsection{Task Space Inverse Dynamics Control (Directly regulating in «task space»)}
+%\subsubsection{Virtual Model Control (Dynamic control of a quasistatic system)}
+%\subsection{Efficient Walking}
 
-\subsection{Stability Analysis}
+
+\section{Contact Stability Analysis}
 Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
 %\subsubsection{Stability Criteria}
 %\subsubsection{Gait Classification} 
 %->Statically stable, dynamically stable; check difference stable and balanced!
 
-\subsubsection{Terminology}
+\subsection{Terminology}
 See \cite{vukobratovic2007towards} for definitions; also covered in \cite[Ch.48.3.7]{siciliano2016springer}.
+
 \textbf{Statically balanced}\\
 
 \textbf{Dynamically balanced}
-\subsubsection{Floor Projection of the Center of Mass (FCoM)}
-\subsubsection{Zero-Moment Point (ZMP)}
+\subsection{Floor Projection of the Center of Mass (FCoM)}
+\subsection{Zero-Moment Point (ZMP)}
 Introduction in \cite{vukobratovic1972stability}, reviewed in \cite{vukobratovic2004zero}, made popular with \cite{kajita2003biped}.
 Assumptions:
 \begin{itemize}
@@ -108,17 +113,9 @@ Assumptions:
 \begin{equation*} 
 \myM{OC}=\dfrac{\btau_O^P\times\myM{n}}{\myM{n}\cdot\bfun^p}
 \end{equation*}
-\subsubsection{Center of Pressure (CoP)}
-\subsubsection{Coincidence of ZMP and CoP}
+\subsection{Center of Pressure (CoP)}
+\subsection{Coincidence of ZMP and CoP}
 
-
-\subsection{Motion Generation}
-\subsection{Motion Control}
-%\subsubsection{Kinematic Control (High-gain joint position trajectory tracking)}
-%\subsubsection{Impedance Control with Joint Space Inverse Dynamics (Low-gain joint control with model compensation)}
-%\subsubsection{Task Space Inverse Dynamics Control (Directly regulating in «task space»)}
-%\subsubsection{Virtual Model Control (Dynamic control of a quasistatic system)}
-\subsection{Efficient Walking}
 
 \section{Differential Dynamic Programming (DDP)}\label{sec:DDP}
 This section describes the basics of \gls{DDP}, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{mayne1966} \citep{mayne1966}. A modern description of the algorithm using the same notations as below can be found in \cite{tassa2012synthesis, tassa2014control}.
@@ -215,6 +212,7 @@ Like Newton's method, \gls{DDP} is a second-order algorithm \citep{liao1992advan
 The interested reader can find a more extensive introduction to numerical optimization in e.g. \cite{nocedal2006numerical} and \citeauthor{tassa2012synthesis}  
 provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
+
 \section{Handling Constraints with DDP}\label{sec:ConstrainedDDP}
 By nature, the \gls{DDP} algorithm presented in \cref{sec:DDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the controls allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. Since physically consistent bipedal locomotion is highly dependent on making contacts with the ground, this section provides details on the above mentioned approach.  
 
@@ -285,8 +283,9 @@ In the scope of this thesis, the following tasks are handled
 tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RH_{SE(3)}\}:
 \end{equation}
 1) the \gls{CoM} tracking $(CoM)$, 2) the tracking of the left- and right-hand pose ($LH_{SE(3)}$, $RH_{SE(3)}$) and 3) the tracking of the left- and right-feet pose ($LF_{SE(3)}, RH_{SE(3)}$).
-\subsection{Feasibility-Prone DDP}
+%\subsection{Feasibility-Prone DDP}
 %Name Box-FDDP and relate it to Box-DDP
+
 
 \section{RH5 Humanoid Robot}
 The derived approaches for constrained \gls{DDP} have been tested both in simulation and real-world experiments on a full-size humanoid robot. RH5 is a lightweight and biologically inspired humanoid that has recently been developed at DFKI Robotics Innovation Center\cite{peters2017konstruktion}.

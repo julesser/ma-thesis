@@ -1,3 +1,6 @@
+## Ignore other literature: 
+literature/Others/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

@@ -83,6 +83,7 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \newcommand{\bfun}{\myM{f}}
 \newcommand{\bl}{\myM{l}}
+\newcommand{\bp}{\myM{p}}
 \newcommand{\bq}{\myM{q}}
 \newcommand{\btau}{\myM{\tau}}
 \newcommand{\bu}{\myM{u}}
@@ -178,20 +179,27 @@
 \include{tex/chapter2}
 
 \chapter{Contact Stability Constrained DDP}
+\section{Stability of Surface Contacts}
+\section{Center of Pressure Constraints}
+\section{Integration into the Crocoddyl Framework}
 
 \chapter{Bipedal Walking Variants}
-\section{Formulation of the Optimization Problem}
+\section{Formulation of the Optimization Problem} %Build on example: Fixed CoM, fixed feet
 \section{Inequality Constraints for Physical Compliance}
 \section{Trajectories for Increasing Mechanism Complexity}
 
 \chapter{Highly-Dynamic Movements}
 \section{Formulation of the Optimization Problems}
 \section{Trajectories for Increasing Task Complexity}
+%\section{Comparison of FDDP and DDP Solver}
 \section{Identification of Limits in System Design}
 
 \chapter{Experimental Validation on the RH5 Humanoid}
 %\section{Validation in Real-Time Physics Simulation}
-\section{Experimental Setup}
+\section{Preliminaries}
+\subsection{Experimental Setup}
+\subsection{Control Architecture}
+\subsection{Notational Compatibility of the Frameworks}
 \section{Quasi-Static Movements}
 \subsection{Squatting}
 \subsection{Balancing}

@@ -32,7 +32,7 @@ This term refers to the leg that is performing a step, i.e. moving through the a
 \textbf{Supporting foot}\\
 This term refers to the leg that is in contact with the ground, supporting all the weight of the humanoid. 
 
-\subsection{Dynamics}
+\subsection{Dynamic Modeling of Legged Robots}
 In this section we will introduce the equations of motion for a manipulator as well as for  floating base systems. A concise introduction to this topic is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
 \subsubsection{General Formulation}
 Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} are written as: 
@@ -91,30 +91,38 @@ For more details on contact wrenches and spatial vector algebra in general, the 
 
 
 \section{Contact Stability Analysis}
-Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
-%\subsubsection{Stability Criteria}
-%\subsubsection{Gait Classification} 
-%->Statically stable, dynamically stable; check difference stable and balanced!
+Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; 
+CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
 
-\subsection{Terminology}
-See \cite{vukobratovic2007towards} for definitions; also covered in \cite[Ch.48.3.7]{siciliano2016springer}.
+\subsection{Stability Criteria}
 
-\textbf{Statically balanced}\\
-
-\textbf{Dynamically balanced}
-\subsection{Floor Projection of the Center of Mass (FCoM)}
-\subsection{Zero-Moment Point (ZMP)}
+\subsubsection{Floor Projection of the Center of Mass (FCoM)}
+\begin{equation*} 
+\bp_{CoM}=\dfrac{\sum_{i=1}^{n}m_i\bp_i}{\sum_{i=1}^{n}m_i}
+\end{equation*}
+\begin{equation*} 
+\sum_{i=1}^{n}((\bp_{FCoM}-\bp_i)\times m_i\myM{g})=\myM{0}
+\end{equation*}
+\subsubsection{Zero-Moment Point (ZMP)}
 Introduction in \cite{vukobratovic1972stability}, reviewed in \cite{vukobratovic2004zero}, made popular with \cite{kajita2003biped}.
 Assumptions:
 \begin{itemize}
 \item One planar contact are (i.e. no multiple surfaces like on rough terrain)
 \item Sufficiently high friction to prevent sliding of the feet
-\end{itemize}
-\begin{equation*} 
-\myM{OC}=\dfrac{\btau_O^P\times\myM{n}}{\myM{n}\cdot\bfun^p}
-\end{equation*}
-\subsection{Center of Pressure (CoP)}
-\subsection{Coincidence of ZMP and CoP}
+
+%TODO
+% Describe CoP and ZMP according to https://scaron.info/teaching/zero-tilting-moment-point.html
+\subsubsection{Center of Pressure (CoP)}
+\subsubsection{Coincidence of ZMP and CoP}
+
+\subsection{Stability Classification}
+There are existing several classifications on stability, which will be defined in the following according to \cite[Sec.1.2.1]{westervelt2018feedback} and \cite{garcia2002classification}. See \citeauthor{vukobratovic2007towards} for more details on differentiating the terms dynamic stability and dynamic balance \cite{vukobratovic2007towards}.  
+
+\subsubsection{Statically Stable Gait}
+The gait or movement of a humanoid is classified as \textit{statically stable}, if the \gls{FCoM} does not leave the \gls{SP} during the entire motion or gait. Consequently, the humanoid will remain in a stable position, whenever the movement is stopped. Typically, these kind of stability are only obtained with very low walking velocities or quasi-static motions, where the static forces dominate the dynamic forces.  
+
+\subsubsection{Dynamically Stable Gait}
+If the \gls{FCoM} partially leaves the \gls{SP} at some point during the gait, but the \gls{CoP} (or \gls{ZMP}) always remains within the \gls{SP}, the gait or movement is classified as \textit{dynamically stable}. This stability margin is extremely useful for flat-foot dynamic walking since it prevents the foot from rotating around the boundary of the \gls{SP}. 
 
 
 \section{Differential Dynamic Programming (DDP)}\label{sec:DDP}

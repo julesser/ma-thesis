@@ -110,54 +110,14 @@ Assumptions:
 \item One planar contact are (i.e. no multiple surfaces like on rough terrain)
 \item Sufficiently high friction to prevent sliding of the feet
 \end{itemize}
+\subsubsection{Center of Pressure (CoP)}
+Computation via 
+\begin{equation}
+\myM{p}_{CoP}=\dfrac{\myM{n}\times\myM{M}}{\myM{F}\cdot\myM{n}}
+\end{equation}
+
 %TODO
 % Describe CoP and ZMP according to https://scaron.info/teaching/zero-tilting-moment-point.html
-\subsubsection{Center of Pressure (CoP)}
-Conditions for \gls{CoP} inside convex hull:
-\begin{align}
-\begin{split}
-\mid\mid\tau^x\mid\mid &\leq Yf^z \\
-\mid\mid\tau^y\mid\mid &\leq Xf^z 
-\end{split}
-\end{align}
-Which can be modeled by the four inequality conditions:
-\begin{align}
-\begin{split}
-\tau^x &\leq Yf^z \\
--\tau^x &\leq Yf^z \\
-\tau^y &\leq Yf^z \\
--\tau^y &\leq Yf^z 
-\end{split}
-\end{align}
-These conditions are be implemented via: 
-\begin{equation}
-\begin{bmatrix} 0 & 0 & -Y & 1 & 0 & 0 \\
-0 & 0 & -Y & -1 & 0 & 0 \\
-0 & 0 & -X & 0 & 1 & 0 \\
-0 & 0 & -X & 0 & -1 & 0 \end{bmatrix} \cdot
-\begin{bmatrix} f^x \\ f^y \\ f^z \\ \tau^x \\ \tau^y \\ \tau^z \end{bmatrix} \leq
-\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-\end{equation}
-
-\subsubsection{Backup: Friction Cone constraints}
-\begin{align}
-\begin{split}
-\mid\mid f^x\mid\mid &\leq \mu f^z \\
-\mid\mid f^y\mid\mid &\leq \mu f^z \\
-f^z &> 0
-\end{split}
-\end{align}
-For the case of four edges of the linear approximation of the friction cone, the equations become:
-\begin{equation}
-\begin{bmatrix} 1 & 0 & -\mu \\
--1 & 0 & -\mu \\
-0 & 1 & -\mu \\
-0 & -1 & -\mu \\
-0 & 0 & -\mu \\ \end{bmatrix} \cdot
-\begin{bmatrix} f^x \\ f^y \\ f^z \end{bmatrix} \leq
-\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-\end{equation}
-
 \subsubsection{Coincidence of ZMP and CoP}
 
 \subsection{Stability Classification}

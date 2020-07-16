@@ -5,12 +5,12 @@
 %-----------------------------------------------------------------------------%
 
 \chapter{Background: Optimal Bipedal Locomotion}\label{c2}
-The second chapter provides the reader with fundamentals on the mathematical modeling of legged robots, outlines how motion generation can be formulated as optimization problem and introduces the class of algorithms used within this thesis. 
+The second chapter provides the reader with fundamentals on the terminology, modeling and stability analysis in the context of humanoid robotics, introduces the class of algorithms and relevant extensions used within this thesis and presents the experimental platform.  
 
 %\section{Modeling and Control of Legged Robots}
 \section{Foundations of Bipedal Locomotion}
 \subsection{Terminology}
-In order to describe the locomotion of a humanoid robot, some specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking, concisely summarized by \citeauthor{dekker2009zero} \cite{vukobratovic2007towards, dekker2009zero}.\\\\
+In order to describe the locomotion of a humanoid robot, specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking \cite{vukobratovic2007towards}, concisely summarized by \citeauthor{dekker2009zero} \cite{dekker2009zero}.\\\\
 \textbf{Walk}\\
 Walk can be defined as: "\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}".\\\\
 \textbf{Run}\\
@@ -32,8 +32,8 @@ This term refers to the leg that is performing a step, i.e. moving through the a
 \textbf{Supporting foot}\\
 This term refers to the leg that is in contact with the ground, supporting all the weight of the humanoid. 
 
-\subsection{Dynamic Modeling of Legged Robots}
-In this section we will introduce the equations of motion for a manipulator as well as for  floating base systems. A concise introduction to this topic is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
+\subsection{Dynamic Modeling of Legged Robots}\label{subsec:DynamicModeling}
+In the following, the dynamic model for floating base systems, such as legged robots, is derived based on a general formulation. A concise introduction to dynamic modeling is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
 \subsubsection{General Formulation}
 Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} are written as: 
 \begin{equation} \label{eqn:EoMGeneral}
@@ -61,7 +61,7 @@ where
 \item $\btau_g(\bq)$ is the vector of external joint torques caused by gravity.
 \end{itemize}
 In contrast to the general formulation \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used to calculate the acceleration $\bddq$ based on the given state $(\bq, \bdq)$, also known as \gls{FD}, as well as the \gls{ID}.
-\subsubsection{Floating Base Systems (Legged Robots)}
+\subsubsection{Floating Base Systems}
 A floating base system is characterized by having a base that is free to move, rather than being fixed in space. Consequently, the vector of generalized coordinates $\bq$ not only contains the joints angles, but also accounts for the position and orientation of the floating base. Legged robots belong to this category of rigid-body systems as they make and brake contacts with their environment in order to move. Contrary to manipulators, contacts need to be actively enforced by kinematic contact constraints for legged robots. There are namely two different types of contact constraints that can be applied: point contacts (3d) or surface contacts (6d). 
 For the case of point contacts, the dynamics of the floating base system become
 \begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
@@ -90,43 +90,92 @@ For more details on contact wrenches and spatial vector algebra in general, the 
 %\subsection{Efficient Walking}
 
 
-\section{Contact Stability Analysis}
-Overview of stability margins in \cite{garcia2002classification} and for Handbook of Robotics see main reference from tedrake \cite{pratt2006velocity}; 
-CoM and CoP calculation and coincidence described in \cite{sardain2004forces}.
+\section{Stability Analysis: Not Falling Down}
+The derived robot model from \cref{subsec:DynamicModeling} represents a high-dimensional, constrained, nonlinear dynamical system. In this section, the most common criteria  for analyzing the long-term stability behavior of such complex systems are presented. Exhaustive studies on stability criteria and their relation can be found in \cite{garcia2002classification, dekker2009zero, siciliano2016springer}.
 
-\subsection{Stability Criteria}
-
+\subsection{Static Stability Criteria}
 \subsubsection{Floor Projection of the Center of Mass (FCoM)}
+Consider the case of a robot that is not moving, i.e. a humanoid standing in double support with a fixed pose. In that case, the only forces acting on the humanoid are the ones caused by gravity. These forces can be represented by a virtual force acting on the \gls{CoM} of the robot. The position of the \gls{CoM} w.r.t. the base frame can be described by
 \begin{equation*} 
-\bp_{CoM}=\dfrac{\sum_{i=1}^{n}m_i\bp_i}{\sum_{i=1}^{n}m_i}
+\bp_{CoM}=\dfrac{\sum_{i=1}^{n}m_i\bp_i}{\sum_{i=1}^{n}m_i},
 \end{equation*}
+where the robot has n links and $p_i$ indicate the according link distances of the individual \gls{CoM}. The \gls{FCoM} equals the first two components of the \gls{CoM} position vector $\bp_{CoM}$ and hence, also the following relation holds:
 \begin{equation*} 
-\sum_{i=1}^{n}((\bp_{FCoM}-\bp_i)\times m_i\myM{g})=\myM{0}
+\sum_{i=1}^{n}((\bp_{FCoM}-\bp_i)\times m_i\myM{g})=\myM{0}.
 \end{equation*}
-\subsubsection{Zero-Moment Point (ZMP)}
-Introduction in \cite{vukobratovic1972stability}, reviewed in \cite{vukobratovic2004zero}, made popular with \cite{kajita2003biped}.
-Assumptions:
-\begin{itemize}
-\item One planar contact are (i.e. no multiple surfaces like on rough terrain)
-\item Sufficiently high friction to prevent sliding of the feet
-\end{itemize}
-\subsubsection{Center of Pressure (CoP)}
-Computation via 
-\begin{equation}
-\myM{p}_{CoP}=\dfrac{\myM{n}\times\myM{M}}{\myM{F}\cdot\myM{n}}
-\end{equation}
+The \gls{FCoM} can be used as a static stability margin, ensuring the motionless robot will not tip over or fall if $\bp_{FCoM}$ always remains inside the \gls{SP}. Note that this criteria is also applicable in so called \textit{quasi-static} movements, where static forces are still dominating dynamic forces.
 
-%TODO
-% Describe CoP and ZMP according to https://scaron.info/teaching/zero-tilting-moment-point.html
+\subsection{Dynamic Stability Criteria}
+In case of faster motions, dynamic forces will exceed the static forces and can not be neglected anymore. The acting forces can be divided into contact forces and gravity/inertial forces, where the so called \gls{ZMP} is based on the former, and the \gls{CoP} on the latter. In the following, both concepts are introduced according to the description in \cite{sardain2004forces} with a nomenclature equivalent to \cite{scaronTeaching}.
+\subsubsection{Center of Pressure (CoP)}
+The \gls{CoP} is defined as the point, where the field of pressure forces acting on the sole is equivalent to a single resultant force where the resultant moment is zero. Hence the \gls{CoP} is a local quantity that is derived from the interaction forces at the contact surface. 
+
+Considering the case of a foot contacting a plane surface, the resultant contact force $\bfun^c$ is exerted by the environment onto the robot. This force consists of the resultant pressure force $\bfun^p=(\bfun^c\cdot\bn)\bn$, as well as the resultant friction force $\bfun^f=\bfun^c-\bfun^p$.
+Hence, the following conditions hold:
+\begin{align*}
+\btau_O^p 		&= \myM{0} \\
+\bp_{CoP}\times(\bfun^p\cdot\bn)\bn	&= -\btau_O^P \\
+(\bfun^p\cdot\bn)\bn\times\bp_{CoP}\times\bn	&= -\bn\times\btau_O^p
+\end{align*}
+Since both the sole point $O$ and $\bp_{CoP}$ belong to the same plane, we yield:
+\begin{equation*}
+\bp_{CoP}=\dfrac{\bn\times\myM{\btau_O^p}}{\bfun^p\cdot\bn}.
+\end{equation*}
+Finally, friction forces are tangent to the contact surface and their moment is aligned with $n$, so we equivalently can write this relationship as:
+\begin{equation}\label{eqn:CoPComputation}
+\bp_{CoP}=\dfrac{\bn\times\myM{\btau_O^c}}{\bfun^c\cdot\bn}.
+\end{equation}
+\Cref{eqn:CoPComputation} can be used to compute the \gls{CoP} expressed in the local contact frame.
+
+%\begin{figure}[h!]
+%\centering	
+%\includegraphics[width=.5\textwidth]{fig/CoP1.png}
+%\caption{The recently presented RH5 humanoid is used as experimental platform within this thesis.}
+%\label{img:rh5_robot}
+%\end{figure} 
+%
+%\begin{figure}[h!]
+%\centering	
+%\includegraphics[width=.6\textwidth]{fig/CoP2.png}
+%\caption{The recently presented RH5 humanoid is used as experimental platform within this thesis.}
+%\label{img:rh5_robot}
+%\end{figure} 
+\subsubsection{Zero-Moment Point (ZMP)}
+The \gls{ZMP} is defined as a point on the ground where the tipping moment acting on the biped equals zero. This condition can be interpreted as a constraint on the contact moments, which contains \textit{at least} the roll and pitch direction. Originally, the concept has been introduced in \cite{vukobratovic1972stability}, it has been reviewed in \cite{vukobratovic2004zero} and made popular with \cite{kajita2003biped}.
+
+The concept is build upon two key assumptions:
+\begin{itemize}
+\item There exists one planar contact surface (i.e. no multiple surfaces like on rough terrain)
+\item The friction is sufficiently high to prevent sliding of the feet
+\end{itemize}
+From the Newton-Euler equations, the motion of the biped can be written as
+\begin{align*}
+m\ddot{\bp}_{CoM} &= m\bg+\bfun^c \\
+\dot{\myM{L}}_O &= \bp_{CoM}\times m\bg+\bw_{CoM}^c,
+\end{align*}
+where $m$ denotes the total mass of the robot, $\bg$ is the gravity vector, $\ddot{\bp}_{CoM}$ the centroidal acceleration, $\dot{\myM{L}}_O$ the change of the angular momentum. $\bw_{CoM}^c=[\btau_{CoM}^c, \bfun^c]$ denotes the sum of all contact wrenches in the \gls{CoM} frame. The gravito-inertial wrench of the robot can be defined as
+\begin{align*}
+\bfun^{gi} &= m(\bg-m\ddot{\bp}_{CoM}) \\
+\btau_O^{gi} &= \bp_{CoM}\times m\bg-\dot{\myM{L}}_O.
+\end{align*}
+Using the wrench form of the Newton-Euler equations
+\begin{equation}\label{eqn:NetwonEuler} 
+\bw^{gi}+\bw^c=\myM{0},
+\end{equation}
+one can derive the \gls{ZMP}, under for the case of a planar surface, as
+\begin{equation}\label{eqn:ZMPComputation}
+\bp_{ZMP}=\dfrac{\bn\times\myM{\btau_O^{gi}}}{\bfun^{gi}\cdot\bn}.
+\end{equation}
+In practice, one can use this formula to compute the \gls{ZMP} from force sensors or from an inertial measurement unit. 
 \subsubsection{Coincidence of ZMP and CoP}
+As \citeauthor{sardain2004forces} outline, both the \gls{ZMP} and the \gls{CoP} yield the same point for the case of bipedal walking on a single plane surface. 
+Comparing \cref{eqn:ZMPComputation} with \cref{eqn:CoPComputation}, we recognize the only difference is that the former is applied to the (global) gravito-inertial wrench, while the latter is applied to the (local) contact wrench. If we recall the Netwon-Euler equations from \cref{eqn:NetwonEuler}, it becomes clear why both points coincide when there is only one contact plane.
 
 \subsection{Stability Classification}
 There are existing several classifications on stability, which will be defined in the following according to \cite[Sec.1.2.1]{westervelt2018feedback} and \cite{garcia2002classification}. See \citeauthor{vukobratovic2007towards} for more details on differentiating the terms dynamic stability and dynamic balance \cite{vukobratovic2007towards}.  
-
-\subsubsection{Statically Stable Gait}
+\subsubsection{Statically Stable Motion}
 The gait or movement of a humanoid is classified as \textit{statically stable}, if the \gls{FCoM} does not leave the \gls{SP} during the entire motion or gait. Consequently, the humanoid will remain in a stable position, whenever the movement is stopped. Typically, these kind of stability are only obtained with very low walking velocities or quasi-static motions, where the static forces dominate the dynamic forces.  
-
-\subsubsection{Dynamically Stable Gait}
+\subsubsection{Dynamically Stable Motion}
 If the \gls{FCoM} partially leaves the \gls{SP} at some point during the gait, but the \gls{CoP} (or \gls{ZMP}) always remains within the \gls{SP}, the gait or movement is classified as \textit{dynamically stable}. This stability margin is extremely useful for flat-foot dynamic walking since it prevents the foot from rotating around the boundary of the \gls{SP}. 
 
 

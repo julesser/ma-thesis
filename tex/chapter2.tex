@@ -5,18 +5,18 @@
 %-----------------------------------------------------------------------------%
 
 \chapter{Background: Optimal Bipedal Locomotion}\label{c2}
-The second chapter provides the reader with fundamentals regarding terminology, modeling and stability analysis in the context of humanoid robotics, presents the class of used algorithms and relevant extensions and introduces the RH5 humanoid robot serving as experimental platform for this thesis.
+The second chapter provides the reader with fundamentals on the terminology, modeling and stability analysis in the context of humanoid robotics, introduces the class of algorithms and relevant extensions used within this thesis and presents the experimental platform.  
 
 %\section{Modeling and Control of Legged Robots}
 \section{Foundations of Bipedal Locomotion}
 \subsection{Terminology}
 In order to describe the locomotion of a humanoid robot, specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking \cite{vukobratovic2007towards}, concisely summarized by \citeauthor{dekker2009zero} \cite{dekker2009zero}.\\\\
 \textbf{Walk}\\
-Walk can be defined as: '\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}'.\\\\
+Walk can be defined as: "\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}".\\\\
 \textbf{Run}\\
 Run in turn is characterized by  a movement where partially both feet leaving the ground at the same time.\\\\
 \textbf{Gait}\\
-The way each human walks and runs is unique, hence gait can be defined as: '\textit{Manner of walking or running}'.\\\\
+The way each human walks and runs is unique, hence gait can be defined as: "\textit{Manner of walking or running}".\\\\
 \textbf{Periodic gait}\\
 If a gait is realized by repeating each locomotion phase in an identical way, the gait is referred to as \textit{periodic}.\\\\
 \textbf{Symmetric gait}\\
@@ -35,7 +35,7 @@ This term refers to the leg that is in contact with the ground, supporting all t
 \subsection{Dynamic Modeling of Legged Robots}\label{subsec:DynamicModeling}
 In the following, the dynamic model for floating base systems, such as legged robots, is derived based on a general formulation. A concise introduction to dynamic modeling is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
 \subsubsection{General Formulation}
-Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} can be written as: 
+Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} are written as: 
 \begin{equation} \label{eqn:EoMGeneral}
 F(\bq(t),\bdq(t),\bddq(t),\bu(t),t)=0,
 \end{equation}
@@ -60,10 +60,9 @@ where
 \item $\btau$ is the vector of actuated joint torques and 
 \item $\btau_g(\bq)$ is the vector of external joint torques caused by gravity.
 \end{itemize}
-In contrast to the general formulation in \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used for computing the \gls{FD}, as well as the \gls{ID} of a robotic system.
+In contrast to the general formulation \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used to calculate the acceleration $\bddq$ based on the given state $(\bq, \bdq)$, also known as \gls{FD}, as well as the \gls{ID}.
 \subsubsection{Floating Base Systems}
 A floating base system is characterized by having a base that is free to move, rather than being fixed in space. Consequently, the vector of generalized coordinates $\bq$ not only contains the joints angles, but also accounts for the position and orientation of the floating base. Legged robots belong to this category of rigid-body systems as they make and brake contacts with their environment in order to move. Contrary to manipulators, contacts need to be actively enforced by kinematic contact constraints for legged robots. There are namely two different types of contact constraints that can be applied: point contacts (3d) or surface contacts (6d). 
-
 For the case of point contacts, the dynamics of the floating base system become
 \begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
 \myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{f}_i,
@@ -74,7 +73,7 @@ where
 \item $\myM{J}_{C_i}$ is the Jacobian at the location of a contact point $C_i$ and
 \item $\bfun_i$ is the contact force acting at the contact point $C_i$.
 \end{itemize}
-For the case of surface contacts, such as a flat foot on a flat floor, modeling a point contact is not sufficient since it only constrains the translation. In order to also account for the rotational constraints enforced by the geometry one could take into account multiple point contacts. A non-redundant alternative is to model more general frame contact constraints as
+For the case of surface contacts, such as a flat foot on the floor, modeling a point contact is not sufficient since it only constrains the translation. In order to also account for the rotational constraints enforced by the geometry one could take into account multiple point contacts. A non-redundant alternative is to model more general frame contact constraints as
 \begin{equation*} \label{eqn:EoMLeggedRobotSurfaceContact}
 \myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{w}_i,
 \end{equation*}
@@ -92,19 +91,19 @@ For more details on contact wrenches and spatial vector algebra in general, the 
 
 
 \section{Stability Analysis: Not Falling Down}
-Humanoid robots are high-dimensional, constrained and nonlinear dynamical systems. In this section, the most common criteria  for analyzing the long-term stability behavior of such complex systems are presented. Exhaustive studies on stability criteria and their relation can be found in \cite{garcia2002classification, dekker2009zero, siciliano2016springer}.
+The derived robot model from \cref{subsec:DynamicModeling} represents a high-dimensional, constrained, nonlinear dynamical system. In this section, the most common criteria  for analyzing the long-term stability behavior of such complex systems are presented. Exhaustive studies on stability criteria and their relation can be found in \cite{garcia2002classification, dekker2009zero, siciliano2016springer}.
 
 \subsection{Static Stability Criteria}
 \subsubsection{Floor Projection of the Center of Mass (FCoM)}
-Consider the case of a robot that is not moving, i.e. a humanoid in static double support. In that case, the only forces acting on the humanoid are the ones caused by gravity. These forces can be represented by a virtual force acting on the \gls{CoM} of the robot. The position of the \gls{CoM} w.r.t. the base frame can be described by
+Consider the case of a robot that is not moving, i.e. a humanoid standing in double support with a fixed pose. In that case, the only forces acting on the humanoid are the ones caused by gravity. These forces can be represented by a virtual force acting on the \gls{CoM} of the robot. The position of the \gls{CoM} w.r.t. the base frame can be described by
 \begin{equation*} 
 \bp_{CoM}=\dfrac{\sum_{i=1}^{n}m_i\bp_i}{\sum_{i=1}^{n}m_i},
 \end{equation*}
-where the robot has $n$ links and $p_i$ indicate the according link distances of the individual \gls{CoM}s. The \gls{FCoM} equals the first two components of the \gls{CoM} position vector $\bp_{CoM}$ and hence, the following relation holds:
+where the robot has n links and $p_i$ indicate the according link distances of the individual \gls{CoM}. The \gls{FCoM} equals the first two components of the \gls{CoM} position vector $\bp_{CoM}$ and hence, also the following relation holds:
 \begin{equation*} 
 \sum_{i=1}^{n}((\bp_{FCoM}-\bp_i)\times m_i\myM{g})=\myM{0}.
 \end{equation*}
-The \gls{FCoM} can be used as a static stability margin, ensuring the motionless robot will not tip over or fall, if $\bp_{FCoM}$ always remains inside the \gls{SP}. Note that this criteria is also applicable in so called \textit{quasi-static} movements, where static forces are still dominating dynamic forces.
+The \gls{FCoM} can be used as a static stability margin, ensuring the motionless robot will not tip over or fall if $\bp_{FCoM}$ always remains inside the \gls{SP}. Note that this criteria is also applicable in so called \textit{quasi-static} movements, where static forces are still dominating dynamic forces.
 
 \subsection{Dynamic Stability Criteria}
 In case of faster motions, dynamic forces will exceed the static forces and can not be neglected anymore. The acting forces can be divided into contact forces and gravity/inertial forces, where the so called \gls{ZMP} is based on the former, and the \gls{CoP} on the latter. In the following, both concepts are introduced according to the description in \cite{sardain2004forces} with a nomenclature equivalent to \cite{scaronTeaching}.
@@ -142,7 +141,7 @@ Finally, friction forces are tangent to the contact surface and their moment is 
 %\label{img:rh5_robot}
 %\end{figure} 
 \subsubsection{Zero-Moment Point (ZMP)}
-The \gls{ZMP} is defined as a point on the ground where the \textit{tipping moment} acting on the biped equals zero. This condition can be interpreted as a constraint on the contact moments, which contains \textit{at least} the roll and pitch direction. Originally, the concept has been introduced in \cite{vukobratovic1972stability}, it has been reviewed in \cite{vukobratovic2004zero} and made popular with \cite{kajita2003biped}.
+The \gls{ZMP} is defined as a point on the ground where the tipping moment acting on the biped equals zero. This condition can be interpreted as a constraint on the contact moments, which contains \textit{at least} the roll and pitch direction. Originally, the concept has been introduced in \cite{vukobratovic1972stability}, it has been reviewed in \cite{vukobratovic2004zero} and made popular with \cite{kajita2003biped}.
 
 The concept is build upon two key assumptions:
 \begin{itemize}
@@ -163,7 +162,7 @@ Using the wrench form of the Newton-Euler equations
 \begin{equation}\label{eqn:NetwonEuler} 
 \bw^{gi}+\bw^c=\myM{0},
 \end{equation}
-one can derive the \gls{ZMP}, for the case of a planar surface, as
+one can derive the \gls{ZMP}, under for the case of a planar surface, as
 \begin{equation}\label{eqn:ZMPComputation}
 \bp_{ZMP}=\dfrac{\bn\times\myM{\btau_O^{gi}}}{\bfun^{gi}\cdot\bn}.
 \end{equation}
@@ -265,15 +264,15 @@ After computing the feedback policy in the backward pass, the forward pass compu
 \end{align*}
 where $\hat{\bx}_i,\hat{\bu}_i$ are the new state-control sequences. The step size of the numerical optimization is described by the backtracking line search parameter $\alpha$, which iteratively is reduced starting from 1. The backward and forward passes of the \gls{DDP} algorithm are iterated until convergence to the (locally) optimal trajectory.  
 
-%\subsection{Numerical Characteristics}
-%Like Newton's method, \gls{DDP} is a second-order algorithm \citep{liao1992advantages} and consequently takes large steps towards the minimum. With these types of algorithms, regularization and line-search often are required to achieve convergence \cite{liao1991convergence}. 
-%
-%\textit{Line-search} is one of the basic iterative approaches from numerical optimization in order to find a local minimum of an objective function. Backtracking line-search especially determines the step length, namely the control modification, by some search parameter.
-%
-%\textit{Regularization} uses \#\#\#\#\# F I L L \#\#\#\#\#
-%
-%The interested reader can find a more extensive introduction to numerical optimization in e.g. \cite{nocedal2006numerical} and \citeauthor{tassa2012synthesis}  
-%provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
+\subsection{Numerical Characteristics}
+Like Newton's method, \gls{DDP} is a second-order algorithm \citep{liao1992advantages} and consequently takes large steps towards the minimum. With these types of algorithms, regularization and line-search often are required to achieve convergence \cite{liao1991convergence}. 
+
+\textit{Line-search} is one of the basic iterative approaches from numerical optimization in order to find a local minimum of an objective function. Backtracking line-search especially determines the step length, namely the control modification, by some search parameter.
+
+\textit{Regularization} uses \#\#\#\#\# F I L L \#\#\#\#\#
+
+The interested reader can find a more extensive introduction to numerical optimization in e.g. \cite{nocedal2006numerical} and \citeauthor{tassa2012synthesis}  
+provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
 
 \section{Handling Constraints with DDP}\label{sec:ConstrainedDDP}
@@ -351,7 +350,7 @@ tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RH_{SE(3)}\}:
 
 
 \section{RH5 Humanoid Robot}
-The proposed motion planning and control approach for constrained \gls{DDP} have been tested both in simulation and real-world experiments on a full-size humanoid robot. RH5 is a lightweight and biologically inspired humanoid that has recently been developed at DFKI Robotics Innovation Center\cite{peters2017konstruktion}.
+The derived approaches for constrained \gls{DDP} have been tested both in simulation and real-world experiments on a full-size humanoid robot. RH5 is a lightweight and biologically inspired humanoid that has recently been developed at DFKI Robotics Innovation Center\cite{peters2017konstruktion}.
 
 The RH5 humanoid robot (see \cref{img:rh5_robot}) is designed to mimic the human anatomy with a total size of 200cm, a weight of 62kg and a total of 32 \gls{DoF}. The two legs account for 12 \gls{DoF}, the torso and neck kinematics each for three and the arms and grippers of the robot for 16 \gls{DoF}. In order to achieve a high dynamic performance, the robot's design follows a series-parallel hybrid approach. Consequently,linkages and parallel mechanisms are utilized in most of the robots joints, e.g. the hip-flexion-extension, knee, ankle, torso and wrist. A comparison of RH5 with other state of the art humanoid robots revealed several advantages of this design approach, including better maximum velocity and torque of the ankle as well as an advantageous weight of the lower leg \cite{kumar2020survey}. The interested reader can find a comprehensive introduction on series-parallel hybrid robots in \cite[Ch.2]{kumar2019modular}. 
 

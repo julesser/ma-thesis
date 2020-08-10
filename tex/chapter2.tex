@@ -12,13 +12,14 @@ The second chapter provides the reader with fundamentals regarding terminology, 
 \subsection{Terminology}
 In order to describe the locomotion of a humanoid robot, specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking \cite{vukobratovic2007towards}, concisely summarized by \citeauthor{dekker2009zero} \cite{dekker2009zero}.\\\\
 \textbf{Walk}\\
-Walk can be defined as: '\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}'.\\\\
+Walk can be defined as: ``\textit{Movement by putting forward each foot in turn, not having both feet off the ground at once}''.\\\\
 \textbf{Run}\\
 Run in turn is characterized by  a movement where partially both feet leaving the ground at the same time.\\\\
 \textbf{Gait}\\
-The way each human walks and runs is unique, hence gait can be defined as: '\textit{Manner of walking or running}'.\\\\
+The way each human walks and runs is unique, hence gait can be defined as: ``\textit{Manner of walking or running}''.\\\\
 \textbf{Periodic gait}\\
-If a gait is realized by repeating each locomotion phase in an identical way, the gait is referred to as \textit{periodic}.\\\\
+If a gait is realized by repeating each locomotion phase in an identical 
+\footnote{The locomotion phase can be identical w.r.t. the step size or the duration, depending on the index.} way, the gait is referred to as \textit{periodic}.\\\\
 \textbf{Symmetric gait}\\
 If the left and right leg move in an identical but time-shifted manner, the gait is referred to as \textit{symmetric}.\\\\
 \textbf{Double Support}\\
@@ -33,7 +34,7 @@ This term refers to the leg that is performing a step, i.e. moving through the a
 This term refers to the leg that is in contact with the ground, supporting all the weight of the humanoid. 
 
 \subsection{Dynamic Modeling of Legged Robots}\label{subsec:DynamicModeling}
-In the following, the dynamic model for floating base systems, such as legged robots, is derived based on a general formulation. A concise introduction to dynamic modeling is presented with \cite{scaronTeaching}, more comprehensive studies can be found in \cite{roboticSystemsLab2017, featherstone2014rigid}.
+In the following, the dynamic model for floating base systems, such as legged robots, is derived based on a general formulation. A concise introduction to dynamic modeling is presented with \cite{scaronTeaching}, comprehensive studies can be found in \cite{pfeiffer1996multibody, jain2010robot, featherstone2014rigid}.
 \subsubsection{General Formulation}
 Mathematical models of a robot's dynamics describe the motion as a function of time and control inputs. These models are the basis for both simulation and control of robotic systems. In an abstract form, the \gls{EoM} can be written as: 
 \begin{equation} \label{eqn:EoMGeneral}
@@ -47,8 +48,8 @@ where
 \item $\bddq$ is the second time derivative (acceleration) of \myM{q} and
 \item \myM{u} is the vector of control inputs. 
 \end{itemize}
-Consequently, the \gls{EoM} provide a mapping between the control space on the one hand and the state space of robot on the other hand. Typical methods for computing the closed-form solution of the \gls{EoM} are e.g. the classical \textit{Newton-Euler} method or the \textit{Lagrange method}, where the former is based on principles for conservation of linear and angular momenta and the latter utilizes energy-based functions expressed in generalized coordinates. 
-\subsubsection{Manipulator Equations}
+Consequently, the \gls{EoM} provide a mapping between the control space on the one hand and the state space of robot on the other hand. Typical methods for computing the closed-form solution of the \gls{EoM} are e.g. the classical \textit{Newton-Euler} \cite{luh1980line} method or the \textit{Lagrange method} \cite{hollerbach1980recursive}, where the former is based on principles for conservation of linear and angular momenta and the latter utilizes energy-based functions expressed in generalized coordinates. 
+\subsubsection{Fixed Base Systems}
 For applications with fixed-based robots, e.g. a robotic manipulator, the multi-body dynamics can be formulated as
 \begin{equation} \label{eqn:EoMManipulator}
 \myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\btau+\btau_g(\bq),
@@ -62,7 +63,7 @@ where
 \end{itemize}
 In contrast to the general formulation in \cref{eqn:EoMGeneral}, this expression is time-invariant. Hence, \cref{eqn:EoMManipulator} can be used for computing the \gls{FD}, as well as the \gls{ID} of a robotic system.
 \subsubsection{Floating Base Systems}
-A floating base system is characterized by having a base that is free to move, rather than being fixed in space. Consequently, the vector of generalized coordinates $\bq$ not only contains the joints angles, but also accounts for the position and orientation of the floating base. Legged robots belong to this category of rigid-body systems as they make and brake contacts with their environment in order to move. Contrary to manipulators, contacts need to be actively enforced by kinematic contact constraints for legged robots. There are namely two different types of contact constraints that can be applied: point contacts (3d) or surface contacts (6d). 
+A floating base system is characterized by having a base that is free to move, rather than being fixed in space. Consequently, the vector of generalized coordinates $\bq$ not only contains the joints angles, but also accounts for the position and orientation of the floating base. Legged robots belong to this category of rigid-body systems as they make and break contacts with their environment in order to move. Contrary to manipulators, contacts need to be actively enforced by holonomic constraints for legged robots. There are namely two different types of contact constraints that can be applied: point contacts (3d) or surface contacts (6d). 
 
 For the case of point contacts, the dynamics of the floating base system become
 \begin{equation*} \label{eqn:EoMLeggedRobotPtContact}
@@ -78,8 +79,8 @@ For the case of surface contacts, such as a flat foot on a flat floor, modeling 
 \begin{equation*} \label{eqn:EoMLeggedRobotSurfaceContact}
 \myM{M}(\bq)\bddq+\bdq^T\myM{C}(\bq)\bdq=\myM{S}^T\btau+\btau_g(\bq)+\sum_{i=1}^{k}\myM{J}_{C_i}^T\myM{w}_i,
 \end{equation*}
-where $\myM{w}_i$ is referred to as the \textit{contact wrench} acting on the contact link $i$. This wrench stacks the resultant $\bfun_i$ of contact forces and the moment $\myM{m}_i$ exerted by these forces around the contact frame as
-$$\myM{w}_i=\{\myM{f}_i,\myM{m}_i\}.$$ 
+where $\myM{w}_i$ is referred to as the \textit{contact wrench} acting on the contact link $i$. This wrench stacks the resultant $\bfun_i$ of contact forces and the moment $\btau_i$ exerted by these forces around the contact frame as
+$$\myM{w}_i=(\myM{f}_i,\btau_i)_{6\times 1}.$$ 
 For more details on contact wrenches and spatial vector algebra in general, the interested reader is referred to e.g. \cite[Ch.2]{featherstone2014rigid}.
 
 %\subsection{Motion Generation}
@@ -100,7 +101,7 @@ Consider the case of a robot that is not moving, i.e. a humanoid in static doubl
 \begin{equation*} 
 \bp_{CoM}=\dfrac{\sum_{i=1}^{n}m_i\bp_i}{\sum_{i=1}^{n}m_i},
 \end{equation*}
-where the robot has $n$ links and $p_i$ indicate the according link distances of the individual \gls{CoM}s. The \gls{FCoM} equals the first two components of the \gls{CoM} position vector $\bp_{CoM}$ and hence, the following relation holds:
+where the robot has $n$ links and $\myM{p}_i$ indicate the according link distances of the individual \gls{CoM}s. The \gls{FCoM} equals the first two components of the \gls{CoM} position vector $\bp_{CoM}$ and the following relation holds:
 \begin{equation*} 
 \sum_{i=1}^{n}((\bp_{FCoM}-\bp_i)\times m_i\myM{g})=\myM{0}.
 \end{equation*}
@@ -118,11 +119,11 @@ Hence, the following conditions hold:
 \bp_{CoP}\times(\bfun^p\cdot\bn)\bn	&= -\btau_O^P \\
 (\bfun^p\cdot\bn)\bn\times\bp_{CoP}\times\bn	&= -\bn\times\btau_O^p
 \end{align*}
-Since both the sole point $O$ and $\bp_{CoP}$ belong to the same plane, we yield:
+Since both the sole point $O$ and $\bp_{CoP}$ belong to the same plane, we get:
 \begin{equation*}
 \bp_{CoP}=\dfrac{\bn\times\myM{\btau_O^p}}{\bfun^p\cdot\bn}.
 \end{equation*}
-Finally, friction forces are tangent to the contact surface and their moment is aligned with $n$, so we equivalently can write this relationship as:
+Finally, friction forces are tangent to the contact surface and their moment is aligned with $\bn$, so we equivalently can write this relationship as:
 \begin{equation}\label{eqn:CoPComputation}
 \bp_{CoP}=\dfrac{\bn\times\myM{\btau_O^c}}{\bfun^c\cdot\bn}.
 \end{equation}
@@ -152,9 +153,9 @@ The concept is build upon two key assumptions:
 From the Newton-Euler equations, the motion of the biped can be written as
 \begin{align*}
 m\ddot{\bp}_{CoM} &= m\bg+\bfun^c \\
-\dot{\myM{L}}_O &= \bp_{CoM}\times m\bg+\bw_{CoM}^c,
+\dot{\myM{L}}_O &= \bp_{CoM}\times m\bg+\btau_{CoM}^c,
 \end{align*}
-where $m$ denotes the total mass of the robot, $\bg$ is the gravity vector, $\ddot{\bp}_{CoM}$ the centroidal acceleration, $\dot{\myM{L}}_O$ the change of the angular momentum. $\bw_{CoM}^c=[\btau_{CoM}^c, \bfun^c]$ denotes the sum of all contact wrenches in the \gls{CoM} frame. The gravito-inertial wrench of the robot can be defined as
+where $m$ denotes the total mass of the robot, $\bg$ is the gravity vector, $\ddot{\bp}_{CoM}$ the centroidal acceleration, $\dot{\myM{L}}_O$ the change of the angular momentum. $\bw_{CoM}^c=(\btau_{CoM}^c, \bfun^c)_{6\times 1}$ denotes the sum of all contact wrenches in the \gls{CoM} frame. The gravito-inertial wrench of the robot can be defined as
 \begin{align*}
 \bfun^{gi} &= m(\bg-m\ddot{\bp}_{CoM}) \\
 \btau_O^{gi} &= \bp_{CoM}\times m\bg-\dot{\myM{L}}_O.
@@ -165,7 +166,7 @@ Using the wrench form of the Newton-Euler equations
 \end{equation}
 one can derive the \gls{ZMP}, for the case of a planar surface, as
 \begin{equation}\label{eqn:ZMPComputation}
-\bp_{ZMP}=\dfrac{\bn\times\myM{\btau_O^{gi}}}{\bfun^{gi}\cdot\bn}.
+\bp_{ZMP}=\dfrac{\bn\times\myM{\btau}_O^{gi}}{\bfun^{gi}\cdot\bn}.
 \end{equation}
 In practice, one can use this formula to compute the \gls{ZMP} from force sensors or from an inertial measurement unit. 
 \subsubsection{Coincidence of ZMP and CoP}
@@ -215,7 +216,7 @@ Note that \cref{eqn:bellman} is referred to as the \textit{Bellman equation} for
 \subsection{Quadratic Approximation}
 \gls{DDP} locally computes the optimal state and control sequences of the \gls{OC} problem derived with \cref{eqn:bellman} by iteratively performing a forward and backward pass. The \textit{backward pass} on the trajectory generates a new control sequence and is followed by a \textit{forward pass} to compute and evaluate the new trajectory.
 
-Let $\bQ(\dx,\du)$ be the variation in the argument on the right-hand side of \cref{eqn:bellman} around the $i-th (\bx,\bu)$ pair
+Let $\bQ(\dx,\du)$ be the variation in the argument on the right-hand side of \cref{eqn:bellman} around the $i^{th} (\bx,\bu)$ pair
 \begin{equation}\label{eqn:Q}
 \bQ(\dx,\du)=l(\bx+\dx,\bu+\du)+V'(\bfun(\bx+\dx,\bu+\du)).
 \end{equation}
@@ -226,9 +227,9 @@ The \gls{DDP} algorithm uses a quadratic approximation of this differential chan
 \begin{bmatrix} 0 & \bQ_{\bx}^T & \bQ_{\bu}^T \\
 \bQ_{\bx} & \bQ_{\bx\bx} & \bQ_{\bx\bu} \\
 \bQ_{\bu} & \bQ_{\bu\bx} & \bQ_{\bu\bu} \end{bmatrix}
-\begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix},
+\begin{bmatrix} 1 \\ \dx \\ \du \end{bmatrix}.
 \end{equation}
-where the coefficients can be computed to 
+The coefficients can be computed as  
 \begin{subequations}\label{eqn:QApproxCoeff}
 \begin{align}
 \bQ_{\bx} &= l_{\bx}+\bfun_{\bx}^T \bV_{\bx}^\prime, \\
@@ -238,7 +239,7 @@ where the coefficients can be computed to
 \bQ_{\bu\bu} &= l_{\bu\bu}+\bfun_{\bu}^T \bV_{\bx\bx}^\prime\bfun_{\bu}+\bV_{\bx}^\prime\cdot\bfun_{\bu\bu} \label{subeqn:Quu}.
 \end{align}
 \end{subequations}
-The last terms of \crefrange{subeqn:Qxx}{subeqn:Quu} denote the product of a vector with a tensor. 
+where the primes denote the values at the next time-step.  
 
 \subsection{Backward Pass}
 The first algorithmic step of \gls{DDP}, namely the backward pass, involves computing a new control sequence on the given trajectory and consequently determining the search direction of a a step in the numerical optimization. To this end, the quadratic approximation obtained from \cref{eqn:QApprox}, minimized with respect to $\du$ for some state perturbation $\dx$, results in
@@ -285,15 +286,15 @@ In the case of rigid contact dynamics, \gls{DDP} assumes a set of given contacts
 
 The unconstrained robot dynamics can be represented as 
 \begin{equation}\label{eqn:unconstrainedDynamics}
-\myM{M}\dot{\myM{v}}_{free}=\myM{S\tau}-\myM{b}, 
+\myM{M}\dot{\myM{v}}_{free}=\myM{S\tau}-\myM{b}=\btau_b, 
 \end{equation}
-with the joint-space intertia matrix $\myM{M}\in \myM{R}^{nxn}$ and the unconstrained acceleration vector $\dot{\myM{v}}_{free}$. The right-hand side of \cref{eqn:unconstrainedDynamics} represents the n-dimensional force-bias vector accounting for the control $\myM{\tau}$, the Coriolis and gravitational effects $\myM{b}$ and the selection matrix $\myM{S}$ of actuated joints. 
+with the joint-space intertia matrix $\myM{M}\in \myM{R}^{n\times n}$ and the unconstrained acceleration vector $\dot{\myM{v}}_{free}$. The right-hand side of \cref{eqn:unconstrainedDynamics} represents the n-dimensional force-bias vector accounting for the control $\myM{\tau}$, the Coriolis and gravitational effects $\myM{b}$ and the selection matrix $\myM{S}$ of actuated joints. 
 
 In order to incorporate the rigid contact constraints to the robot dynamics, one can apply the Gauss principle of least constraint \cite{udwadia1992new}. The idea is to minimize the deviation in acceleration between the constrained and unconstrained motion:
 \begin{equation}\label{eqn:gaussMinimization}
 \begin{aligned} & \dot{\myM{v}} = \underset{\myM{a}}{\arg\min} & & \frac{1}{2}\,\|\dot{\myM{v}}-\dot{\myM{v}}_{free}\|_{\myM{M}} \\ & \textrm{subject to} & & \myM{J}_{c} \dot{\myM{v}} + \dot{\myM{J}}_c \myM{v} = \myM{0}, \end{aligned}
 \end{equation}
-where $\myM{M}$ formally represents the metric tensor over the configuration manifold $\myM{q}$. In order to express the holonomic contact constraint $\phi(\myM{q})$ in the acceleration space, it needs to be differentiated twice. Consequently, the contact condition can be seen as a second-order kinematic constraints on the contact surface position where $\myM{J}_{c}= \begin{bmatrix} \myM{J}_{c_1} & \cdots & \myM{J}_{c}\end{bmatrix}$ is a stack of $f$ contact Jacobians. 
+where $\myM{M}$ formally represents the inertia tensor over the configuration manifold $\myM{q}$. In order to express the holonomic contact constraint $\phi(\myM{q})$ in the acceleration space, it needs to be differentiated twice. Consequently, the contact condition can be seen as a second-order kinematic constraints on the contact surface position where $\myM{J}_{c}= \begin{bmatrix} \myM{J}_{c_1} & \cdots & \myM{J}_{c}\end{bmatrix}$ is a stack of $f$ contact Jacobians. 
 
 \subsubsection{Karush-Kuhn-Tucker (KKT) Conditions}
 The Gauss minimization in \cref{eqn:gaussMinimization} corresponds to an 
@@ -301,7 +302,7 @@ equality-constrained quadratic optimization problem. The optimal solutions ($\do
 \begin{equation}\label{eqn:KKTConditions}
 \left[\begin{matrix}\myM{M} & \myM{J}^{\top}_c \\{\myM{J}_{c}} & \myM{0}\end{matrix}\right] \left[\begin{matrix} \dot{\myM{v}} \\ -\boldsymbol{\lambda} \end{matrix}\right] = \left[\begin{matrix} \boldsymbol{\tau}_b \\ -\dot{\myM{J}}_c \myM{v}\end{matrix}\right].
 \end{equation}
-These dual variables $\myM{\lambda}^k$ can be seen as external wrenches at the contact level. For a given robot state and applied torques, \cref{eqn:KKTConditions} allows a direct computation of the contact forces. To this end, the contact constraints can be solved analytically at the level of dynamics instead of introducing additional constraints in the whole-body optimization \cite{saab2013dynamic}.  
+These dual variables $\myM{\lambda}^k$ represent external wrenches at the contact level. For a given robot state and applied torques, \cref{eqn:KKTConditions} allows a direct computation of the contact forces. To this end, the contact constraints can be solved analytically at the level of dynamics instead of introducing additional constraints in the whole-body optimization \cite{saab2013dynamic}.  
 
 \subsection{KKT-Based DDP Algorithm}
 The \gls{KKT} dynamics from \cref{eqn:KKTConditions} can be expressed as a function of the state $\bx_i$ and the control $\bu_i$:
@@ -343,26 +344,10 @@ l_k(\bx_k,\bu_k)=\sum_{j\in tasks}\myM{w}_{j_k}\mid\mid\myM{h}_{j_k}(\bx_k,\bu_k
 where $\myM{w}_{j_k}$ assigned to task $j$ at corresponding time $k$. The \gls{DDP} algorithm utilized the derivatives of the regulators functions, namely computing the Jacobians and Hessians of the cost functions. 
 In the scope of this thesis, the following tasks are handled
 \begin{equation}
-tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RH_{SE(3)}\}:
+tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RF_{SE(3)}\}:
 \end{equation}
 1) the \gls{CoM} tracking $(CoM)$, 2) the tracking of the left- and right-hand pose ($LH_{SE(3)}$, $RH_{SE(3)}$) and 3) the tracking of the left- and right-feet pose ($LF_{SE(3)}, RH_{SE(3)}$).
-%\subsection{Feasibility-Prone DDP}
-%Name Box-FDDP and relate it to Box-DDP
 
-
-\section{RH5 Humanoid Robot}
-The proposed motion planning and control approach for constrained \gls{DDP} have been tested both in simulation and real-world experiments on a full-size humanoid robot. RH5 is a lightweight and biologically inspired humanoid that has recently been developed at DFKI Robotics Innovation Center\cite{peters2017konstruktion}.
-
-The RH5 humanoid robot (see \cref{img:rh5_robot}) is designed to mimic the human anatomy with a total size of 200cm, a weight of 62kg and a total of 32 \gls{DoF}. The two legs account for 12 \gls{DoF}, the torso and neck kinematics each for three and the arms and grippers of the robot for 16 \gls{DoF}. In order to achieve a high dynamic performance, the robot's design follows a series-parallel hybrid approach. Consequently,linkages and parallel mechanisms are utilized in most of the robots joints, e.g. the hip-flexion-extension, knee, ankle, torso and wrist. A comparison of RH5 with other state of the art humanoid robots revealed several advantages of this design approach, including better maximum velocity and torque of the ankle as well as an advantageous weight of the lower leg \cite{kumar2020survey}. The interested reader can find a comprehensive introduction on series-parallel hybrid robots in \cite[Ch.2]{kumar2019modular}. 
-
-\begin{figure}[h!]
-\centering	
-\includegraphics[width=.25\textwidth]{img/rh5_robot.png}
-\caption{The recently presented RH5 humanoid is used as experimental platform within this thesis.}
-\label{img:rh5_robot}
-\end{figure} 
-
-% Add to Appendix: 
-% - Gelenkwinkel
-% - Gelenkachsen Darstellung
-% - URDF (abstract and full)
+\subsection{Feasibility-Driven DDP (FDDP)}
+The \gls{FDDP} algorithm is an improved version of the classical \gls{DDP} algorithm that has been introduced along with the Crocoddyl framework for multi-contact optimal control \cite{mastalli20crocoddyl}.
+Compared to \gls{DDP}, \gls{FDDP} shows a greater globalization strategy due to two modifications. First, the backward pass also allows for infeasible state and control trajectories. Second, forward pass keeps the gaps open within the first iterations. 

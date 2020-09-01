@@ -9,7 +9,7 @@
 %  DATEI:  AbschlussLatex.tex                                                 %
 %                                                                             %
 %  DATUM:  01.07.2017                                                         %
-%                                                                             %
+%                                      ss                                       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -54,7 +54,7 @@
 %--- Gliederungstiefe (Bezifferung/Inhaltsverzeichnis) -----------------------%
 
 \setcounter{secnumdepth}{2}
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 
 %--- Eingabekodierung --------------------------------------------------------%
@@ -104,7 +104,9 @@
 
 %--- Weitere Pakete ----------------------------------------------------------%
 \usepackage{setspace}            % Zeilenabstand einstellbar
-\usepackage{hyperref}
+%\usepackage[hidelinks,colorlinks=true,linkcolor=cyan,citecolor=cyan]{hyperref}
+\usepackage[colorlinks, linkcolor = black, citecolor = black, filecolor = black, urlcolor = cyan]{hyperref} %Add linktocpage to have only sites clickable in ToC
+
 \usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{epstopdf}
@@ -152,12 +154,11 @@
 \include{tex/_title}
 \include{tex/_declaration}
 \include{tex/_abstract}
-\include{tex/_kurzfassung}
+%\include{tex/_kurzfassung}
+%\include{tex/_acknowledgments}   
+\tableofcontents    
 \printglossary[title=List of Symbols]
-\printglossary[type=\acronymtype,title=Acronyms]		         
-\tableofcontents             
-%\listoffigures 
-%\listoftables 
+\printglossary[type=\acronymtype,title=Acronyms]	         
 
 
 %-----Hauptkapitel-----
@@ -175,36 +176,59 @@
 %\include{tex/chapter6}
 
 \chapter{Bipedal Walking Variants}
-\section{Formulation of the Optimization Problem} %Build on example: Fixed CoM, fixed feet
-\section{Inequality Constraints for Physical Compliance}
-\section{Trajectories for Increasing Mechanism Complexity}
+\section{Formulation of the Optimization Problem}
+\subsection{Robot Tasks}
+\subsection{Contact and Impact Modeling}
+\subsection{Inequality Constraints for Physical Compliance}
+\section{Simulation Results for Increasing Gait Dynamics}
+\subsection{Static Walking}
+\subsection{Slow Dynamic Walking}
+\subsection{Fast Dynamic Walking}
+\section{Evaluation of Contact Stability}
+\subsection{Different Levels of CoP Restriction}
+\subsection{Comparison of CoP and ZMP Trajectories}
 
 \chapter{Highly-Dynamic Movements}
-\section{Formulation of the Optimization Problems}
-\section{Trajectories for Increasing Task Complexity}
-%\section{Comparison of FDDP and DDP Solver}
+\section{Formulation of the Optimization Problem}
+\section{Simulation Results for Increasing Task Complexity}
+\subsection{A Simple Vertical Jump}
+\subsection{Forward Jumping Over Multiple Obstacles}
 \section{Identification of Limits in System Design}
+\subsection{Analysis of Joint Limits}
+\subsection{Analysis of Torque Limits}
 
-\chapter{Experimental Validation on the RH5 Humanoid}
-%\section{Validation in Real-Time Physics Simulation}
-\section{Preliminaries}
-\subsection{Experimental Setup}
-\subsection{Control Architecture}
-\subsection{Notational Compatibility of the Frameworks}
-\section{Quasi-Static Movements}
-\subsection{Squatting}
-\subsection{Balancing}
-\section{Static Bipedal Walking}
-\section{Dynamic Bipedal Walking}
+\chapter{Validation in Real-Time Physics Simulation}
+\section{Simulation Setup}
+\subsection{PyBullet Simulation Environment}
+\subsection{Spline Interpolation of the Trajectories}
+\subsection{Control Approach}
+\section{Motion Stabilization with Joint Space Control}
+\subsection{Quasi-Static Movements}
+\subsection{Bipedal Walking Variants}
+\subsection{Highly-Dynamic Movements}
+
+\chapter{Validation in Real-World Experiments}
+\section{Experimental Setup}
+\subsection{Global Overview}
+\subsection{Control Approach}
+\section{Verification of Consistency Between the Frameworks}
+\subsection{Recomputing the Contact Forces}
+\subsection{CoM and ZMP Trajectories}
+\section{Experiment I: Fast Squats}
+\section{Experiment II: One-Leg Balancing}
+\section{Experiment III: Static Walking}
+\section{Experiment IV: Dynamic Walking}
 
 \chapter{Conclusion and Outlook}
-\section{Summary}
+\section{Thesis Summary}
 \section{Future Directions}
 
 
 
 %-----Anhang-----
-\include{tex/_appendix}
+%\include{tex/_appendix}
+%\listoffigures 
+%\listoftables 
 %%% style is changed only once, need to reopen texstudio for change %%%
 %\bibliographystyle{plain} %Verzeichnis nach Autor sortiert, Referenzen numerisch
 %\bibliographystyle{abbrv} %Verzeichnis nach Autor sortiert, Vornamen abgekürzt 

@@ -5,7 +5,7 @@
 %-----------------------------------------------------------------------------%
 
 \chapter{Contact Stability Constrained DDP}\label{c3}
-\section{Idea: Constraining the CoP of each Contact Surface}
+\section{The Idea}
 
 \section{Center of Pressure Constraints}
 \subsection{Center of Pressure (CoP) Conditions}
@@ -93,7 +93,15 @@ These conditions are be implemented via:
 \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
 \end{equation}
 
-\subsection{Implementation of the Bounds}
+
+\section{Integration into the Crocoddyl Framework}
+\subsection{Inequality Constraints by Penalization}
+%CostModelSum, 
+%Contact/Impulse Dynamics Action Models, 
+%Residual, 
+%Activation
+
+\subsection{Computing the Residual}
 Computation of the cost residual: 
 \begin{equation}
 \myM{r} = \myM{A} * \myM{w}
@@ -111,31 +119,27 @@ Details:
 cost = 0.5 * sqaredNorm(r - lb) + 0.5 * sqaredNorm(r - ub) 
 i.e. everything lower than lb and greater than ub will affect the cost. 
 
+\subsection{Unit-Testing Numerical Differentiation} 
 
-\subsection{Backup: Friction Cone constraints}
-\begin{align}
-\begin{split}
-\mid\mid f^x\mid\mid &\leq \mu f^z \\
-\mid\mid f^y\mid\mid &\leq \mu f^z \\
-f^z &> 0
-\end{split}
-\end{align}
-For the case of four edges of the linear approximation of the friction cone, the equations become:
-\begin{equation}
-\begin{bmatrix} 1 & 0 & -\mu \\
--1 & 0 & -\mu \\
-0 & 1 & -\mu \\
-0 & -1 & -\mu \\
-0 & 0 & -\mu \\ \end{bmatrix} \cdot
-\begin{bmatrix} f^x \\ f^y \\ f^z \end{bmatrix} \leq
-\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
-\end{equation}
+%\subsection{Backup: Friction Cone constraints}
+%\begin{align}
+%\begin{split}
+%\mid\mid f^x\mid\mid &\leq \mu f^z \\
+%\mid\mid f^y\mid\mid &\leq \mu f^z \\
+%f^z &> 0
+%\end{split}
+%\end{align}
+%For the case of four edges of the linear approximation of the friction cone, the equations become:
+%\begin{equation}
+%\begin{bmatrix} 1 & 0 & -\mu \\
+%-1 & 0 & -\mu \\
+%0 & 1 & -\mu \\
+%0 & -1 & -\mu \\
+%0 & 0 & -\mu \\ \end{bmatrix} \cdot
+%\begin{bmatrix} f^x \\ f^y \\ f^z \end{bmatrix} \leq
+%\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}
+%\end{equation}
 
-\section{Integration into the Crocoddyl Framework}
-\subsection{Inequality Constraints by Penalization}
-%CostModelSum, Residual, Activation
-\subsection{Computing the Residual}
-\subsection{Unittesting Numerical Differentiation} 
 
 
 

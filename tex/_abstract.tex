@@ -1,7 +1,19 @@
 \thispagestyle{empty}
 \chapter*{Abstract}
 
-\textbf{Keywords:} Humanoids, Dynamic Bipedal Walking, Motion Planning, Multi-Contact Optimal Control, Differential Dynamic Programming, Trajectory Optimization
+In order to further close the gap between robots and their natural counterparts, current research is driving towards exploiting the natural dynamics of robots. This requires a rethinking about the way we control robots for moving in a more dynamic, efficient and natural way. 
+
+Dynamic bipedal locomotion is a challenging problem and remains an open area of research. A key characteristic is the decoupling between the center of mass and the multi-body dynamics. Particular difficulties arise from effective underactuation, the mechanism complexity, as well as nonlinear and hybrid dynamics. 
+
+A common approach is to decompose this problem into smaller sub-problems that are solved sequentially. Many state-of-the-art frameworks rely on trajectory optimization based on reduced centroidal dynamics, which is transferred to a whole-body trajectory via feedback linearization using Inverse Kinematics (IK) or Inverse Dynamics (ID). Recent research indicates that solving this mapping with a local optimal control solver, namely Differential Dynamic Programming (DDP), instead of IK/ID, produces more efficient motions, with lower forces and impacts. 
+
+This master thesis contributes to the research field of dynamic bipedal locomotion by applying, evaluating and extending DDP-based whole-body trajectory optimization, pursuing three objectives: 
+First, we develop an approach to constrain the optimal control problem allowing DDP to produce inherently balanced motions. 
+Second, we evaluate our approach for quasi-static and dynamic motions in a real-time physics simulation and in real-world experiments on the lightweight and biologically inspired RH5 humanoid robot.
+Third, we examine the limits of the derived whole-body planning approach and the system design via solving highly-dynamic movements. 
+
+\vfill\vfill
+\textbf{Keywords:} Humanoid Robots, Dynamic Bipedal Walking, Motion Planning, Multi-Contact Optimal Control, Differential Dynamic Programming, Whole-Body Trajectory Optimization  
  
 
 

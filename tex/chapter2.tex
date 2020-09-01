@@ -7,8 +7,7 @@
 \chapter{Mathematical Background: Optimal Bipedal Locomotion}\label{c2}
 The second chapter provides the reader with fundamentals regarding terminology, modeling and stability analysis in the context of humanoid robotics, presents the class of used algorithms and relevant extensions and introduces the RH5 humanoid robot serving as experimental platform for this thesis.
 
-%\section{Modeling and Control of Legged Robots}
-\section{Foundations of Bipedal Locomotion}
+\section{Foundations of Bipedal Locomotion}\label{sec:BackgroundBiped}
 \subsection{Terminology}
 In order to describe the locomotion of a humanoid robot, specific terms are required that are introduced within this section. \citeauthor{vukobratovic2007towards} provide an extensive introduction to the terminology related to bipedal walking \cite{vukobratovic2007towards}, concisely summarized by \citeauthor{dekker2009zero} \cite{dekker2009zero}.\\\\
 \textbf{Walk}\\
@@ -92,7 +91,7 @@ For more details on contact wrenches and spatial vector algebra in general, the 
 %\subsection{Efficient Walking}
 
 
-\section{Stability Analysis: Not Falling Down}
+\section{Stability Analysis: Not Falling Down}\label{sec:BackgroundStability}
 Humanoid robots are high-dimensional, constrained and nonlinear dynamical systems. In this section, the most common criteria  for analyzing the long-term stability behavior of such complex systems are presented. Exhaustive studies on stability criteria and their relation can be found in \cite{garcia2002classification, dekker2009zero, siciliano2016springer}.
 
 \subsection{Static Stability Criteria}
@@ -181,7 +180,7 @@ The gait or movement of a humanoid is classified as \textit{statically stable}, 
 If the \gls{FCoM} partially leaves the \gls{SP} at some point during the gait, but the \gls{CoP} (or \gls{ZMP}) always remains within the \gls{SP}, the gait or movement is classified as \textit{dynamically stable}. This stability margin is extremely useful for flat-foot dynamic walking since it prevents the foot from rotating around the boundary of the \gls{SP}. 
 
 
-\section{Differential Dynamic Programming (DDP)}\label{sec:DDP}
+\section{Differential Dynamic Programming (DDP)}\label{sec:BackgroundDDP}
 This section describes the basics of \gls{DDP}, which is an \gls{OC} algorithm that belongs to the \gls{TO} class. The algorithm was introduced in 1966 by \citeauthor{mayne1966} \citep{mayne1966}. A modern description of the algorithm using the same notations as below can be found in \cite{tassa2012synthesis, tassa2014control}.
 \subsection{Finite Horizon Optimal Control}
 We consider a system with discrete-time dynamics, which can be modeled as a generic function $\myM{f}$
@@ -277,7 +276,7 @@ where $\hat{\bx}_i,\hat{\bu}_i$ are the new state-control sequences. The step si
 %provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
 
-\section{Handling Constraints with DDP}\label{sec:ConstrainedDDP}
+\section{Handling Constraints with DDP}\label{sec:BackgroundConstrainedDDP}
 By nature, the \gls{DDP} algorithm presented in \cref{sec:DDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the controls allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. Since physically consistent bipedal locomotion is highly dependent on making contacts with the ground, this section provides details on the above mentioned approach.  
 
 \subsection{DDP With Constrained Robot Dynamics}
@@ -347,7 +346,3 @@ In the scope of this thesis, the following tasks are handled
 tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RF_{SE(3)}\}:
 \end{equation}
 1) the \gls{CoM} tracking $(CoM)$, 2) the tracking of the left- and right-hand pose ($LH_{SE(3)}$, $RH_{SE(3)}$) and 3) the tracking of the left- and right-feet pose ($LF_{SE(3)}, RH_{SE(3)}$).
-
-\subsection{Feasibility-Driven DDP (FDDP)}
-The \gls{FDDP} algorithm is an improved version of the classical \gls{DDP} algorithm that has been introduced along with the Crocoddyl framework for multi-contact optimal control \cite{mastalli20crocoddyl}.
-Compared to \gls{DDP}, \gls{FDDP} shows a greater globalization strategy due to two modifications. First, the backward pass also allows for infeasible state and control trajectories. Second, forward pass keeps the gaps open within the first iterations. 

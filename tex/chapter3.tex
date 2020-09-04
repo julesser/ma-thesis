@@ -6,7 +6,7 @@
 
 \chapter{Contact Stability Constrained DDP}\label{c3}
 This chapter presents a generic method for integrating contact stability constraints into DDP-like solvers. The key idea is to define inequality constraints for unilaterality, friction and the \gls{CoP} of each contact surface with the goal of generating inherently balanced motions.
- 
+
 \section{The Idea}
 In \cref{sec:TheoryStability} we have explored two different criteria for ensuring contact stability for dynamic systems, namely the \gls{ZMP} and \gls{CoP}. As outlined, the application of the \gls{ZMP} is limited due to the assumptions of sufficiently high friction and the existence of one planar contact surface. Since we want to provide a \textit{generic} method that can also be used for e.g. walking up stairs, these simplifying assumptions do not hold anymore. 
 
@@ -134,7 +134,7 @@ where $\myM{A}$ corresponds to a matrix of \gls{CoP} inequality constraints and 
 
 \subsection{Computation of the Cost}
 The residual vector depicted in \cref{eqn:costResidual} typically contains non-zero numbers. The resulting scalar \gls{CoP} cost value $\Phi_{CoP}$ is computed via a bounded quadratic activation as
-\begin{align}
+\begin{align}\label{eqn:CoPCostComputation}
 \begin{split}
 \Phi_{CoP} = 0.5 \cdot ||\myM{r}||^2 \quad &\mid lb >= \myM{r} >= ub \\
 \Phi_{CoP} = 0 \quad &\mid lb < \myM{r} < ub.

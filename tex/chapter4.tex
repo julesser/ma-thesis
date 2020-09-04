@@ -4,7 +4,104 @@
 %                                                                             %
 %-----------------------------------------------------------------------------%
 
-\chapter{Experimental Validation}\label{c4}
+\chapter{Bipedal Walking Variants}\label{c4}
+This chapter studies the proposed motion planning approach for bipedal walking gaits of the full-size humanoid RH5. It starts by describing the individual building blocks of the optimization problem, then discusses the simulation results obtained for increasing gait dynamics and finally provides an evaluation of the contact stability of the generated motions.
+
+\section{Formulation of the Optimization Problem}
+This section gives information about the adopted contact and impact modeling techniques and introduces the constraints used for generating physically compliant walking trajectories. The core formulation is based on the legged gaits described in \cite{mastalli20crocoddyl}, but contains various improvements necessary for application on real robots. All motions presented in this chapter are solved given a predefined sequence of contacts and step timings. 
+
+Recapitulating \cref{sec:TheoryDDP}, we formulate the optimization problem as
+\begin{equation}
+\myM{X}^*,\myM{U}^*= 
+\arg\min_{\mathbf{X},\mathbf{U}} l_N(x_N)+\sum_{k=0}^{N-1} \int_{t_k}^{t_k+\Delta t} l(\mathbf{x},\mathbf{u})dt. 
+\end{equation}
+
+\subsection{Contact and Impact Modeling}
+During a walking motion, the body is always in contact with the ground either in single support, or in double support. In \cref{sec:TheoryConstrainedDDP} we have discovered, how rigid contacts can be expressed as a kinematic constraint on the \gls{EoM} (see \cref{eqn:unconstrainedDynamics}). 
+Analogously, one can describe the impulse dynamics
+\footnote{Impulse dynamics account for the physical effects that occur at a switch from non-contact to contact condition. Detailed information can be found e.g. in \cite{featherstone2014rigid}.} 
+of a multibody system as
+\begin{equation}\label{eqn:ImpulseDynamics}
+\left[\begin{matrix}\myM{M} & \myM{J}^{\top}_c \\{\myM{J}_{c}} & \myM{0}\end{matrix}\right] \left[\begin{matrix} \myM{v}^+ \\ -\boldsymbol{\Lambda} \end{matrix}\right] = \left[\begin{matrix} \myM{M}\myM{v}^- \\ -e\myM{J}_c \myM{v}^-\end{matrix}\right],
+\end{equation}
+where $\boldsymbol{\Lambda}$ is the contact impulse, $\myM{v}^-$ and $\myM{v}^+$ are the generalized velocities before and after the impact and $e\in [0,1]$ is the restitution coefficient that accounts for the elasticity of the collision. For all motions, we use this impulse model to account for the infinitesimal short change in the contact situation.
+
+\subsection{Robot Tasks}
+Robot tasks, such as grasping and object or performing a step, are an essential goal of motion planning. As outlined in \cref{sec:TheoryConstrainedDDP}, these task-related constraints are considered in the optimization process as regulator functions. In the context of this thesis two tasks are of specific interest, namely the foot tracking and \gls{CoM} tracking. 
+
+\paragraph{Foot Tracking Cost}
+In order to perform a symmetric gait (see \cref{sec:TheoryBiped}), the design of dedicated foot trajectories is crucial. We used piecewise-linear functions to describe the swing foot reference trajectory. Deviation from this time-depended reference foot trajectory is highly penalized. The foot tracking cost can be formulated via the squared euclidean norm (L2 norm) as
+\begin{equation*} 
+\Phi_1=\mid\mid c(t)-c^{ref}(t)\mid\mid^2_2, 
+\end{equation*}
+where the $c(t)$ is the actual \gls{CoM} position at time-point $t$ and $c^{ref}(t)$ the according reference. Start and end position as well as timings are given with the predefined contact sequence and combined with a desired step height form the desired foot trajectory. 
+
+\paragraph{\Gls{CoM} Tracking Cost}
+In bipedal locomotion, the three dimensional position of the \gls{CoM} of the whole-body is turned out to be crucial \cite{carpentier2017centre}. This is especially true for quasi-static motions, where the \gls{FCoM} is used as static stability margin as explained in \cref{sec:TheoryBiped}. Analogously to the foot cost, the \gls{CoM} tracking cost is formulated as
+\begin{equation*} 
+\Phi_2=\mid\mid f(t)-f^{ref}(t)\mid\mid^2_2.
+\end{equation*}
+In order to account for the static stability in these motions, we perform a dedicated shifting of the \gls{FCoM} to the foot center, before performing the swing-foot task. Additionally, the \gls{CoM} is kept at a constant height to prevent unnecessary forces acting on the base of the body. 
+
+\subsection{Inequality Constraints for Physical Compliance}
+Essential demands on physically compliant motion planning is that (i) the robot limits (torque, joints) are considered and (ii) are the generated trajectories are inherently stable. To this end, we consider joint limits, friction cone and the novel \gls{CoP} bound as inequality constraints in our formulation, while torque constraints are covered in the algorithm itself.
+
+\paragraph{Contact Stability Constraints}
+As detailed in \ref{c3} with the concept of contact stability constrained \gls{DDP}, we constrain unilaterality, friction and the \gls{CoP} for each foot in contact. For the sake of clarity, \cref{eqn:CoPCostComputation} is again capitulated as 
+\begin{align*}
+\begin{split}
+\Phi_3 = 0.5 \cdot ||\myM{r}||^2 \quad &\mid lb >= \myM{r} >= ub, \\
+\Phi_3 = 0 \quad &\mid lb < \myM{r} < ub,
+\end{split}
+\end{align*}
+where the \gls{CoP} position is bound to lie inside the foot contact are by the lower and upper bounds $lb$ and $ub$, respectively.
+In the same manner friction cone constraints along with the unilaterality are considered as
+\begin{align*}
+\begin{split}
+\Phi_4 = 0.5 \cdot ||\myM{r}||^2 \quad &\mid lb >= \myM{r} >= ub, \\
+\Phi_4 = 0 \quad &\mid lb < \myM{r} < ub,
+\end{split}
+\end{align*}
+where $lb$ and $ub$ bound the resulting contact force to lie inside a 4-sided polygonal approximation of the spatial friction cone \cite{kao2016contact}.
+
+\paragraph{Joint Limits}
+Physical boundaries of the joints must not be exceeded to avoid damage to the system. They are covered via a bounded quadratic activation as
+\begin{align*}
+\begin{split}
+\Phi_5 = 0.5 \cdot ||\myM{r}||^2 \quad &\mid lb >= \myM{r} >= ub \\
+\Phi_5 = 0 \quad &\mid lb < \myM{r} < ub.
+\end{split}
+\end{align*}
+where $lb$ and $ub$ correspond to the lower and upper bounds for joint position and velocities, respectively. 
+
+\subsection{Further Regularization Terms}
+Additional to the described constraints for tasks and physical compliance, we optimize for minimization of the torques and regularize the robot posture.
+\paragraph{Torque Minimization}
+In order to improve the energy efficiency of the motions and maintain a human-like torque at the joints \cite{kim1994modeling}, we minimize the joint torques for realistic dynamic movements as 
+\begin{equation*} 
+\Phi_6=\mid\mid \btau(t)\mid\mid^2_2.
+\end{equation*}
+\paragraph{Posture Regularization}
+Finally, we deal with the redundancy of multi-body dynamics by applying a weighted least-squares cost function to regularize the state with respect to the nominal robot posture:
+\begin{equation*} 
+\Phi_7=\mid\mid q(t)-q^{ref}\mid\mid^2_2.
+\end{equation*}
+
+
+\section{Simulation Results for Increasing Gait Dynamics}
+\subsection{Static Walking}
+%>> Task Space Plots (CoM w. vertical lines for step phase; Foot trajectory) 
+%>> Joint convergence
+\subsection{Dynamic Walking}
+%>> Natural CoM motion; 
+%>> Effect of different walking velocities
+%>> Long gait motion
+
+
+\section{Evaluation of Contact Stability}
+\subsection{Different Levels of CoP Restriction}
+%>> Stability Analysis Plots
+\subsection{Comparison of CoP and ZMP Trajectories}
 
 
 

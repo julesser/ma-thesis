@@ -8,7 +8,7 @@
 This chapter presents a generic method for integrating contact stability constraints into DDP-like solvers. The key idea is to define inequality constraints for unilaterality, friction and the \gls{CoP} of each contact surface with the goal of generating inherently balanced motions.
 
 \section{The Idea}
-In \cref{sec:TheoryStability} we have explored two different criteria for ensuring contact stability for dynamic systems, namely the \gls{ZMP} and \gls{CoP}. As outlined, the application of the \gls{ZMP} is limited due to the assumptions of sufficiently high friction and the existence of one planar contact surface. Since we want to provide a \textit{generic} method that can also be used for e.g. walking up stairs, these simplifying assumptions do not hold anymore. 
+Stability of the contacts is an essential objective of motion planning since prevents the robot from sliding and falling down. In \cref{sec:TheoryStability} we have explored two different criteria for ensuring contact stability for dynamic systems, namely the \gls{ZMP} and \gls{CoP}. As outlined, the application of the \gls{ZMP} is limited due to the assumptions of sufficiently high friction and the existence of one planar contact surface. Since we want to provide a \textit{generic} method that can also be used for e.g. walking up stairs, these simplifying assumptions do not hold anymore. 
 
 Consequently, we decide to model a 6d surface contact, as introduced in \ref{eqn:EoMLeggedRobotSurfaceContact} with dedicated constraints for (i) unilaterality of the contact forces (ii) Coloumb friction on the resultant force, and (iii) \gls{CoP} inside the support area. This approach can be compared to the concept of contact wrench cone \cite{caron2015stability}, without additionally enforcing the yaw torque constraint. These inequality constraints for surface contacts can compactly be summarized as
 \begin{subequations}\label{eqn:contractWrenchConeReduced}
@@ -160,7 +160,7 @@ costModel.addCost("LF_CoPCost", CoPCost, 1e3)
 \end{verbatim}
 
 \subsection{List of Contributions}
-The contributions of this thesis to the open-source framework Crocoddyl are summarized in two main pull requests. The first one, \hyperlink{https://github.com/loco-3d/crocoddyl/pull/792}{\#792} contains the basic formulation of the \gls{CoP} cost function for contact dynamics action models. With \hyperlink{https://github.com/loco-3d/crocoddyl/pull/830}{\#830}, an additional version is added the special case of impulse dynamics.
+The contributions of this thesis to the open-source framework Crocoddyl are summarized in two main pull requests. The first one, \hyperlink{https://github.com/loco-3d/crocoddyl/pull/792}{\#792} contains the basic formulation of the \gls{CoP} cost function for contact dynamics action models. With \hyperlink{https://github.com/loco-3d/crocoddyl/pull/830}{\#830}, an additional version is added for the special case of impulse dynamics.
 A functional unittest that checks the cost against numerical differentiation can be found in the according directory of \cite{crocoddylweb}.
 
 

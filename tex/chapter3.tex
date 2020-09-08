@@ -7,7 +7,7 @@
 \chapter{Contact Stability Constrained DDP}\label{c3}
 This chapter presents a generic method for integrating contact stability constraints into DDP-like solvers. The key idea is to define inequality constraints for unilaterality, friction and the \gls{CoP} of each contact surface with the goal of generating inherently balanced motions.
 
-\section{The Idea}
+\section{The Idea}\label{sec:StabilityIdea}
 Stability of the contacts is an essential objective of motion planning since prevents the robot from sliding and falling down. In \cref{sec:TheoryStability} we have explored two different criteria for ensuring contact stability for dynamic systems, namely the \gls{ZMP} and \gls{CoP}. As outlined, the application of the \gls{ZMP} is limited due to the assumptions of sufficiently high friction and the existence of one planar contact surface. Since we want to provide a \textit{generic} method that can also be used for e.g. walking up stairs, these simplifying assumptions do not hold anymore. 
 
 Consequently, we decide to model a 6d surface contact, as introduced in \ref{eqn:EoMLeggedRobotSurfaceContact} with dedicated constraints for (i) unilaterality of the contact forces (ii) Coloumb friction on the resultant force, and (iii) \gls{CoP} inside the support area. This approach can be compared to the concept of contact wrench cone \cite{caron2015stability}, without additionally enforcing the yaw torque constraint. These inequality constraints for surface contacts can compactly be summarized as
@@ -48,7 +48,7 @@ Both, the unilaterality of the contact forces and the friction cone constraints,
 \end{figure}
 
 
-\section{Center of Pressure (CoP) Constraints}
+\section{Center of Pressure (CoP) Constraints}\label{sec:StabilityCoP}
 In this section we will derive a universal set of implementable constraints that bound the \gls{CoP} to lie inside the rectangular contact area of each foot.
 
 \subsection{CoP Stability Conditions}
@@ -111,7 +111,7 @@ Yn_0 & Yn_1 & Yn_2 & -n_2 & 0 & n_0 \\ \end{bmatrix} \cdot
 and finally yield an implementable set of inquality equations for constraining the \gls{CoP} to lie inside the rectangular contact area of each foot. 
 
 
-\section{Integration into the Crocoddyl Framework}
+\section{Integration Into the Crocoddyl Framework}\label{sec:StabilityIntegration}
 This section presents the integration of the derived CoP inequality constraints from \cref{eqn:CoPInequalityMatrix} into the Crocoddyl framework. 
 
 \subsection{Inequality Constraints by Penalization}

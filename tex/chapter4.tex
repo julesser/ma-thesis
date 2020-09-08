@@ -7,7 +7,7 @@
 \chapter{Bipedal Walking Variants}\label{c4}
 This chapter studies the proposed motion planning approach for bipedal walking gaits of the full-size humanoid RH5. It starts by describing the individual building blocks of the optimization problem, then discusses the simulation results obtained for increasing gait dynamics and finally provides an evaluation of the contact stability of the dynamic motions.
 
-\section{Formulation of the Optimization Problem}
+\section{Formulation of the Optimization Problem}\label{sec:BipedFormulation}
 This section gives information about the adopted contact and impact modeling techniques and introduces the constraints used for generating physically compliant walking trajectories. The core formulation is based on the legged gaits described in \cite{mastalli20crocoddyl}, but contains various improvements necessary for application on real robots. All motions presented in this chapter are solved given a predefined sequence of contacts and step timings. 
 
 Recapitulating \cref{sec:TheoryDDP}, we formulate the optimization problem as
@@ -88,7 +88,7 @@ Finally, we deal with the redundancy of multi-body dynamics by applying a weight
 \end{equation*}
 
 
-\section{Simulation Results for Increasing Gait Dynamics}
+\section{Simulation Results for Increasing Gait Dynamics}\label{sec:BipedSimulation}
 This section presents the simulation results for bipedal walking motions obtained by solving an optimization problem based on the described building blocks from the previous section. It studies both static and dynamic walking gaits, respectively.
 
 \subsection{Static Walking}
@@ -197,10 +197,11 @@ The solution of the dynamic walking \gls{OC} problem is visualized in \cref{fig:
 \label{fig:walkDynamic_JointState}
 \end{figure} 
 
+%\subsection{Dynamic Walking: Long Gait as Sequence of OC Problems}
 %\subsection{Dynamic Walking: The Effect of Different Velocities}
 
 
-\section{Evaluation of Contact Stability}
+\section{Evaluation of Contact Stability}\label{sec:BipedEvaluation}
 This section evaluates, based on the presented dynamic walking gait from the previous section, the proposed approach of contact stability constrained DDP (\cref{c3}).
 
 \subsection{Dynamically Balanced Walking Motion}

@@ -7,7 +7,7 @@
 \chapter{Introduction}\label{c1}
 This introduction guides the reader to the goal of the master's thesis. Beginning with a motivation on humanoid robots a general problem statement is derived. Thereupon, two approaches are presented for solving the motion planning problem as well as the used framework and experimental platform. Building upon this related work, the specific objectives of the thesis are defined and a brief overview of the structure is provided.
 
-\section{Motivation}
+\section{Motivation}\label{sec:IntroMotivation}
 Robotics research is highly motivated by the idea of creating machines with the ability to autonomously explore and interact with complex and dynamic environments. These intelligent agents can act in surroundings that are either inaccessible or dangerous to humans or support us in everyday life tasks. 
  
 The key promise of using legs for locomotion is the improved mobility over wheeled systems. Significant advantages are gained due to the ability of using isolated footholds and active suspension, which effectively decouples the main body from the roughness of the environment and allows e.g. to step over obstacles \cite{raibert1986legged}. These benefits come at the expense of a significant increase in complexity, since there is a need of ongoing, active balancing of the robot in order to avoid falling down \cite{wieber2016modeling}.
@@ -43,7 +43,7 @@ The specific difficulty of creating bipedal walking motions has several causes. 
 \textit{Dynamic} bipedal locomotion adds additional complexity to this problem. A central characteristic of walking dynamically is that the center of mass (COM) partially leaves the biped's support polygon. Furthermore there is the need of generating feasible, controllable limit cycles. When considering running motions, difficulties are faced regarding the conservation of angular momentum, which implies restrictions on the controllability during flight phases \cite{westervelt2018feedback}. 
 
 
-\section{Related Work}
+\section{Related Work}\label{sec:IntroRelated}
 There are existing numerous ways to generate feasible motion plans for robotic systems. Common approaches are relying on simplified dynamic models, while recent ones make use of numerical optimization for generating efficient motion plans. 
 
 \subsection{Traditional Legged Locomotion Planning}

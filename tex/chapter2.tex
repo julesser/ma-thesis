@@ -276,7 +276,7 @@ where $\hat{\bx}_i,\hat{\bu}_i$ are the new state-control sequences. The step si
 %provide details and extension on these characteristics in the context of the \gls{DDP} algorithm.
 
 
-\section{Handling Constraints with DDP}\label{sec:TheoryConstrainedDDP}
+\section{Handling Constraints With DDP}\label{sec:TheoryConstrainedDDP}
 By nature, the \gls{DDP} algorithm presented in \cref{sec:TheoryDDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the controls allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. Since physically consistent bipedal locomotion is highly dependent on making contacts with the ground, this section provides details on the above mentioned approach.  
 
 \subsection{DDP With Constrained Robot Dynamics}
@@ -343,9 +343,9 @@ l_k(\bx_k,\bu_k)=\sum_{j\in tasks}\myM{w}_{j_k}\mid\mid\myM{h}_{j_k}(\bx_k,\bu_k
 where $\myM{w}_{j_k}$ assigned to task $j$ at corresponding time $k$. The \gls{DDP} algorithm utilized the derivatives of the regulators functions, namely computing the Jacobians and Hessians of the cost functions. 
 In the scope of this thesis, the following tasks are handled
 \begin{equation}
-tasks \subseteq \{CoM, LH_{SE(3)}, RH_{SE(3)}, LF_{SE(3)}, RF_{SE(3)}\}:
+tasks \subseteq \{CoM, LF_{SE(3)}, RF_{SE(3)}\}:
 \end{equation}
-1) the \gls{CoM} tracking $(CoM)$, 2) the tracking of the left- and right-hand pose ($LH_{SE(3)}$, $RH_{SE(3)}$) and 3) the tracking of the left- and right-feet pose ($LF_{SE(3)}, RH_{SE(3)}$).
+1) the \gls{CoM} tracking $(CoM)$ and 2) the tracking of the left- and right-feet pose ($LF_{SE(3)}, RF_{SE(3)}$).
 
-\subsection{Inequality Constraints}
-DDP has a hard time with these... (motivate penalization, mention active-set and augmented lagrangian)
+%\subsection{Inequality Constraints}
+%DDP has a hard time with these... (motivate penalization, mention active-set and augmented lagrangian)

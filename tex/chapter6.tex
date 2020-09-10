@@ -5,5 +5,184 @@
 %-----------------------------------------------------------------------------%
 
 \chapter{Online Stabilization of the Planned Motions}\label{c6}
+This chapter presents a two-step validation of the physical compliance of the planned motions where an online stabilization is applied to track the optimal trajectories. At first, we proof the stability of the motions in a real-time physics simulation. Following this, we explore the feasibility of the motions in real-world experiments on a full-size humanoid robot.    
+
+\section{Validation in Real-Time Physics Simulation}\label{sec:OnlineSimulation}
+This section investigates the stability of the planned motions by applying an online stabilization based on joint space position control to track the trajectories obtained from \gls{OC}. To begin with, an overview of the simulation setup is given, then the tracking results of the planned motions are discussed. 
+
+\subsection{Simulation Setup}
+The optimal motions are tested in the dynamical simulation environment PyBullet \cite{coumans2016pybullet}. PyBullet is an open-source framework for robotics simulation that allows fast computation of rigid-body dynamics along with collision detection. The focus of PyBullet is to minimize the simulation-to-reality ('sim-to-real') gap, which is, despite constantly improving robot models, still a major problem in real-world experiments. To this end, the simulation in the simulator is setup in a similar way the motions would be tested o a real robot, namely interpolating the trajectories and closing the loop on joint position level.
+
+The control loop on the real system (see \cref{sec:OnlineExperiments}) is running at a frequency of 1000Hz. The generated bipedal walking variants and highly-dynamic movements presented in \crefrange{c4}{c5} are generated with with an discrete \gls{OC} formulation at 30Hz and 10Hz, respectively. To this end, the optimal trajectories are interpolated with a cubic spline in order to realize an up-scaling of the reference data to 1000Hz.  
+
+The control architecture consists of a simple PD-controller on joint space level. The controller is supposed to track both position and velocity reference trajectories with the standard PyBullet parameters in a real-time loop running at 1000Hz. In this real-time simulation, the same URDF robot model is used as in the Crocoddyl framework, including similar maximal motor torques. Furthermore, the parameters of the rigid contact models have been aligned between both frameworks to ensure comparability.
+
+\subsection{Motion Tracking With Joint Space Control}
+Following up, we investigate the capabilities of the presented control architecture for tracking the planned motions. To this end, we study the control tracking performance for the dynamic walking gait (\cref{sec:BipedSimulation}) and a highly-dynamic forward jump (\cref{sec:HighlySimulation}).
+
+\subsubsection{Dynamic Walking}
+To begin with, we analyze the motion tracking for dynamic walking gait. \cref{fig:walkDynamic_pybulletTracking} shows the tracking performance of the joint level control architecture. The reference trajectories from \gls{OC} are visualized as solid lines, while the resulting trajectories of the real-time physics simulation are shown as dotted lines. It can be seen that the controller follows the optimal trajectories fairly good. Small deviations can be seen around two seconds, which accounts for the lift off phase for the second robot step. This effect can be explained by the apparent abrupt change in the joint space, but is found to be marginal for the overall tracking performance. 
+\begin{figure}[h!]
+\centering	
+\includegraphics[width=1\textwidth]{fig/walkDynamic/pybullet/pybulletTracking}
+\caption{Control tracking performance on joint level for the dynamic walking gait.}
+\label{fig:walkDynamic_pybulletTracking}
+\end{figure}
+
+As introduced previously, the control architecture is solely based on joint space position and velocity level. Although the tracking performance is good, this does not proof for the stability of the motions. Similar to the definition of robot tasks, also the evaluation of the motions should be pursued in task space. To this end, \cref{fig:walkDynamic_pybulletBase} monitors the according motion of the floating base. As can be seen, the floating base deviates about $\pm$ 10mm in x and y-direction , as well as $+$ 5mm in z-direction. 
+\begin{figure}[h!]
+\centering	
+\includegraphics[width=1\textwidth]{fig/walkDynamic/pybullet/pybulletBase}
+\caption{Motion of the floating base resulting from joint space control for the dynamic walking gait.}
+\label{fig:walkDynamic_pybulletBase}
+\end{figure}
+
+In this context, it is important to notice that no controller tracks these task space quantities. Instead, they are merely the result of the joint space control performance. The largest deviations in task space occur during the first step and the according impact in the first two seconds of the motions. It becomes evident that these task space errors do not correlate to the peaks discussed on joint space level. Furthermore, one can observe oscillations in the stabilization phase at the end of the motion. This effect can be attributed to the fact that the systems slightly starts to swing after the second impact. This behavior could be compensated e.g. with a dedicated control in task space instead of joint space. 
+
+Overall it can be stated that the dynamic walking motion can be successfully stabilized by the proposed control approach. 
+
+\subsubsection{Forward Jumping}
+To identify the limits of the control approach, we now study the online stabilization for a highly-dynamic forward jump (\cref{sec:HighlySimulation}). In addition to the previously discussed dynamic walking, the jumping task introduces new challenges for the controller in terms of speed and robustness that will be investigated in the following.  
+
+\ref{fig:jumpForward_pybulletTracking} shows the tracking performance of the joint level control architecture for the forward jump. In contrast to the case of dynamic walking, the joint space controller reveals larger tracking deviations. This is especially true for the most dynamic part of the motion, namely the acceleration of the base and finally the takeoff around 300-400ms. Large deviations can be especially seen for body pitch, and the knee joints, which turned out to be crucial for highly-dynamic movements. 
+
+\begin{figure}[h!]
+\centering	
+\includegraphics[width=1\textwidth]{fig/jumpForward/pybullet/pybulletTracking}
+\caption{Control tracking performance on joint level for a forward jump.}
+\label{fig:jumpForward_pybulletTracking}
+\end{figure}
+
+
+\begin{figure}[h!]
+\centering	
+\includegraphics[width=1\textwidth]{fig/jumpForward/pybullet/pybulletBase}
+\caption{Motion of the floating base resulting from joint space control for a forward jump.}
+\label{fig:jumpForward_pybulletBase}
+\end{figure}
+
+In company with these findings, \cref{fig:jumpForward_pybulletBase} monitors the motion of the (uncontrolled) floating base resulting from the joint space control performance. As becomes evident, the deviations in tasks space are also much higher compared to the dynamics walking case. While the height of the floating base is reasonable, the x-position shows tracking errors of about $\pm$ 5cm. Errors of this magnitude inevitably lead to instability of the movement to be performed. In this case, the strong deviation in task space causes the robot to tilt around the rear edge of the foot after the touchdown. 
+
+Consequently, it turned out that a mere control on a joint space basis is not sufficient to track highly dynamic movements, but is indeed appropriate to stabilize a dynamic walking gait in real-time. 
+
+
+\section{Validation in Real-World Experiments}\label{sec:OnlineExperiments}
+This section presents experimental results of the planned motions on the full-size humanoid robot RH5 \cref{sec:IntroRH5}. Analogously to the validation in PyBullet, the goal is to track the \gls{OC} trajectories with an joint space online stabilization on the real system. 
+
+Based on the simulation results from the last section, highly dynamic movements are not evaluated on the real system in the context of this thesis. As discussed in the last section, these motions require more advanced control algorithms in task space due to the dynamic nature of the movement. 
+
+The rest of this section is structured as follows. First, an overview of the experimental setup with the involved components is presented. Following up, we verify the consistency between the used frameworks. Finally, four experiments are presented, gradually incorporating a new level of difficulty to evaluate the tracking performance of the online stabilizer (see \cref{tab:experiments}). 
+
+\begin{table}[h!]
+\centering
+\caption{Overview about the difficulty of the conducted experiments.}
+\begin{tabular}{lcccc}
+\hline
+& Balancing & Static Walk & Fast Squats & Dynamic Walk\\ \hline
+Surface Contacts & \greencheckmark  & \greencheckmark & \greencheckmark & \greencheckmark \\
+Base motion & \greencheckmark  & \greencheckmark & \greencheckmark & \greencheckmark \\
+Swingleg motion & \greencheckmark  & \greencheckmark & \redxmark & \greencheckmark \\
+Step sequence & \redxmark  & \greencheckmark & \redxmark & \greencheckmark \\
+Impacts & \redxmark  & \greencheckmark & \redxmark & \greencheckmark \\
+Dynamic forces & \redxmark  & \redxmark & \greencheckmark & \greencheckmark \\
+%Non-flat terrain & \redxmark  & \redxmark & \redxmark & \redxmark \\
+Flight-phases & \redxmark  & \redxmark & \redxmark & \redxmark \\
+\hline
+\quad\quad Success & \greencheckmark  & (\greencheckmark) & \greencheckmark & \redxmark \\ \hline
+\end{tabular}
+\label{tab:experiments}
+\end{table}
+
+\subsection{Experimental Setup}
+An overview of the experimental pipeline is given in \cref{img:experimentalSetup}. The foundation for the experiments are the motion data generated offline with the proposed whole-body \gls{TO}. The planned motions are then tracked in real-time with a joint space online stabilization on the real system. In the following, details on the involved components are provided. 
+\begin{figure}[h!]
+\centering	
+\includegraphics[width=1\textwidth]{img/experimentalSetup}
+\caption{Overview about the experimental pipeline.}
+\label{img:experimentalSetup}
+\end{figure}
+
+%Trajectory File
+The presented motion planning approach computes inherently balanced motions that are concisely captured in an appropriate file. This trajectory file contains the optimal state trajectories $\myM{X}^*=[\bq^*,\bv^*]$, optimal control inputs $\myM{U}^*$ and the resulting contact wrenches $\myM{F}_{ext}^*$ acting on the feet. In order to minimize the computational effort in the real-time loop, the file already encompasses data discretized to the desired frequency of 1000Hz. As in the PyBullet validation, the trajectories are interpolated using cubic splines in order to ensure smoothness an derivability. 
+
+%HyRoDyn motivation
+As introduced in \cref{sec:IntroRH5}, the novel RH5 humanoid robot contains multiple parallel mechanisms in order to achieve a high dynamic performance, superior stiffness and payload-to-weight ratio. This leads to the presence of various closed loops in series-parallel hybrid robotic systems, which are difficult to model and control. Most multi-body dynamics libraries, e.g. RBDL \cite{felis2017rbdl} and OpenSim \cite{delp2007opensim}, these loop closure constraints are solved numerically. HyRoDyn (Hybrid Robot Dynamics), is a recently presented modular software framework for solving the kinematics and dynamics of these type of series-parallel hybrid robots analytically, leading to improved accuracy and computational performance \cite{kumar2018hyrodyn}.
+
+%Abstract vs Full Model
+The planned motions are computed based on a serialized robot model. For dynamic real-time control, using this simplified model neglecting the closed loops turns out to be sufficient, although the accuracy is reduced \cite{kumar2019model}. However, the problem remains on transforming the results from the independent joint space, to the actuation space. In the context of this thesis, HyRoDyn is used to map the trajectories generated for the serialized robot model to compute the forces of the linear actuators.
+
+%Rock+Control
+HyRoDyn, as well as the low-level control of the RH5 robot is implemented using the Robot Construction Kit (Rock) middleware \cite{joyeux2013rock}, which is based on the Orocod Real Time Toolkit. Low-level actuator controllers are utilized to compensate deviations from the reference trajectories. Analogously to the PyBullet validation, this control approach uses a cascaded position, velocity with an additional current control loop. 
+
+\subsection{Consistency Between the Frameworks}
+Consistency of the frameworks involved in the motion planning and control pipeline is an indispensable prerequisite for the following up experiments. Hence, we will provide a brief proof of concept by checking the notability compliance of HyRoDyn and Pinocchio \cite{carpentier2019pinocchio}, which is used inside Crocoddyl for computation of robots dynamics and their analytical derivatives.   
+\subsubsection{Recomputing the Contact Forces}
+\subsubsection{CoM and ZMP Trajectories}
+
+%The Rotative Inverse Kinematic Model (RIKM) has been implemented within the real
+%time Robot Construction Kit (RoCK) [Joyeux and Albiez, 2011] to achieve a kinematic
+%control of the ACTIVE ANKLE. For a tolerance of x mm, the algorithm converges
+%in four to six iterations, can be implemented with a control loop frequency
+%of 1 kHz, and is thus suitable for most applications from a control perspective. The
+%kinematic control of ACTIVE ANKLE is implemented on a mid-level control PC communicating with the FPGA electronics of the actuators which implement low level
+%cascaded position, velocity, and torque controllers.
+
+
+
+\subsection{Experiment I: One-Leg Balancing}
+\begin{figure}[h!]
+\begin{subfigure}{.2\textwidth}
+	\includegraphics[width=.95\linewidth]{experiments/balancing/1}
+	\caption{}
+	\end{subfigure}%
+\begin{subfigure}{.2\textwidth}
+	\includegraphics[width=.95\linewidth]{experiments/balancing/2}
+	\caption{}
+\end{subfigure}%
+\begin{subfigure}{.2\textwidth}
+	\includegraphics[width=.95\linewidth]{experiments/balancing/3}
+	\caption{}
+	\end{subfigure}%
+\begin{subfigure}{.2\textwidth}
+	\includegraphics[width=.95\linewidth]{experiments/balancing/4}
+	\caption{}
+\end{subfigure}%
+\begin{subfigure}{.2\textwidth}
+	\includegraphics[width=.95\linewidth]{experiments/balancing/5}
+	\caption{}
+	\end{subfigure}%
+\caption{Experiment No.1: One-Leg Balancing.}
+\label{fig:jumpForward_Snaps}
+\end{figure} 
+
+\subsection{Experiment II: Static Walking}
+\subsection{Experiment III: Fast Squats}
+\subsection{Experiment IV: Dynamic Walking}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

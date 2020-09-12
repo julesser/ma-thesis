@@ -93,7 +93,7 @@ The RH5 humanoid robot (see \cref{img:rh5_robot}) is designed to mimic the human
 \end{figure} 
 
 
-\section{Contributions}
+\section{Contributions}\label{sec:IntroContributions}
 The overall goal of this master's thesis is to contribute to the research field of humanoid robotics by applying, evaluating and extending recently presented whole-body \gls{TO} approaches on the RH5 humanoid robot. 
 
 The proposed motion planning approach (see \cref{img:approach}) consists of a DDP-based whole-body \gls{TO}. 
@@ -118,8 +118,7 @@ This thesis is organized in a total of 8 chapters. Fig. XXX shows the overall ou
 \paragraph{\hyperref[c3]{Chapter 3 (Contact Stability Constrained DDP)}} presents a generic method for integrating stability constraints into DDP-like solvers in order to generate inherently balanced dynamic motions.
 \paragraph{\hyperref[c4]{Chapter 4 (Bipedal Walking Variants)}} studies the proposed motion planning approach for bipedal walking gaits of increasing complexity in simulation.
 \paragraph{\hyperref[c5]{Chapter 5 (Highly-Dynamic Movements)}} presents an analysis of highly-dynamic movements based on the proposed motion planning approach with the goal of identifying the system limits of the RH5 humanoid robot. 
-\paragraph{\hyperref[c6]{Chapter 6 (Validation in Real-Time Physics Simulation)}} presents a validation of the generated motions by application of a simple control architecture in an real-time physics simulation environment. 
-\paragraph{\hyperref[c7]{Chapter 7 (Validation in Real-World Experiments)}} presents an experimental pipeline for validating the motions on a full-size humanoid robot with series-parallel hybrid mechanisms. 
-\paragraph{\hyperref[c8]{Chapter 8 (Conclusion and Outlook)}} presents the summary of the thesis and identifies future research directions. 
+\paragraph{\hyperref[c6]{Chapter 6 (Online Stabilization of the Planned Motions)}} presents a two-step validation of the physical compliance of the planned motions where an online stabilization is applied to track the optimal trajectories, first in a real-time physics simulation and following up in real-world experiments on a full-size humanoid robot.
+\paragraph{\hyperref[c8]{Chapter 7 (Conclusion and Outlook)}} presents the summary of the thesis and identifies future research directions. 
 
 

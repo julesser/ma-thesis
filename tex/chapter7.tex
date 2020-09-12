@@ -6,4 +6,26 @@
 
 \chapter{Conclusion and Outlook}\label{c7}
 
+\section{Thesis Summary}
+This master thesis was motivated by the generation of physically consistent, efficient motions plans for legged robots. 
 
+The premise of investigation was that whole-body planning leads to more efficient motions than a simple program such as an \gls{IK} solver. Therefore, the core algorithm of the proposed motion planning approach is a recently presented \gls{DDP}-based whole-body \gls{TO}. Building upon this, a generic method for constraining DDP-like solvers is presented in order to generate dynamically balanced motions. The results are integrated into the recently presented open-source framework Crocoddyl.
+
+Following this, we investigated the \gls{CoP}-based contact stability of the  proposed motion planning approach for a wide range of motions with the biologically inspired RH5 humanoid robot. It has been shown that the resulting motion plans for both, dynamic bipedal walking and various jumping tasks, are inherently balanced. Additionally, the analysis of highly-dynamic movements, allowed the derivation of useful guidelines for future design iterations of the humanoid robot.
+
+Although the focus of this thesis was on motion planning, we evaluated the feasibility of the generated trajectories with a simple online stabilizer. It has been demonstrated in a real-time physics simulator that the motion plans can be stabilized by a simple control architecture solely based on joint-space position control. Furthermore, it could be shown that for real-world experiments, a compensation in task space is indispensable due to model inaccuracies. 
+
+The final result of this thesis is an efficient motion planning approach that produces inherently balanced motions. This algorithm efficiently generates highly-dynamic movements with flight-phases for various legged systems. 
+
+\section{Future Directions}
+%DDP is great
+We see large potential in using \gls{DDP}-based whole-body \gls{TO} to generate motions for legged systems. Motion planning based on numerical optimization clearly reduces the amount of hand-crafted components and allows the specification of high-level tasks directly in the operational space of the robot. This might become even more important as legged robots tackle more difficult terrain that require higher dynamic motions.
+  
+%Algorithmic Improvements
+From an algorithmic perspective, the formulation can still be improved in a number of ways. The goal for the algorithm is to efficiently and accurately generate physically compliant motions. Promising ways of simultaneously increasing both measures are seen by embedding inequality constraints directly as strict bounds inside the \gls{DDP} algorithm, instead of forcing it by penalization.
+
+%Control Approaches: MPC + Online Stabilization
+From a control perspective, two successive steps are of particular interest. First, it is considered worth working on an improved online stabilization. As discussed in the last chapter, operational space control is inevitable in order to compensate for modeling errors directly in tasks space. Following up, it would be interesting to embed the motion planning inside a \gls{MPC} formulation. If the re-planning is fast enough, the robot is enabled to act more robustly to unpredicted situations. 
+
+%Long-term vision
+This direction of future research, namely improving the motion-planning algorithm and embedding it in an \gls{MPC} formulation on a real system, seems promising. Intelligently combining optimization-based planning and control may be the key for robots to interact with the environment and humans in a more natural, dynamic and autonomous way. With some work in this direction, we might soon find legged robots crossing our daily path or intuitively collaborating with them when assembling infrastructures and exploring foreign planets. 

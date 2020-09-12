@@ -21,7 +21,7 @@ The vertical jump formulation follows an optimization problem of the form descri
 We constrain the optimization based on the building blocks introduced in \cref{sec:BipedFormulation}. Precisely, we define a foot tracking cost $\Phi_1$ based on piecewise-linear functions to incorporate the basic jumping height and length. We apply the contact stability constrained \gls{DDP} (\cref{c3}) with dedicated cost functions for \gls{CoP} ($\Phi_3$) and friction cone ($\Phi_4$). Physical compliance is ensured via the torque bounds of the solver and joint limits costs $\Phi_5$. We use a \gls{CoM} tracking cost $\Phi_2$ only for the final stabilization of the motion. Additionally, torque minimization ($\Phi_6$) and posture regularization ($\Phi_7$) are optimized.
 
 Biomechanical studies have shown that the effect of arm swinging is elementary for the performance in human jumping \cite{harman1990effects}. To this end, we also include the arms in the optimization for our jumping tasks. 
-In order to account for the dynamic nature of the movements, it turned out to be useful to reduce the integration step size. We found a higher feasibility of the jumping tasks with an integration step size of 10ms compared to 30ms for the bipedal walking gaits (see \cref{sec:BipedSimulation}). Since we do not use a contact planner along with this work, the contact timings had to be chosen to approximately match the physic of flight phases. 
+In order to account for the dynamic nature of the movements, it turned out to be useful to reduce the integration step size. We found a higher feasibility of the jumping tasks with an integration step size of 10 ms compared to 30 ms for the bipedal walking gaits (see \cref{sec:BipedSimulation}). Since we do not use a contact planner along with this work, the contact timings had to be chosen to approximately match the physic of flight phases. 
 Highly dynamic movements are subject to higher impulse forces than is the case with walking movements. As described in \ref{sec:TheoryDDP}, \gls{DDP} relies on integration of the system dynamics in each step to obtain the states. The higher impulse forces then in turn cause numerical drifts of higher order in the contact constraints. This effect is visible as drifting of the support feet after touchdown. Through an extensive grid search, we found a set of valid Baumgarte gains that reduce these numerical drifts for highly-dynamic movements.
 
 \section{Simulation Results for Increasing Task Complexity}\label{sec:HighlySimulation}
@@ -210,7 +210,7 @@ Step size:& 0.01 s & & \\ \hline
 
 Previously, we have demonstrated that the contact stability constrained \gls{DDP} allows computation of a simple forward jump with dynamical balanced motions. Following up, we want to study if the concept also holds for multiple forward jumps. 
 
-\cref{fig:jumpObstacles_StabilityAnalysis} shows the obtained results for stability analysis for sequentially solving the sequence of optimization problems. The robot starts in an initial pose in \gls{DS}, performs a jump and recovers to the intial pose again. This \gls{OC} problem is repeated for three times with identical constraints and timings until the robot reaches the final \gls{DS} pose marked by red rectangles. As becomes evident, the contact stability constrained \gls{DDP} forces the \gls{CoP}s of both feet to lie within the desired contact area proofing for dynamically balanced motions. 
+\cref{fig:jumpObstacles_StabilityAnalysis} shows the obtained results for stability analysis for sequentially solving the sequence of optimization problems. The robot starts in an initial pose in \gls{DS}, performs a jump and recovers to the initial pose again. This \gls{OC} problem is repeated for three times with identical constraints and timings until the robot reaches the final \gls{DS} pose marked by red rectangles. As becomes evident, the contact stability constrained \gls{DDP} forces the \gls{CoP}s of both feet to lie within the desired contact area proofing for dynamically balanced motions. 
 
 \begin{figure}[h!]
 \centering	
@@ -222,35 +222,49 @@ Previously, we have demonstrated that the contact stability constrained \gls{DDP
 Recapitulating the results for the simple forward jump, we identified that the \gls{CoP}s are located in the rear area of the foot sole during takeoff. We can draw similar conclusions for the first jump of the multi-phase \gls{OC} problem. However, the \gls{CoP}s for the second and third jump do not share this pattern. This effect can be attributed to the dynamic forces already acting on the robot while the second and second impact phase, respectively.
 
 
-%\section{Identification of Limits in System Design}\label{sec:HighlyIdentification}
-\section{Evaluation of the System Design}
+\section{Evaluation of the System Design}\label{sec:HighlyIdentification}
 
-This section presents an exhaustive study of the system limits of the RH5 humanoid robot based on the case studies introduced from the last section. The motivation is form a basis of decision-making for future design iterations to perform highly-dynamic movements with the humanoid in real-world experiments.
+This section presents an exhaustive study of the system limits of the RH5 humanoid robot based on the case studies introduced in the last section. The motivation is to form a basis of decision-making for future design iterations that allow the robot to perform highly-dynamic movements in real-world experiments.
+
+The evaluation of the system design is performed by iteratively increasing the task complexity. We conduct multiple simulations with different jumping lengths $l$ and heights $h$ for the presented vertical jump ($h=$ 1 cm - 30 cm), forward jump ($l=$ 10 cm - 50 cm, $h=$ 10 cm) and forward jumping task over multiple obstacles ($l=$ 60 cm, $h=$ 25 cm), respectively (see \cref{tab:systemLimits}). Of particular interest here are the system-relevant limits, namely the valid  joint position and velocity ranges as well as the according maximum  motor torques. 
+
+A few notes on the used notation in \cref{tab:systemLimits}: Checkmarks and crosses indicate whether the according limits are satisfied or not with the given movement. Checkmarks in brackets mean that a maximum torque needs to be applied for a period longer than 50 ms, which can not necessarily be provided by the real actuators. Underscored numbers along with the crosses declare for how many joints the according limit is exceeded.
+
+In the following the results of the study are presented in detail and design guidelines are derived based on the conducted experiments. 
 
 \begin{table}[t]
 \centering
-\caption{Capabilities of the RH5 humanoid to perform highly-dynamic motions.}
+\caption{Capabilities of the RH5 humanoid to perform various highly-dynamic jumps (length $l$, height $h$) respecting the hardware limits, namely available motor torque and valid joint position and velocity ranges.}
 \begin{tabular}{lccc}
 \hline
-& Motor Torque & Joint Position & Joint Velocity \\ \hline
-Vertical Jump & & & \\
-\quad\quad 1 cm 		& \greencheckmark  & \greencheckmark & \greencheckmark \\
-\quad\quad 5 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 10 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 20 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 30 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\ \hline
-Forward Jump (h=10 cm)& & & \\
-\quad\quad 10 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 20 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 30 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 40 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\
-\quad\quad 50 cm 		& \greencheckmark  & \greencheckmark & \redxmark \\ \hline
-Obstacle Jump (h=25 cm)& & & \\
-\quad\quad 60cm 		& \redxmark  & \redxmark & \redxmark \\ \hline
+& Position Limits & Torque Limits & Velocity Limits\\ \hline
+Vertical Jump ($l=$ 0 cm) & & & \\
+\quad\quad $h=$ 1 cm 		& \greencheckmark  & \greencheckmark & \greencheckmark \\
+\quad\quad $h=$ 5 cm 		& \greencheckmark  & \greencheckmark & \redxmark$_3$ \\
+\quad\quad $h=$ 10 cm 		& \greencheckmark & (\greencheckmark) & \redxmark$_3$  \\
+\quad\quad $h=$ 20 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_5$ \\
+\quad\quad $h=$ 30 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\ \hline
+Forward Jump ($h=$ 10 cm)& & & \\
+\quad\quad $l=$ 10 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\
+\quad\quad $l=$ 20 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\
+\quad\quad $l=$ 30 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\
+\quad\quad $l=$ 40 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\
+\quad\quad $l=$ 50 cm 		& \greencheckmark  & (\greencheckmark) & \redxmark$_7$ \\ \hline
+Obstacle Jump ($h=$ 25 cm)& & & \\
+\quad\quad $l=$ 60 cm 		& \greencheckmark  & \redxmark$_5$ & \redxmark$_7$ \\ \hline
 \end{tabular}
 \label{tab:systemLimits}
 \end{table}
 
+\subsection{Design Guidelines derived from Vertical Jumping}
+The vertical jumping tasks already gives good insights in the dynamic capabilities of the humanoid robot RH5. From \cref{tab:systemLimits} we can see that the smallest jump with a height of 1 cm can be realized with the system. This is remarkable, since the current design of the humanoid is not indented for the purpose of highly-dynamic movements. 
+
+For jumps with a height of 5 cm or above we can draw the conclusion that velocity limits are can not be satisfied anymore. In the first case, body pitch and knee velocities are exceeded, which is reasonable since these form the main part of the motion. For the highest jump on the other hand, additionally limits for the ankle pitch joints and the shoulder roll joints turn out to be not sufficient anymore. These violations can be explained by the higher impact forces and increased arm swinging activities, respectively. 
+
+\subsection{Design Guidelines derived from Forward Jumping}
+In comparison to the simple vertical jump, the forward jumping tasks involves higher dynamic forces acting on the base and hence require even faster motions. To this end, none of the forward jumping tasks turned out to be feasible with the currently implemented velocity limits. Interestingly, the ankle pitch velocity turned out to be sufficient, while the hip joint velocity limits were exceeded. This effect may be explained by the reduced impact forces in z-direction, but the increased angular momentum necessary to move the base forward. 
+
+Furthermore, we can draw similar conclusions for the torque feasibility from the vertical, forward and multiple jumping over obstacles tasks. Although the maximum torque available with the currently embedded motors are high enough, they may not be feasible with the real actuators. For the body pitch, knee and ankle pitch joints, these maximal torques have to be applied for a period longer than 50 ms. To prevent long-term damage to the system, the corresponding actuators should be redesigned with an appropriate safety factor. 
 
 
 

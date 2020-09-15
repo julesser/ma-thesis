@@ -32,14 +32,14 @@ Robot tasks, such as grasping and object or performing a step, are an essential 
 \paragraph{Foot Tracking Cost}
 In order to perform a symmetric gait (see \cref{sec:TheoryBiped}), the design of dedicated foot trajectories is crucial. We used piecewise-linear functions to describe the swing foot reference trajectory. Deviation from this time-depended reference foot trajectory is highly penalized. The foot tracking cost can be formulated via the squared euclidean norm (L2 norm) as
 \begin{equation*} 
-\textbf{Foot}: \Phi_1=\mid\mid c(t)-c^{ref}(t)\mid\mid^2_2,
+\textbf{Foot}: \Phi_1=\mid\mid c(t)-c^text{ref}(t)\mid\mid^2_2,
 \end{equation*}
-where $c(t)$ is the actual \gls{CoM} position at time-point $t$ and $c^{ref}(t)$ is the according reference. Start and end position as well as timings are predefined and combined with a desired step height to form the desired foot trajectory. 
+where $c(t)$ is the actual \gls{CoM} position at time-point $t$ and $c^\text{ref}(t)$ is the according reference. Start and end position as well as timings are predefined and combined with a desired step height to form the desired foot trajectory. 
 
 \paragraph{\Gls{CoM} Tracking Cost}
 In bipedal locomotion, the three dimensional position of the \gls{CoM} of the whole-body turned out to be crucial \cite{carpentier2017centre}. This is especially true for quasi-static motions, where the \gls{FCoM} is used as static stability margin as explained in \cref{sec:TheoryBiped}. Analogously to the foot cost, the \gls{CoM} tracking cost is formulated as
 \begin{equation*} 
-\textbf{CoM}: \Phi_2=\mid\mid f(t)-f^{ref}(t)\mid\mid^2_2.
+\textbf{CoM}: \Phi_2=\mid\mid f(t)-f^\text{ref}(t)\mid\mid^2_2.
 \end{equation*}
 In order to account for the static stability in these motions, we perform a dedicated shifting of the \gls{FCoM} to the foot center, before performing the swing-foot task. Additionally, the \gls{CoM} is kept at a constant height to prevent unnecessary forces acting on the base of the body. 
 
@@ -84,7 +84,7 @@ In order to improve the energy efficiency of the motions and maintain a human-li
 \paragraph{Posture Regularization}
 Finally, we deal with the redundancy of multi-body dynamics by applying a weighted least-squares cost function to regularize the state with respect to the nominal robot posture:
 \begin{equation*} 
-\textbf{Posture}: \Phi_7=\mid\mid q(t)-q^{ref}\mid\mid^2_2.
+\textbf{Posture}: \Phi_7=\mid\mid q(t)-q^\text{ref}\mid\mid^2_2.
 \end{equation*}
 
 
@@ -102,14 +102,14 @@ Focus of investigation is a slow two step walking motion. We assume a quasi-stat
 \item Perform a left step, while the \gls{FCoM} remains at the \gls{RF} center. 
 \item \gls{FCoM} shift from the \gls{RF} center to the half length of the line intersecting both feet center while returning to the initial pose. 
 \end{enumerate}
-Additionally, the \gls{CoM} is optimized for a constant height over the whole gait. \cref{tab:walkStatic} gives a compact overview of the desired gait characteristics and the applied constraints of the optimization. In order to comply with the quasi-static assumption, the motion is performed about a time horizon of 15s with a total stride length of 20cm a robot model with fixed arms. 
+Additionally, the \gls{CoM} is optimized for a constant height over the whole gait. \cref{tab:walkStatic} gives a compact overview of the desired gait characteristics and the applied constraints of the optimization. In order to comply with the quasi-static assumption, the motion is performed about a time horizon of 15 s with a total stride length of 20 cm a robot model with fixed arms. 
 \begin{table}[]
 \centering
-\caption{Static walking gait characteristics and applied optimization constraints.}
+\caption[Static walking gait characteristics and optimization constraints]{Static walking gait characteristics and applied optimization constraints.}
 \begin{tabular}{|ll|ll|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Gait Characteristics}} & \multicolumn{2}{l|}{\textbf{Optimization Constraints}} \\ \hline
-Step length:& 10 cm 	& Tasks: 			& Foot ($\Phi_1$), \textbf{CoM} ($\Phi_2$)\\ \hline
+Step length:& 10 cm 	& Tasks: 			& Foot ($\Phi_1$), \gls{CoM} ($\Phi_2$)\\ \hline
 Step height:& 5 cm 	& Stability: 		& Friction Cone ($\Phi_4$)\\ \hline
 Time:& 3 s/phase 	& Limits: 			& Joint ($\Phi_5$), Torque ($\Phi_6$)\\ \hline
 Step size:& 0.03 s	& Regularization: 	& Posture ($\Phi_7$), Torque ($\Phi_8$)\\ \hline
@@ -119,11 +119,11 @@ Step size:& 0.03 s	& Regularization: 	& Posture ($\Phi_7$), Torque ($\Phi_8$)\\ 
 
 The results of the optimization problem \cref{eqn:optimizationProblem} are shown in \cref{fig:walkStatic_TaskSpace} and \cref{fig:walkStatic_JointState}.
 
-\cref{fig:walkStatic_TaskSpace} presents the resulting base and end-effector trajectories. As becomes clear, the \gls{FCoM} tracking is sufficiently good and the \gls{CoM} height remains in a reasonable range of $\pm$ 1cm. Equally, the desired foot trajectory is tracked with adequate accuracy. Also the foot velocities are reasonable with a maximum velocity of 0.1m/s at the impact. The pursued step height is not reached exactly, but is about one centimeter less. This effect can be explained by the immediately reverse direction at the vertex of the piecewise-linear trajectory, which is smoothed by the solver.
+\cref{fig:walkStatic_TaskSpace} presents the resulting base and end-effector trajectories. As becomes clear, the \gls{FCoM} tracking is sufficiently good and the \gls{CoM} height remains in a reasonable range of $\pm$ 1 cm. Equally, the desired foot trajectory is tracked with adequate accuracy. Also the foot velocities are reasonable with a maximum velocity of 0.1 m/s at the impact. The pursued step height is not reached exactly, but is about one centimeter less. This effect can be explained by the immediately reverse direction at the vertex of the piecewise-linear trajectory, which is smoothed by the solver.
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/walkStatic/TaskSpace}
-\caption{Static walking gait solution in task space. Both the \gls{FCoM} task and the swing foot task is satisfied with acceptable accuracy.}
+\caption[Static walking gait solution in task space]{Static walking gait solution in task space. Both the \gls{FCoM} task and the swing foot task is satisfied with acceptable accuracy.}
 \label{fig:walkStatic_TaskSpace}
 \end{figure} 
 
@@ -131,7 +131,7 @@ The results of the optimization problem \cref{eqn:optimizationProblem} are shown
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/walkStatic/JointState}
-\caption{Static walking gait solution of the joint states. Due to the slow nature of the motion, joint limits are far from being reached.}
+\caption[Static walking gait solution of the joint states]{Static walking gait solution of the joint states. Due to the slow nature of the motion, joint limits are far from being reached and velocity discontinuities remain within reasonable ranges.}
 \label{fig:walkStatic_JointState}
 \end{figure} 
 
@@ -140,16 +140,16 @@ The analysis of a dynamic walking gait is concerned about generating efficient m
 
 Focus of investigation is a dynamic walking motion. Compared to the previously studied static walking gait these motions are characterized by higher velocities and dynamic forces exceed the static ones. These characteristics imply that dynamic stability criteria become necessary. To this end, we apply the proposed approach of contact stability constrained DDP described in \cref{c3}. Consequently, the \gls{CoP} of each foot is constrained instead of following a reference \gls{CoM} trajectory. By this, the solver is enabled to find an optimal, dynamic \gls{CoM} shifting along with the requested contact stability constraints. 
 
-The optimization problem is composed of a total of five locomotion phases, namely 1. \gls{DS}, 2. right step, 3. \gls{DS}, 4. left step and 5. recovery to the initial pose. In accordance with biomechanical findings \cite{kuo2001simple}, we choose a desired step length of 40cm with $1.5$s per step and deliberately define a stance/swing ratio of 1/3. \cref{tab:walkDynamic} compactly summarizes the dynamic gait characteristics and applied constraints of the optimization.
+The optimization problem is composed of a total of five locomotion phases, namely 1. \gls{DS}, 2. right step, 3. \gls{DS}, 4. left step and 5. recovery to the initial pose. In accordance with biomechanical findings \cite{kuo2001simple}, we choose a desired step length of 40 cm with $1.5$s per step and deliberately define a stance/swing ratio of one to three. \cref{tab:walkDynamic} compactly summarizes the dynamic gait characteristics and applied constraints of the optimization.
 
 \begin{table}[]
 \centering
-\caption{Dynamic walking gait characteristics and applied optimization constraints.}
+\caption[Dynamic walking gait characteristics and optimization constraints]{Dynamic walking gait characteristics and optimization constraints.}
 \begin{tabular}{|ll|ll|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Gait Characteristics}} & \multicolumn{2}{l|}{\textbf{Optimization Constraints}} \\ \hline
 Step length:& 40 cm 	& Tasks: 			& Foot ($\Phi_1$)\\ \hline
-Step height:& 5 cm 	& Stability: 		& \textbf{\gls{CoP}} ($\Phi_3$), Friction Cone ($\Phi_4$)\\ \hline
+Step height:& 5 cm 	& Stability: 		& \gls{CoP} ($\Phi_3$), Friction Cone ($\Phi_4$)\\ \hline
 Time:& 1.5 s/step	& Limits: 			& Joint ($\Phi_5$), Torque ($\Phi_6$)\\ \hline
 Step size:& 0.03 s	& Regularization: 	& Posture ($\Phi_7$), Torque ($\Phi_8$)\\ \hline
 Stance/Swing Ratio:& 1/3 & & \\ \hline
@@ -160,40 +160,35 @@ Stance/Swing Ratio:& 1/3 & & \\ \hline
 \begin{figure}[h!]
 \begin{subfigure}{.5\textwidth}
 	\includegraphics[width=1\linewidth]{fig/walkDynamic/snaps/1}
-	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.5\textwidth}
 	\includegraphics[width=1\linewidth]{fig/walkDynamic/snaps/4}
-	\caption{}
 \end{subfigure}%
 
 \begin{subfigure}{.5\textwidth}
 	\includegraphics[width=1\linewidth]{fig/walkDynamic/snaps/7}
-	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
 	\includegraphics[width=1\linewidth]{fig/walkDynamic/snaps/8}
-	\caption{}
 \end{subfigure}
-\caption{Bipedal dynamic walking. Image order: column-wise,
-from top to bottom and left to right.}
+\caption[Dynamic walking based on the contact stability constrained \gls{DDP}]{Bipedal dynamic walking gait based on the contact stability constrained \gls{DDP} approach. A natural \gls{CoM} shifting emerges resulting from the inequality constraints for the \gls{CoP} of each foot. Image order: column-wise, from top to bottom and left to right.}
 \label{fig:walkDynamic_Snaps}
 \end{figure}
 
-The solution of the dynamic walking \gls{OC} problem is visualized in \cref{fig:walkDynamic_Snaps}. As becomes clear from \cref{fig:walkDynamic_TaskSpace}, a natural \gls{CoM} shifting to the sides emerges resulting from the inequality constraints for the \gls{CoP}, which is about half of the amount as for the static walking case. Although the \gls{CoM} height is not explicitly constrained, it stays in a reasonable range of about $+$3cm, which might be caused from to the final posture regularization. The end-effector velocities in z-direction are about twice as high as for the case of static walking, which is explained by the higher walking speed. 
+The solution of the dynamic walking \gls{OC} problem is visualized in \cref{fig:walkDynamic_Snaps}. As becomes clear from \cref{fig:walkDynamic_TaskSpace}, a natural \gls{CoM} shifting to the sides emerges resulting from the inequality constraints for the \gls{CoP}, which is about half of the amount as for the static walking case. Although the \gls{CoM} height is not explicitly constrained, it stays in a reasonable range of about $+$3 cm, which might be caused from to the final posture regularization. The end-effector velocities in z-direction are about twice as high as for the case of static walking, which is explained by the higher walking speed. 
 \cref{fig:walkDynamic_JointState} shows the resulting joint states for the dynamic walking gait. The velocity and acceleration contain higher peaks and also the joint deflections are stronger, which is reasonable due to the higher walking speed.       
 
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/walkDynamic/TaskSpace}
-\caption{Dynamic walking gait solution in task space.}
+\caption[Dynamic walking gait solution in task space]{Dynamic walking gait solution in task space. It becomes evident that a natural \gls{CoM} shifting in y-direction emerges resulting from the inequality constraints for the \gls{CoP} of each foot.}
 \label{fig:walkDynamic_TaskSpace}
 \end{figure} 
 
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/walkDynamic/JointState}
-\caption{Dynamic walking gait solution of the joint states.}
+\caption[Dynamic walking gait solution of the joint states.]{Dynamic walking gait solution of the joint states. Both joint velocities and acceleration show higher peaks along with higher joint deflections compared to the static walking, which is reasonable due to the higher walking speed.}
 \label{fig:walkDynamic_JointState}
 \end{figure} 
 
@@ -212,8 +207,8 @@ The blue curve shows the time course of the resulting \gls{CoM} trajectory, with
 The orange and green crosses mark the time-dependent position of the \gls{CoP}s for both feet. It is evident that both \gls{CoP}s remain within the corresponding SP over the entire time course of the movement, which is why the movement can be classified as dynamically balanced. 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=1\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP100}
-\caption{Stability Analysis of the dynamic walking gait.}
+\includegraphics[width=.8\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP100}
+\caption[Stability Analysis of the dynamic walking gait]{Stability Analysis of the dynamic walking gait. As both \gls{CoP}s remain within the corresponding SP, the movement can be classified as dynamically balanced and hence verify the functionality of the proposed contact stability constrained \gls{DDP} approach.}
 \label{fig:walkDynamic_StabilityCoP100}
 \end{figure} 
 
@@ -224,8 +219,8 @@ In practice, however, it might be convenient for real-world experiments to consi
 \cref{fig:walkDynamic_StabilityCoP50} shows the dynamic walking gait, where the \gls{CoP} inequality constraints are active for a \gls{SP} reduced to 50 percent of the original foot geometry. It becomes evident that also these more conservative contact stability constraints can be solved, which might be useful for the purpose of experimental validation. 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=1\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP50}
-\caption{Stability Analysis of the dynamic walking gait.}
+\includegraphics[width=.8\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP50}
+\caption[Dynamic walking stability analysis with conservative \gls{CoP} restriction]{Stability analysis of the dynamic walking gait with a \gls{CoP} that is constrained in a \gls{SP} that is reduced by 50 percent. By this, the stability is more conservative, might be convenient for real-world experiments}
 \label{fig:walkDynamic_StabilityCoP50}
 \end{figure}
 %\subsection{Comparison of CoP and ZMP Trajectories}

@@ -32,7 +32,7 @@ The analysis of a simple vertical jump is a good example to understand the under
 
 \begin{table}[t]
 \centering
-\caption{Vertical jump characteristics and applied optimization constraints.}
+\caption[Vertical jump characteristics and optimization constraints]{Vertical jump characteristics and applied optimization constraints.}
 \begin{tabular}{|ll|ll|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Jump Characteristics}} & \multicolumn{2}{l|}{\textbf{Optimization Constraints}} \\ \hline
@@ -71,7 +71,7 @@ The vertical jumping task (see \cref{tab:jumpVertical}) consists of five phases 
 	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/6x}
 	\caption{}
 \end{subfigure}%
-\caption{A simple vertical jump.}
+\caption[A simple vertical jump]{A simple vertical jump consisting of the locomotion phases initial pose (a), descending (b), take off (c), flight phase (d), touchdown (e) and pose recovery (e).}
 \label{fig:jumpVertical_Snaps}
 \end{figure} 
 
@@ -80,7 +80,7 @@ The vertical jumping task (see \cref{tab:jumpVertical}) consists of five phases 
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/jumpVertical/JointState}
-\caption{Vertical jump solution of the joint states with according joint limits visualized as dashed lines. The maximum velocities of the body pitch and knee joints turn out to be insufficient for the highly-dynamic take off.}
+\caption[Vertical jump solution according joint limits]{Vertical jump solution of the joint states with according joint limits visualized as dashed lines. The maximum velocities of the body pitch and knee joints turn out to be insufficient for the highly-dynamic take off.}
 \label{fig:jumpVertical_JointState}
 \end{figure} 
 
@@ -89,7 +89,7 @@ A similar observation applies to the joint torques as shown in \cref{fig:jumpVer
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/jumpVertical/JointTorques}
-\caption{Vertical jump solution of the joint torques with according motor limits visualized as dashed lines. The solver prevents the body pitch and knee torques to exceed the limits, but still maximum torques are required for these joints over longer time horizons.}
+\caption[Vertical jump solution with according torque limits]{Vertical jump solution of the joint torques with according motor limits visualized as dashed lines. The solver prevents the body pitch and knee torques to exceed the limits, but still maximum torques are required for these joints over longer time horizons.}
 \label{fig:jumpVertical_JointTorques}
 \end{figure} 
 
@@ -101,7 +101,7 @@ We can draw similar conclusions regarding the physical compliance of the system,
 
 \begin{table}[t]
 \centering
-\caption{Forward jump characteristics and applied optimization constraints.}
+\caption[Forward jump characteristics and optimization constraints]{Forward jump characteristics and applied optimization constraints.}
 \begin{tabular}{|ll|ll|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Jump Characteristics}} & \multicolumn{2}{l|}{\textbf{Optimization Constraints}} \\ \hline
@@ -138,15 +138,15 @@ Step size:& 0.01 s   & Regularization: 	& Posture ($\Phi_7$), Torque ($\Phi_8$)\
 	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/6x}
 	\caption{}
 \end{subfigure}%
-\caption{A simple forward jump.}
+\caption[A simple forward jump]{A simple forward jump consisting of the locomotion phases initial pose (a), descending (b), take off (c), flight phase (d), touchdown (e) and recovery (e).}
 \label{fig:jumpForward_Snaps}
 \end{figure} 
 
-\cref{fig:jumpForward_ContactWrenches} presents an overview about the solved optimal contact wrenches. When the robot does not move, the sum of vertical forces $F_z$ for left and right foot equals the body's weight, which is about 600 N. It becomes evident that about 4000 N (7 x robot weight) are exerted to the ground at lift off and about 8000 N (14 x robot weight) at touchdown, which is reasonable according to biomechanical findings \cite{meghdari2002dynamical}.
+%\cref{fig:jumpForward_ContactWrenches} presents an overview about the solved optimal contact wrenches. When the robot does not move, the sum of vertical forces $F_z$ for left and right foot equals the body's weight, which is about 600 N. It becomes evident that about 4000 N (7 x robot weight) are exerted to the ground at lift off and about 8000 N (14 x robot weight) at touchdown, which is reasonable according to biomechanical findings \cite{meghdari2002dynamical}.
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/jumpForward/ContactWrenches}
-\caption{Forward jump solution of the contact wrenches.}
+\caption[Forward jump solution of the contact wrenches]{Forward jump solution of the contact wrenches. The orders of magnitude are in accordance with biomechanical findings.}
 \label{fig:jumpForward_ContactWrenches}
 \end{figure} 
 
@@ -154,7 +154,7 @@ We have shown in \cref{sec:BipedEvaluation} that the proposed motion planning ap
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=.7\textwidth]{fig/jumpForward/StabilityAnalysis}
-\caption{Stability analysis of the simple forward jump.}
+\caption[Stability analysis of the simple forward jump]{Stability analysis of the simple forward jump shows that the motion is dynamically stable since the \gls{CoP}s lie within the \gls{SP} of the according foot. Consequently, the contact stability constrained \gls{DDP} method also holds for highly-dynamic movements. }
 \label{fig:jumpForward_StabilityAnalysis}
 \end{figure} 
 
@@ -165,13 +165,13 @@ We build a sequence of \gls{OC} problems, as introduced in \cref{eqn:optimizatio
 
 \begin{table}[t]
 \centering
-\caption{Multiple obstacles jumping characteristics and applied optimization constraints.}
+\caption[Multiple obstacles jumping characteristics and optimization constraints]{Multiple obstacles jumping characteristics and optimization constraints.}
 \begin{tabular}{|ll|ll|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Jump Characteristics}} & \multicolumn{2}{l|}{\textbf{Optimization Constraints}} \\ \hline
 Number of jumps: & 3 	& Tasks: 			& Foot ($\Phi_1$) \\ \hline
 Jump length:& 60 cm 	& Stability: 		& \gls{CoP} ($\Phi_3$), Friction Cone ($\Phi_4$)\\ \hline
-Jump height:& 25 cm  	& Limits:   & / \\ \hline
+Jump height:& 25 cm  	& Limits:   & - \\ \hline
 Total time:& 1.2 s / jump  & Regularization: 	& Posture ($\Phi_7$), Torque ($\Phi_8$)\\ \hline
 Step size:& 0.01 s & & \\ \hline
 \end{tabular}
@@ -182,29 +182,30 @@ Step size:& 0.01 s & & \\ \hline
 \centering
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/1x}
+	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/2x}
+	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/3x}
+	\caption{}
 \end{subfigure}%
 	
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/4x}
+	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/5x}
+	\caption{}
 \end{subfigure}%
-\begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/6x}
-\end{subfigure}%
-
 \begin{subfigure}{.33\textwidth}
 	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/7x}
-\end{subfigure}%
-
-\caption{Multi-phase \gls{OC} problem of forward jumping over obstacles. Image order: column-wise, from top to bottom and left to right.}
+	\caption{}
+\end{subfigure}%1
+\caption[Multi-phase \gls{OC} problem of forward jumping over obstacles]{Multi-phase \gls{OC} problem of forward jumping over obstacles. Image order: column-wise, from top to bottom and left to right.}
 \label{fig:jumpObstacles_Snaps}
 \end{figure} 
 
@@ -215,18 +216,18 @@ Previously, we have demonstrated that the contact stability constrained \gls{DDP
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/jumpObstacles/StabilityAnalysis}
-\caption{Stability analysis of forward jumping over multiple obstacle.}
+\caption[Stability analysis of forward jumping over multiple obstacle]{Stability analysis of forward jumping over multiple obstacle. The results indicate that the motion is inherently balanced over the whole time horizon of the sequentially solved \gls{OC} problem.}
 \label{fig:jumpObstacles_StabilityAnalysis}
 \end{figure}
 
 Recapitulating the results for the simple forward jump, we identified that the \gls{CoP}s are located in the rear area of the foot sole during takeoff. We can draw similar conclusions for the first jump of the multi-phase \gls{OC} problem. However, the \gls{CoP}s for the second and third jump do not share this pattern. This effect can be attributed to the dynamic forces already acting on the robot while the second and second impact phase, respectively.
 
 
-\section{Evaluation of the System Design}\label{sec:HighlyIdentification}
+\section{Evaluation of the System Design}\label{sec:HighlyEvaluation}
 
 This section presents an exhaustive study of the system limits of the RH5 humanoid robot based on the case studies introduced in the last section. The motivation is to form a basis of decision-making for future design iterations that allow the robot to perform highly-dynamic movements in real-world experiments.
 
-The evaluation of the system design is performed by iteratively increasing the task complexity. We conduct multiple simulations with different jumping lengths $l$ and heights $h$ for the presented vertical jump ($h=$ 1 cm - 30 cm), forward jump ($l=$ 10 cm - 50 cm, $h=$ 10 cm) and forward jumping task over multiple obstacles ($l=$ 60 cm, $h=$ 25 cm), respectively (see \cref{tab:systemLimits}). Of particular interest here are the system-relevant limits, namely the valid  joint position and velocity ranges as well as the according maximum  motor torques. 
+The evaluation of the system design is performed by iteratively increasing the task complexity. We conduct multiple simulations with different jumping lengths $l$ and heights $h$ for the presented vertical jump ($h=$ 1 - 30 cm), forward jump ($l=$ 10 - 50 cm, $h=$ 10 cm) and forward jumping task over multiple obstacles ($l=$ 60 cm, $h=$ 25 cm), respectively (see \cref{tab:systemLimits}). Of particular interest here are the system-relevant limits, namely the valid  joint position and velocity ranges as well as the according maximum  motor torques. 
 
 A few notes on the used notation in \cref{tab:systemLimits}: Checkmarks and crosses indicate whether the according limits are satisfied or not with the given movement. Checkmarks in brackets mean that a maximum torque needs to be applied for a period longer than 50 ms, which can not necessarily be provided by the real actuators. Underscored numbers along with the crosses declare for how many joints the according limit is exceeded.
 
@@ -234,7 +235,7 @@ In the following the results of the study are presented in detail and design gui
 
 \begin{table}[t]
 \centering
-\caption{Capabilities of the RH5 humanoid to perform various highly-dynamic jumps (length $l$, height $h$) respecting the hardware limits, namely available motor torque and valid joint position and velocity ranges.}
+\caption[Capabilities of the RH5 humanoid to perform highly-dynamic jumps]{Capabilities of the RH5 humanoid to perform various highly-dynamic jumps (length $l$, height $h$) respecting the hardware limits, namely available motor torque and valid joint position and velocity ranges. While position limits are satisfied for all types of jumps, the velocity limits turned out to be insufficient. Furthermore, most jumps require a maximal torques applied for a period longer than 50 ms, which can not necessarily be provided by the real actuators.}
 \begin{tabular}{lccc}
 \hline
 & Position Limits & Torque Limits & Velocity Limits\\ \hline
@@ -265,44 +266,3 @@ For jumps with a height of 5 cm or above we can draw the conclusion that velocit
 In comparison to the simple vertical jump, the forward jumping tasks involves higher dynamic forces acting on the base and hence require even faster motions. To this end, none of the forward jumping tasks turned out to be feasible with the currently implemented velocity limits. Interestingly, the ankle pitch velocity turned out to be sufficient, while the hip joint velocity limits were exceeded. This effect may be explained by the reduced impact forces in z-direction, but the increased angular momentum necessary to move the base forward. 
 
 Furthermore, we can draw similar conclusions for the torque feasibility from the vertical, forward and multiple jumping over obstacles tasks. Although the maximum torque available with the currently embedded motors are high enough, they may not be feasible with the real actuators. For the body pitch, knee and ankle pitch joints, these maximal torques have to be applied for a period longer than 50 ms. To prevent long-term damage to the system, the corresponding actuators should be redesigned with an appropriate safety factor. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-

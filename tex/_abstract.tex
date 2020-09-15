@@ -2,12 +2,12 @@
 \chapter*{Abstract}
 
 Motion planning for legged robots is a challenging problem and remains an open area of research. Particular difficulties arise from effective underactuation, the mechanism complexity, as well as nonlinear and hybrid dynamics.
-A common approach is to decompose this problem into smaller sub-problems that are solved sequentially. Recent research indicates that using a local optimal control solver, namely Differential Dynamic Programming (DDP), instead of Inverse Kinematics/Inverse Dynamics, produces more efficient motions, with lower forces and impacts. 
+A common approach is to decompose this problem into smaller sub-problems that are solved sequentially. Recent research indicates that using a local optimal control solver, namely Differential Dynamic Programming (DDP), produces more efficient motions, with lower forces and impacts.
 
-This master thesis contributes by applying, evaluating and extending DDP-based whole-body trajectory optimization, pursuing three objectives: 
-First, we develop an approach to constrain the optimal control problem allowing DDP to produce inherently balanced motions. 
-Second, we evaluate our approach for quasi-static and dynamic motions in a real-time physics simulation and in real-world experiments on the lightweight and biologically inspired RH5 humanoid robot.
-Third, we examine the limits of the derived whole-body planning approach and the system design via solving highly-dynamic movements. 
+This master thesis contributes in this direction by applying, evaluating and extending DDP-based whole-body trajectory optimization, pursuing three objectives: 
+First, we present a generic method for constraining DDP-like solvers in order to generate inherently balanced motion plans. 
+Second, the proposed motion planning approach is evaluated for quasi-static and dynamic motions in a real-time physics simulation and in real-world experiments on the lightweight and biologically inspired RH5 humanoid robot.
+Finally, the limits of the whole-body planning approach and the system design are examined by solving highly-dynamic movements. 
 
 \vfill
 \textbf{Keywords:} Humanoid Robots, Dynamic Bipedal Walking, Motion Planning, Multi-Contact Optimal Control, Differential Dynamic Programming, Whole-Body Trajectory Optimization  

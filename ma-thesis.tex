@@ -89,15 +89,18 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \newcommand{\bfun}{\myM{f}}
 \newcommand{\bg}{\myM{g}}
+\newcommand{\bk}{\myM{k}}
 \newcommand{\bl}{\myM{l}}
 \newcommand{\bn}{\myM{n}}
 \newcommand{\bp}{\myM{p}}
 \newcommand{\bq}{\myM{q}}
 \newcommand{\btau}{\myM{\tau}}
+\newcommand{\bt}{\myM{t}}
 \newcommand{\bu}{\myM{u}}
 \newcommand{\bv}{\myM{v}}
 \newcommand{\bw}{\myM{w}}
 \newcommand{\bx}{\myM{x}}
+\newcommand{\bK}{\myM{K}}
 \newcommand{\bQ}{\myM{Q}}
 \newcommand{\bV}{\myM{V}}
 \newcommand{\bdq}{\dot{\myM{q}}}	
@@ -109,13 +112,18 @@
 
 %--- Weitere Pakete ----------------------------------------------------------%
 \usepackage{setspace}            % Zeilenabstand einstellbar
+\usepackage[usenames, dvipsnames,table,xcdraw]{xcolor} %tabellen mit farben
+\definecolor{pptblue1}{rgb}{0.858,0.921,0.972}
+\definecolor{pptblue2}{rgb}{0.709,0.8,0.894}
+\definecolor{pptblue3}{rgb}{0.427,0.576,0.741}
+\definecolor{pptblue4}{rgb}{0.211,0.407,0.627}
 %\usepackage[hidelinks,colorlinks=true,linkcolor=cyan,citecolor=cyan]{hyperref}
-\usepackage[colorlinks, linkcolor = black, citecolor = black, filecolor = black, urlcolor = cyan]{hyperref} %Add linktocpage to have only sites clickable in ToC
+%\usepackage[colorlinks, linkcolor = pptblue4, citecolor = pptblue4, filecolor = black, urlcolor = pptblue4]{hyperref} %Add linktocpage to have only sites clickable in ToC
+\usepackage[colorlinks, linkcolor = black, citecolor = black, filecolor = black, urlcolor = pptblue4]{hyperref}
 
 \usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{epstopdf}
-\usepackage[usenames, dvipsnames,table,xcdraw]{xcolor} %tabellen mit farben
 \usepackage[export]{adjustbox} %für die größe von bildern
 \usepackage{listings} %statt verbatim?
 \usepackage{bibgerm}
@@ -127,10 +135,36 @@
 \usepackage[main=american,ngerman]{babel}
 \usepackage[babel]{csquotes}
 \usepackage{siunitx}  % degree symbol by \ang{degrees}
-\usepackage[acronym,nonumberlist,nopostdot, automake]{glossaries} % acronym option für seperates Glossar und Abkürzungsliste -> sonst zusammen
+\usepackage[acronym,nonumberlist,nopostdot,automake,style=super,nogroupskip]{glossaries} % acronym option für seperates Glossar und Abkürzungsliste -> sonst zusammen
 \clubpenalty = 10000             % Schusterjungen und Hurenkinder vermeiden
 \widowpenalty = 10000            % siehe dazu 
 \displaywidowpenalty = 10000     % http://www.cs.uu.nl/wais/html/na-dir/de-tex-faq/part5.html
+\usepackage[all]{nowidow}
+\usepackage{listings}
+%\lstset{frame=tb,
+%  language=C++,
+%  breaklines=true,
+%  showstringspaces=false,
+%  columns=flexible,
+%  numbers=none,
+%  tabsize=3
+%}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dred}{rgb}{0.545,0,0}
+\definecolor{dblue}{rgb}{0,0,0.545}
+\definecolor{lgrey}{rgb}{0.9,0.9,0.9}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                breaklines=true,
+                tabsize=3,
+                keywordstyle=\color{dblue}\ttfamily,
+                stringstyle=\color{orange}\ttfamily,
+                commentstyle=\color{dkgreen}\ttfamily,
+                morecomment=[l][\color{dred}]{\#}
+}
+
 
 %Literatur
 \usepackage{cite}                % Sortierte und zusammengefasste Zitatnummern 
@@ -140,6 +174,8 @@
 \usepackage{subcaption}			%For subtables (table a and table b automatically)
 
 %\renewcommand{\thesubfigure}{\arabic{subfigure}} %makes subcaptions in figs/tbls 1,2,3 instead a,b,c
+\renewcommand{\glsnamefont}[1]{\textbf{#1}} %glossary entries bold
+\setlength{\glsdescwidth}{5in} %gloassary terms without line breaks
 \makeglossaries					%Erstelle generell Glossare
 \include{tex/_glossary_data}		%include .tex data with definitions 
 \usepackage[capitalise]{cleveref}
@@ -159,7 +195,7 @@
 \include{tex/_title}
 \include{tex/_declaration}
 \include{tex/_abstract}
-%\include{tex/_kurzfassung}
+\include{tex/_kurzfassung}
 %\include{tex/_acknowledgments}   
 \tableofcontents    
 \printglossary[title=List of Symbols]

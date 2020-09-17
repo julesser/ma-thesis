@@ -150,7 +150,7 @@ Step size:& 0.03 s	& Regularization: 	& $\Phi_{\text{posture}}$, $\Phi_{\text{to
 	\includegraphics[width=1\linewidth]{fig/walkStatic/snaps/9}
 	\caption{}
 \end{subfigure}
-\caption[Static walking based on dedicated \gls{FCoM} shifting]{Static walking gait based on dedicated \gls{FCoM} motion, consisting of the locomotion phases (a) initial pose, (b) \gls{FCoM} shift above \gls{LF}, (c) right step, (d) \gls{FCoM} shift above \gls{RF}, (e) left step and (f) pose recovery. Significant lateral shifts of the \gls{FCoM} are required to establish the static stability.}
+\caption[Static walking based on dedicated \gls{FCoM} shifting]{Static walking gait based on dedicated \gls{FCoM} motion, consisting of the locomotion phases (a) initial pose, (b) \gls{FCoM} shift above \gls{LF}, (c) right step, (d) \gls{FCoM} shift above \gls{RF}, (e) left step and (f) pose recovery. Significant lateral shifts of the \gls{FCoM} are required to establish the static stability. \href{https://github.com/julesser/ma-thesis-simulation-results/blob/master/HumanoidFixedArms/StaticWalking_NoCoPCost_ComHeightConstant/crocoddyl.mp4}{[Video]}}
 \label{fig:walkStatic_Snaps}
 \end{figure}
 
@@ -217,7 +217,7 @@ Step size:& 0.03 s	& Regularization: 	& $\Phi_{\text{posture}}$, $\Phi_{\text{to
 	\includegraphics[width=1\linewidth]{fig/walkDynamic/snaps/8}
 	\caption{}
 \end{subfigure}
-\caption[Dynamic walking based on the contact stability constrained \gls{DDP}]{Dynamic walking gait based on the contact stability constrained \gls{DDP} approach, consisting of the locomotion phases (a) initial pose, (b,c) right step, (d,e) left step and (f) pose recovery. A natural \gls{CoM} shifting emerges resulting from the inequality constraints for the \gls{CoP} of each foot.}
+\caption[Dynamic walking based on the contact stability constrained \gls{DDP}]{Dynamic walking gait based on the contact stability constrained \gls{DDP} approach, consisting of the locomotion phases (a) initial pose, (b,c) right step, (d,e) left step and (f) pose recovery. A natural \gls{CoM} shifting emerges resulting from the inequality constraints for the \gls{CoP} of each foot. \href{https://github.com/julesser/ma-thesis-simulation-results/blob/master/DynamicWalking_LargeSteps_CoP100_ArmsFreed/crocoddyl.mp4}{[Video]}}
 \label{fig:walkDynamic_Snaps}
 \end{figure}
 
@@ -260,14 +260,14 @@ In practice however, it might be convenient for real-world experiments to consid
 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=.7\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP100}
+\includegraphics[width=.9\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP100}
 \caption[Stability Analysis of the dynamic walking gait]{Stability Analysis of the dynamic walking gait. As both \gls{CoP}s remain within the corresponding SP, the movement can be classified as dynamically balanced. Hence, the functionality of the proposed contact stability constrained \gls{DDP} approach is verified.}
 \label{fig:walkDynamic_StabilityCoP100}
 \end{figure} 
 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=.7\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP50}
+\includegraphics[width=.9\textwidth]{fig/walkDynamic/StabilityAnalysis_CoP50}
 \caption[Dynamic walking stability analysis with conservative \gls{CoP} restriction]{Stability analysis of the dynamic walking gait with a \gls{CoP} that is constrained in a \gls{SP} reduced by 50 percent. By this, the stability is more conservative, which may be convenient for real-world experiments}
 \label{fig:walkDynamic_StabilityCoP50}
 \end{figure}

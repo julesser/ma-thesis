@@ -24,16 +24,16 @@ Following up, we investigate the capabilities of the presented control architect
 
 \subsubsection{Dynamic Walking}
 To begin with, we analyze the motion tracking for dynamic walking gait. \cref{fig:walkDynamic_pybulletTracking} shows the tracking performance of the joint level control architecture. The reference trajectories from \gls{OC} are visualized as solid lines, while the resulting trajectories of the real-time physics simulation are shown as dotted lines. It can be seen that the controller follows the optimal trajectories well. Small deviations can be seen around two seconds, which accounts for the lift off phase for the second robot step. This effect can be explained by the apparent abrupt change in the joint space but is found to be marginal for the overall tracking performance. 
-\begin{figure}[h!]
+\begin{figure}
 \centering	
-\includegraphics[width=1\textwidth]{fig/walkDynamic/pybullet/pybulletTracking}
+\includegraphics[width=.85\textwidth]{fig/walkDynamic/pybullet/pybulletTracking}
 \caption[Control tracking performance on joint level for dynamic walking]{Control tracking performance on joint level for dynamic walking. The results indicate that the control architecture follows the reference trajectories with sufficiently good accuracy.}
 \label{fig:walkDynamic_pybulletTracking}
 \end{figure}
 As introduced previously, the control architecture is solely based on joint space position and velocity level. Although the tracking performance is good, this may not prove for the stability of the motions. Similar to the definition of robot tasks, the evaluation of the motions should be pursued in task space. To this end, \cref{fig:walkDynamic_pybulletBase} monitors the according motion of the floating base. As can be seen, the floating base deviates about $\pm$ 10 mm in x and y-direction as well as $+$ 5 mm in z-direction. 
-\begin{figure}[h!]
+\begin{figure}
 \centering	
-\includegraphics[width=1\textwidth]{fig/walkDynamic/pybullet/pybulletBase}
+\includegraphics[width=.85\textwidth]{fig/walkDynamic/pybullet/pybulletBase}
 \caption[Motion of the floating base for dynamic walking]{Motion of the floating base resulting from joint space control for the dynamic walking gait. The results show a deviation of the floating base about $\pm$ 10 mm in x and y-direction , as well as $+$ 5 mm in z-direction.}
 \label{fig:walkDynamic_pybulletBase}
 \end{figure}
@@ -45,11 +45,11 @@ Overall, it can be stated that the dynamic walking motion can be successfully st
 \subsubsection{Forward Jumping}
 To identify the limits of the control approach, we now study the online stabilization for a highly-dynamic forward jump (\cref{sec:HighlySimulation}). In addition to the previously discussed dynamic walking, the jumping task introduces new challenges for the controller in terms of speed and robustness that will be investigated in the following.  
 
-\ref{fig:jumpForward_pybulletTracking} shows the tracking performance of the joint level control architecture for the forward jump. In contrast to the case of dynamic walking, the joint space controller reveals larger tracking deviations. This is especially true for the most dynamic part of the motion, namely the acceleration of the base and finally the takeoff around 300-400 ms. Large deviations can be especially seen for body pitch, and the knee joints, which turned out to be crucial for highly-dynamic movements. 
+\cref{fig:jumpForward_pybulletTracking} shows the tracking performance of the joint level control architecture for the forward jump. In contrast to the case of dynamic walking, the joint space controller reveals larger tracking deviations. This is especially true for the most dynamic part of the motion, namely the acceleration of the base and finally the takeoff around 300-400 ms. Large deviations can be especially seen for body pitch, and the knee joints, which turned out to be crucial for highly-dynamic movements. 
 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=1\textwidth]{fig/jumpForward/pybullet/pybulletTracking}
+\includegraphics[width=.85\textwidth]{fig/jumpForward/pybullet/pybulletTracking}
 \caption[Control tracking performance on joint level for a forward jump]{Control tracking performance on joint level for a forward jump. The results indicate that the control architecture also is suitable to track the reference trajectories of highly-dynamic movements with sufficiently good accuracy.}
 \label{fig:jumpForward_pybulletTracking}
 \end{figure}
@@ -58,7 +58,7 @@ In addition to these findings, \cref{fig:jumpForward_pybulletBase} monitors the 
 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=1\textwidth]{fig/jumpForward/pybullet/pybulletBase}
+\includegraphics[width=.85\textwidth]{fig/jumpForward/pybullet/pybulletBase}
 \caption[Motion of the floating base for a forward jump]{Motion of the floating base for a forward jump.}
 \label{fig:jumpForward_pybulletBase}
 \end{figure}
@@ -143,7 +143,7 @@ The goal of this first experiment is to test the ability of the control architec
 	\includegraphics[width=.95\linewidth]{experiments/balancing/snaps/5}
 	\caption{}
 	\end{subfigure}%
-\caption[Experiment I: One-leg balancing]{Experiment I: One-leg balancing from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c) lifting the \gls{RF} up and (d) down and (e) recovering to the initial pose.} 
+\caption[Experiment I: One-leg balancing]{Experiment I: One-leg balancing from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c) lifting the \gls{RF} up and (d) down and (e) recovering to the initial pose. \href{https://github.com/julesser/ma-thesis-experimental-results/blob/master/balancing/balancing.mp4}{[Video]}} 
 \label{exp:balancingSnaps}
 \end{figure} 
 
@@ -170,7 +170,7 @@ The second experiment deals with a stabilization of the static walking pattern d
 	\includegraphics[width=.95\linewidth]{experiments/walkStatic/snaps/5}
 	\caption{}
 	\end{subfigure}%
-\caption[Experiment II: Static walking]{Experiment II: Static walking from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c,d) performing a right step and (e) shifting the \gls{CoM} to the center of the \gls{SP}.}
+\caption[Experiment II: Static walking]{Experiment II: Static walking from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c,d) performing a right step and (e) shifting the \gls{CoM} to the center of the \gls{SP}. \href{https://github.com/julesser/ma-thesis-experimental-results/tree/master/walkStatic}{[Video]}}
 \label{exp:staticWalkingSnaps}
 \end{figure} 
 
@@ -205,7 +205,7 @@ The objective of this third experiment is to evaluate the tracking performance i
 	\includegraphics[width=.95\linewidth]{experiments/squats/snaps/7}
 	\caption{}
 	\end{subfigure}%
-\caption[Experiment III: Sequence of fast squats]{Experiment III: Sequence of fast squats from (a) an initial pose over, (b,d,f) descending the \gls{CoM} by 15 cm and (c,e,g) recovering to the initial pose.}
+\caption[Experiment III: Sequence of fast squats]{Experiment III: Sequence of fast squats from (a) an initial pose over, (b,d,f) descending the \gls{CoM} by 15 cm and (c,e,g) recovering to the initial pose. \href{https://github.com/julesser/ma-thesis-experimental-results/blob/master/squats/squat15cm_2s.mp4}{[Video]}}
 \label{exp:squatSnaps}
 \end{figure} 
 
@@ -232,10 +232,10 @@ This experiment investigates the capabilities of the control approach to follow 
 	\includegraphics[width=.95\linewidth]{experiments/walkDynamic/snaps/5}
 	\caption{}
 	\end{subfigure}%
-\caption[Experiment IV: Dynamic walking]{Experiment IV: Dynamic walking from (a) an initial pose, (b,c) performing a right step and (e,f) a successive left step.}
+\caption[Experiment IV: Dynamic walking]{Experiment IV: Dynamic walking from (a) an initial pose, (b,c) performing a right step and (e,f) a successive left step. \href{https://github.com/julesser/ma-thesis-experimental-results/blob/master/walkDynamic/walkDynamicFail.mp4}{[Video]}}
 \label{exp:dynamicWalkingSnaps}
 \end{figure} 
-
+eo
 \subsection{Discussion}
 The following section analyzes the experimental results, highlighting limits of the utilized control architecture.
 \subsubsection{Stability of the Motions}

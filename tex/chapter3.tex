@@ -10,7 +10,7 @@ This chapter presents a generic method for integrating contact stability constra
 \section{The Idea}\label{sec:StabilityIdea}
 Stability of the contacts is an essential objective of motion planning since prevents the robot from sliding and falling down. In \cref{sec:TheoryStability} we have explored two different criteria for ensuring contact stability for dynamic systems, namely the \gls{ZMP} and \gls{CoP}. As outlined, the application of the \gls{ZMP} is limited due to the assumptions of sufficiently high friction and the existence of one planar contact surface. Since we want to provide a \textit{generic} method that can also be used for e.g. walking up stairs, these simplifying assumptions do not hold anymore. 
 
-Consequently, we decide to model a 6-dimensional surface contact, as introduced in \ref{eqn:EoMLeggedRobotSurfaceContact} with dedicated constraints for (i) unilaterality of the contact forces (ii) Coulomb friction on the resultant force, and (iii) \gls{CoP} inside the support area. This approach can be compared to the concept of contact wrench cone \cite{caron2015stability}, without additionally enforcing the yaw torque constraint. These inequality constraints for surface contacts can compactly be summarized as
+Consequently, we decide to model a 6D surface contact, as introduced in \ref{eqn:EoMLeggedRobotSurfaceContact} with dedicated constraints for (i) unilaterality of the contact forces (ii) Coulomb friction on the resultant force, and (iii) \gls{CoP} inside the support area. For the sake of simplicity, we model a rectangular contact area. Nevertheless, this concept can be extended  to arbitrary feet designs. This approach can be compared to the concept of contact wrench cone \cite{caron2015stability}, without additionally enforcing the yaw torque constraint. These inequality constraints for surface contacts can compactly be summarized as
 \begin{subequations}\label{eqn:contractWrenchConeReduced}
 \begin{align}
 f_i^z &> 0 \label{subeqn:stabilityUnilaterality},\\
@@ -26,24 +26,24 @@ f_i^z &> 0 \label{subeqn:stabilityUnilaterality},\\
 
 Let us now detail each line of the approach. 
 The first inequality \cref{subeqn:stabilityUnilaterality} accounts for the unilaterality of the contact force. By nature, contact forces always have to be positive since the robot can only \textit{push} from the ground, not \textit{pull} to the ground (\cref{img:simple_contact}). 
-Inequality \crefrange{subeqn:stabilityFrictionX}{subeqn:stabilityFrictionY} corresponds to the Coulomb friction, where $\mu$ denotes the static coefficient of friction. From a modeling perspective, this can be interpreted via the concept of spatial friction cones \cite{kao2016contact}. If, and only if the distributed contact forces lie inside their respective friction cones, these constraints are satisfied. 
-Finally, inequality \crefrange{subeqn:stabilityCoPPitch}{subeqn:stabilityCoPRoll} constrain the \gls{CoP} to lie inside the rectangular contact area of each foot (see \cref{img:contact_surface}). $C_x$ and $C_y$ denote the x and y position of $\bp_{CoP}$, respectively. These \gls{CoP} constraints prevent the robot from tilting about the edges of the rectangular surface contact. In particular, \cref{subeqn:stabilityCoPPitch} corresponds to a constraint of tilting around the pitch axis and \cref{subeqn:stabilityCoPRoll} prevents tilting around the roll axis.
+Inequality \cref{subeqn:stabilityFrictionX,subeqn:stabilityFrictionY} corresponds to the Coulomb friction, where $\mu$ denotes the static coefficient of friction. From a modeling perspective, this can be interpreted via the concept of spatial friction cones \cite{kao2016contact}. If, and only if the distributed contact forces lie inside their respective friction cones, these constraints are satisfied. 
+Finally, inequality \cref{subeqn:stabilityCoPPitch,subeqn:stabilityCoPRoll} constrain the \gls{CoP} to lie inside the rectangular contact area of each foot (see \cref{img:contact_surface}). $C_x$ and $C_y$ denote the x and y position of $\bp_{CoP}$, respectively. These \gls{CoP} constraints prevent the robot from tilting around the edges of the rectangular surface contact. In particular, \cref{subeqn:stabilityCoPPitch} corresponds to a constraint of tilting around the pitch axis and \cref{subeqn:stabilityCoPRoll} prevents tilting around the roll axis.
 
 Both, the unilaterality of the contact forces and the friction cone constraints, are already implemented inside Crocoddyl. However, the central component, bounding the \gls{CoP} to lie inside the support area of each contact foot, is missing. Therefore, the rest of this chapter deals with the derivation of a set of implementable \gls{CoP} constraints and describes the integration of these constraints as a cost function into the Crocoddyl framework.
 \begin{figure}[t]
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[width=.95\linewidth]{img/simple_contact}
-		\caption{Body on a horizontal surface.}
+		\caption{}
 		\label{img:simple_contact}
 	\end{subfigure}%
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		\includegraphics[width=.77\linewidth]{img/contact_surface}
-		\caption{Notations used for \gls{CoP} definition.}
+		\caption{}
 		\label{img:contact_surface}
 	\end{subfigure}
-	\caption[Simplified contact situation and CoP notation]{Visualization of acting forces on a simple rigid body (a) and notation used for the \gls{CoP} definition in the contact surface plane (b) \cite{caron2015stability}.}
+	\caption[Simplified contact situation and CoP notation]{(a) Visualization of acting forces on a simple rigid body and (b) notation used for the \gls{CoP} definition in the contact surface plane \cite{caron2015stability}.}
 	\label{fig:natural2robot}
 \end{figure}
 
@@ -55,11 +55,11 @@ In this section we will derive a universal set of implementable constraints that
 Recapitulate the constraints from inequality \crefrange{subeqn:stabilityCoPPitch}{subeqn:stabilityCoPRoll}. Instead of using the absolute value of $X$ and $Y$, one can also formulate the constraints as
 \begin{align}
 \begin{split}
-\textbf{Pitch}:\quad& -X \leq C_x \leq X,\\
-\textbf{Roll}:\quad& -Y \leq C_y \leq Y.
+-X \leq C_x \leq X,\\
+-Y \leq C_y \leq Y.
 \end{split}
 \end{align}
-Based on this formulation it becomes evident that the \gls{CoP} is constraint to lie inside the foot geometry visualized in \cref{img:contact_surface}. In fact, these conditions can be represented via four single inequality equations as
+Based on this formulation it becomes evident that the \gls{CoP} is constrained to lie inside the foot geometry visualized in \cref{img:contact_surface}. In fact, these conditions can be represented via four single inequality equations as
 \begin{align}\label{eqn:CoPInequalities}
 \begin{split}
 X + C_x \geq 0, \\
@@ -104,7 +104,7 @@ These conditions can be written in matrix form as:
 Xn_0 & Xn_1 & Xn_2 & 0 & -n_2 & n_1 \\
 Xn_0 & Xn_1 & Xn_2 & 0 & n_2 & -n_1 \\
 Yn_0 & Yn_1 & Yn_2 & n_2 & 0 & -n_0 \\
-Yn_0 & Yn_1 & Yn_2 & -n_2 & 0 & n_0 \\ \end{bmatrix} \cdot
+Yn_0 & Yn_1 & Yn_2 & -n_2 & 0 & n_0 \\ \end{bmatrix}
 \begin{bmatrix} f^x \\ f^y \\ f^z \\ \tau^x \\ \tau^y \\ \tau^z \end{bmatrix} \geq
 \begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
 \end{equation}
@@ -124,28 +124,31 @@ where $C$ different costs $\Phi_c$ are weighted by a respective coefficient $\al
 
 \subsection{Computation of Residual and Cost}
 %\subsection{Computation of the Residual}
-In numerical analysis, the term \textit{residual} corresponds to the error of an result \cite{shewchuk1994introduction}. For the sake of compactness, we abbreviate \cref{eqn:CoPInequalityMatrix} as 
+In numerical analysis, the term \textit{residual} corresponds to the error of a result \cite{shewchuk1994introduction}. For the sake of compactness, we abbreviate \cref{eqn:CoPInequalityMatrix} as 
 \begin{equation} \label{eqn:costPositive}
-\myM{A} \cdot \myM{w} \geq \myM{0},
+\myM{A} \myM{w} \geq \myM{0},
 \end{equation}
 where $\myM{A}$ corresponds to a matrix of \gls{CoP} inequality constraints and $\myM{w}$ is the contact wrench acting on the according foot. The residual $\myM{r}\in \myM{R}_{4\times 1}$ of the cost is retrieved by a simple matrix-vector multiplication:
 \begin{equation}\label{eqn:costResidual}
-\myM{r} = \myM{A} \cdot \myM{w}.
+\myM{r} = \myM{A} \myM{w}.
 \end{equation} 
 
 %\subsection{Computation of the Cost}
 The residual vector depicted in \cref{eqn:costResidual} typically contains non-zero numbers. The resulting scalar \gls{CoP} cost value $\Phi_{CoP}$ is computed via a bounded quadratic activation as
-\begin{align}\label{eqn:CoPCostComputation}
-\begin{split}
-\Phi_{CoP} = 0.5 \cdot ||\myM{r}||^2 \quad &\mid lb >= \myM{r} >= ub \\
-\Phi_{CoP} = 0 \quad &\mid lb < \myM{r} < ub.
-\end{split}
-\end{align}
-In order to account for the positiveness of $\myM{r}$ (see \cref{eqn:costPositive}), the bounds are set to $lb=\myM{0}$ and $ub=\infty$, respectively. Finally, this bounded quadratic activation of the residual vector has the following implications:
+\begin{equation}\label{eqn:CoPCostComputation}
+\Phi_{CoP}=
+\begin{cases}
+\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} = \myM{r} = \text{ub} \\[10pt]
+\quad 0 &\mid \text{lb} \leq \myM{r} \leq \text{ub}.
+\end{cases}
+\end{equation}
+
+In order to account for the positiveness of $\myM{r}$ (see \cref{eqn:costPositive}), the bounds are set to $\text{lb}=\myM{0}$ and $\text{ub}=\infty$, respectively. Finally, this bounded quadratic activation of the residual vector has the following implications:
 \begin{itemize}
 \item The \gls{CoP} cost is zero, whenever $\bp_{CoP}$ lies inside or on the border of the foot area spanned by $X$ and $Y$,
 \item The \gls{CoP} cost increases in a quadratic manner, when $\bp_{CoP}$ exceeds the foot area spanned by $X$ and $Y$.
 \end{itemize}  
+Besides this formulation of the cost function also other designs are conceivable for the future. For example, the euclidean distance from the CoP to the coordinate origin could be considered when computing the residual (see  \cref{eqn:CoPCostComputation}).
 
 \subsection{Basic Usage and Contributions}
 %\subsection{Basic Usage of the CoP Cost}
@@ -163,7 +166,7 @@ costModel.addCost("LF_CoPCost", CoPCost, 1e3)
 
 %\subsection{List of Contributions}
 The contributions of this thesis to the open-source framework Crocoddyl are summarized in two main pull requests. The first one, \href{https://github.com/loco-3d/crocoddyl/pull/792}{\#792} contains the basic formulation of the \gls{CoP} cost function for contact dynamics action models (see \cref{app:ContactCoP}). With \href{https://github.com/loco-3d/crocoddyl/pull/830}{\#830}, an additional version is added for the special case of impulse dynamics (see \cref{app:ImpulseCoP}).
-A functional unittest that checks the cost against numerical differentiation as well as accessible python bindings can be found in the according directory of \cite{crocoddylweb}.
+A functional unit test that checks the cost against numerical differentiation as well as accessible python bindings can be found in the according directory of \cite{crocoddylweb}.
 
 
 %\subsection{Backup: Friction Cone constraints}

@@ -15,7 +15,7 @@ The optimal motions are tested in the dynamical simulation environment PyBullet 
 %The focus of this investigation is to minimize the simulation-to-reality ('sim-to-real') gap, which is, despite constantly improving robot models, still a major problem in real-world experiments. 
 The motion tracking in the simulator is set up in a similar way the motions would be tested on a real robot, namely interpolating the trajectories and closing the loop on joint position level.
 
-The control loop on the real system (see \cref{sec:OnlineExperiments}) is running at a frequency of 1 kHz. The generated bipedal walking variants and highly-dynamic movements presented in \crefrange{c4}{c5} are generated with an discrete \gls{OC} formulation at 30 Hz and 10 Hz, respectively. To this end, the optimal trajectories are interpolated with a cubic spline in order to realize an up-scaling of the reference data to 1 kHz.  
+The control loop on the real system (see \cref{sec:OnlineExperiments}) is running at a frequency of 1 kHz. The generated bipedal walking variants and highly-dynamic movements presented in \crefrange{c4}{c5} are generated with a discrete \gls{OC} formulation at 30 \nolinebreak Hz and 10 Hz, respectively. To this end, the optimal trajectories are interpolated with a cubic spline in order to realize an up-scaling of the reference data to 1 kHz.  
 
 The control architecture consists of a simple PD-controller on joint space level. The controller is supposed to track both position and velocity reference trajectories with the standard PyBullet parameters in a real-time loop running at 1 kHz. In this real-time simulation, the same URDF robot model is used as in the Crocoddyl framework, including the same maximal motor torques. Furthermore, the parameters of the rigid contact models have been aligned between both frameworks to ensure comparability.
 
@@ -30,11 +30,11 @@ To begin with, we analyze the motion tracking for dynamic walking gait. \cref{fi
 \caption[Control tracking performance on joint level for dynamic walking]{Control tracking performance on joint level for dynamic walking. The results indicate that the control architecture follows the reference trajectories with sufficiently good accuracy.}
 \label{fig:walkDynamic_pybulletTracking}
 \end{figure}
-As introduced previously, the control architecture is solely based on joint space position and velocity level. Although the tracking performance is good, this may not prove for the stability of the motions. Similar to the definition of robot tasks, the evaluation of the motions should be pursued in task space. To this end, \cref{fig:walkDynamic_pybulletBase} monitors the according motion of the floating base. As can be seen, the floating base deviates about $\pm$ 10 mm in x and y-direction as well as $+$ 5 mm in z-direction. 
+As introduced previously, the control architecture is solely based on joint space position and velocity level. Although the tracking performance is good, this may not prove for the stability of the motions. Similar to the definition of robot tasks, the evaluation of the motions should be pursued in task space. To this end, \cref{fig:walkDynamic_pybulletBase} monitors the according motion of the floating base. As can be seen, the floating base deviates about $\pm$ 10 mm in x- and y-direction as well as $+$ 5 mm in z-direction. 
 \begin{figure}
 \centering	
 \includegraphics[width=.85\textwidth]{fig/walkDynamic/pybullet/pybulletBase}
-\caption[Motion of the floating base for dynamic walking]{Motion of the floating base resulting from joint space control for the dynamic walking gait. The results show a deviation of the floating base about $\pm$ 10 mm in x and y-direction , as well as $+$ 5 mm in z-direction.}
+\caption[Motion of the floating base for dynamic walking]{Motion of the floating base resulting from joint space control for the dynamic walking gait. The results show a deviation of the floating base about $\pm$ 10 \nolinebreak mm in x- and y-direction, as well as $+$ 5 mm in z-direction.}
 \label{fig:walkDynamic_pybulletBase}
 \end{figure}
 
@@ -45,7 +45,7 @@ Overall, it can be stated that the dynamic walking motion can be successfully st
 \subsubsection{Forward Jumping}
 To identify the limits of the control approach, we now study the online stabilization for a highly-dynamic forward jump (\cref{sec:HighlySimulation}). In addition to the previously discussed dynamic walking, the jumping task introduces new challenges for the controller in terms of speed and robustness that will be investigated in the following.  
 
-\cref{fig:jumpForward_pybulletTracking} shows the tracking performance of the joint level control architecture for the forward jump. In contrast to the case of dynamic walking, the joint space controller reveals larger tracking deviations. This is especially true for the most dynamic part of the motion, namely the acceleration of the base and finally the takeoff around 300-400 ms. Large deviations can be especially seen for body pitch, and the knee joints, which turned out to be crucial for highly-dynamic movements. 
+\cref{fig:jumpForward_pybulletTracking} shows the tracking performance of the joint level control architecture for the forward jump. In contrast to the case of dynamic walking, the joint space controller reveals larger tracking deviations. This is especially true for the most dynamic part of the motion, namely the acceleration of the base and finally the takeoff around 300 to 400 ms. Large deviations can be especially seen for body pitch, and the knee joints, which turned out to be crucial for highly-dynamic movements. 
 
 \begin{figure}[h!]
 \centering	
@@ -56,10 +56,10 @@ To identify the limits of the control approach, we now study the online stabiliz
 
 In addition to these findings, \cref{fig:jumpForward_pybulletBase} monitors the motion of the (uncontrolled) floating base resulting from the joint space control performance. As becomes evident, the deviations in task space are also much higher compared to the dynamics walking case. While the height of the floating base is reasonable, the x-position shows tracking errors of about $\pm$ 5 cm. Errors of this magnitude inevitably lead to instability of the movement to be performed. In this case, the strong deviation in task space causes the robot to tilt around the rear edge of the foot after the touchdown. 
 
-\begin{figure}[h!]
+\begin{figure}
 \centering	
 \includegraphics[width=.85\textwidth]{fig/jumpForward/pybullet/pybulletBase}
-\caption[Motion of the floating base for a forward jump]{Motion of the floating base for a forward jump.}
+\caption[Motion of the floating base for a forward jump]{Motion of the floating base resulting from joint space control for a forward jump. Although the tracking in x- and y-direction is appropriate, the y-direction of the floating base drifts about $\pm$ 10 \nolinebreak mm apart.}
 \label{fig:jumpForward_pybulletBase}
 \end{figure}
 
@@ -79,7 +79,7 @@ The rest of this section is structured as follows. First, an overview of the exp
 The foundation for the experiments are the motion data generated offline with the proposed whole-body \gls{TO}. The planned motions are then tracked in real-time with a joint space online stabilization on the real system. An overview of the experimental pipeline is given in \cref{img:experimentalSetup}. In the following, details on the involved components are provided. 
 \begin{figure}
 \centering	
-\includegraphics[width=1\textwidth]{img/experimentalSetup2}
+\includegraphics[width=1\textwidth]{img/experimentalSetup}
 \caption[Overview about the experimental pipeline]{Overview about the experimental pipeline. The offline planned motions are tracked in real-time with a joint space online stabilization on the real system.}
 \label{img:experimentalSetup}
 \end{figure}
@@ -121,8 +121,8 @@ Flight-phases & \redxmark  & \redxmark & \redxmark & \redxmark \\
 \label{tab:experiments}
 \end{table}
 \subsubsection{Experiment I: One-Leg Balancing}
-The goal of this first experiment is to test the ability of the control architecture to track a slow balancing task. The quasi-static motion consists of five locomotion phases as visualized in \cref{exp:balancingSnaps}. From a (a) stable pose in \gls{DS}, (b) shifting the \gls{CoM} above the \gls{LF} (c) lifting the \gls{RF} slightly up (d) and down and (e) returning to the initial pose.
-\begin{figure}
+The goal of this first experiment is to test the ability of the control architecture to track a slow balancing task. The quasi-static motion consists of five locomotion phases as visualized in \cref{exp:balancingSnaps}. From (a) a stable pose in \gls{DS}, (b) shifting the \gls{CoM} above the \gls{LF} (c) lifting the \gls{RF} slightly up (d) and down and (e) returning to the initial pose.
+\begin{figure}[h!]
 \begin{subfigure}{.2\textwidth}
 	\includegraphics[width=.95\linewidth]{experiments/balancing/snaps/1}
 	\caption{}
@@ -149,7 +149,7 @@ The goal of this first experiment is to test the ability of the control architec
 
 \subsubsection{Experiment II: Static Walking}
 The second experiment deals with a stabilization of the static walking pattern discussed in \cref{sec:BipedSimulation} (see \cref{exp:staticWalkingSnaps}). The objective of this test is to analyze the effect of more difficult swing-leg motions, a step sequence of two steps and the effect of impacts. 
-\begin{figure}
+\begin{figure}[h!]
 \begin{subfigure}{.2\textwidth}
 	\includegraphics[width=.95\linewidth]{experiments/walkStatic/snaps/1}
 	\caption{}
@@ -170,13 +170,13 @@ The second experiment deals with a stabilization of the static walking pattern d
 	\includegraphics[width=.95\linewidth]{experiments/walkStatic/snaps/5}
 	\caption{}
 	\end{subfigure}%
-\caption[Experiment II: Static walking]{Experiment II: Static walking from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c,d) performing a right step and (e) shifting the \gls{CoM} to the center of the \gls{SP}. \href{https://github.com/julesser/ma-thesis-experimental-results/tree/master/walkStatic}{[Video]}}
+\caption[Experiment II: Static walking]{Experiment II: Static walking from (a) an initial pose, (b) \gls{CoM} shift above the \gls{LF}, (c,d) performing a right step and (e) shifting the \gls{CoM} to the center of the \gls{SP}. \href{https://github.com/julesser/ma-thesis-experimental-results/tree/master/walkStatic/walkStatic.mp4}{[Video]}}
 \label{exp:staticWalkingSnaps}
 \end{figure} 
 
 \subsubsection{Experiment III: Fast Squats}
 The objective of this third experiment is to evaluate the tracking performance in the context of a dynamic motion. In contrast to the first two motions, the fast squatting experiment (see \cref{exp:squatSnaps}) involves dynamic forces acting on the robot resulting from a fast vertical base movement in the range of 15 cm within two seconds. Analogously to the multiple forward jumps (see \cref{sec:BipedSimulation}), the motion is composed of a sequence of three \gls{OC} problems that are solved sequentially (see \cref{eqn:optimizationProblemSequence}). This experiment can be seen as preliminary test for dynamic walking following in the next experiment.   
-\begin{figure}
+\begin{figure}[h!]
 \begin{subfigure}{.14\textwidth}
 	\includegraphics[width=.95\linewidth]{experiments/squats/snaps/1}
 	\caption{}
@@ -211,7 +211,7 @@ The objective of this third experiment is to evaluate the tracking performance i
 
 \subsubsection{Experiment IV: Dynamic Walking}
 This experiment investigates the capabilities of the control approach to follow the dynamic walking gait trajectories presented in \cref{sec:BipedSimulation} (see \cref{exp:dynamicWalkingSnaps}). From a perspective of complexity, it combines both the challenges of static walking, namely dedicated swing-leg motions, step sequence and impacts, with the difficulty of dynamic forces acting on the robot as explored with the fast squats experiment.
-\begin{figure}
+\begin{figure}[h!]
 \begin{subfigure}{.2\textwidth}
 	\includegraphics[width=.95\linewidth]{experiments/walkDynamic/snaps/1}
 	\caption{}
@@ -242,7 +242,7 @@ The following section analyzes the experimental results, highlighting limits of 
 All in all, three out of four planned motions could be successfully stabilized by the  controller on the real system (see \cref{tab:experiments}). Both the one-leg balancing experiment (I) and the fast squats experiment (III) were stabilized with good accuracy. For experiment II, static walking, only one step could be stabilized at a time. Furthermore, it could be shown that dynamic walking (IV) cannot be stabilized with the present control approach. Possible root causes are outlined in the following. 
 \subsubsection{Tracking Performance}
 As detailed in \cref{subsec:Pipeline}, the online stabilizer solely works in joint space. The experimental results indicate that the overall joint space tracking for all four experiments is satisfying. 
-\cref{exp:BalancingTracking} exemplary shows the tracking performance for the one-leg balancing experiment. It becomes evident that the control architecture allows following the computed reference trajectory in actuator space (a,b) closely. Furthermore, also the resulting tracking quality in the virtual joints (c,d) is satisfying. Similar conclusions hold for the other experiments. Even during critical impulse phases the joint space tracking shows no abnormalities. This precise tracking is achieved with high-gain joint space control, which allows a quick compensation of position differences that comes at the cost of lost compliance in the joints.
+\cref{exp:BalancingTracking} exemplary shows the tracking performance for the one-leg balancing experiment. It becomes evident that the control architecture allows following the computed reference trajectory in actuator space (a,b) closely. Furthermore, also the resulting tracking quality in the virtual joints (c,d) is appropriate. Similar conclusions hold for the other experiments. Even during critical impulse phases the joint space tracking shows no abnormalities. This precise tracking is achieved with high-gain joint space control, which allows a quick compensation of position differences that comes at the cost of lost compliance in the joints.
 \begin{figure}[h!]
 \begin{subfigure}{.5\textwidth}
 	\includegraphics[page=1, width=.95\linewidth]{experiments/balancing/ankleTrack}
@@ -267,7 +267,7 @@ As detailed in \cref{subsec:Pipeline}, the online stabilizer solely works in joi
 \subsubsection{Handling Impulses}
 The impact phase turned out to be the main problem for the walking experiments. This is reasonable since the utilized control approach only compensates for errors in joint space, while errors in task space can arise quickly and are not compensated. Deviations of the reference base motion only effect the static stability if the \gls{FCoM} leaves the support polygon. Differences from the foot position instead may cause instability with a respective error in the range of a few millimeters. The same holds for errors in the foot orientation. Consider for example the case in which the robot only touches the ground with the rear part of the swing foot's sole. Instead of the assumed surface contact between the foot and the ground, a line contact appears that causes the robot to fall in a combination with high-gain position control. 
 \subsubsection{Model Discrepancies}
-The quasi-static experiments provide a good basis of analyzing the model accuracy. Due to the small \gls{SP}, model deviations inevitably lead to instability during the single support phases. In the balancing and static walking experiments the motions could be stabilized if, and only if, the \gls{FCoM} was adjusted by about $\pm$ 7.5 mm. The found model errors in the mass distribution, possibly combined with with errors in inertia distribution, may also pose part of the problem for walking gait stabilization. In order to compensate for these differences, an extensive system identification could be performed to check the dynamic model against the real system.
+The quasi-static experiments provide a good basis of analyzing the model accuracy. Due to the small \gls{SP}, model deviations inevitably lead to instability during the single support phases. In the balancing and static walking experiments the motions could be stabilized only if the \gls{FCoM} was adjusted by about $\pm$ 7.5 mm. The found model errors in the mass distribution, possibly combined with with errors in inertia distribution, may also pose part of the problem for walking gait stabilization. In order to compensate for these differences, an extensive system identification could be performed to check the dynamic model against the real system.
 \subsubsection{Mechanical Deficiencies}
 Beneath the identified limits of the control approach and the modeling errors, also mechanical weaknesses of the RH5 humanoid may contribute to the sim-to-real gap. In the scope of the experiments, several issues have been revealed, namely joint play, calibration errors and undesired structural flexibility in the ankle of the foot. Furthermore, the rigid contact points on the sole of the feet are found to be not the ideal solution, since small deviations can quickly lead to instability of the whole system. Instead, it may be advantageous for dynamic movements of the humanoid robot to use a planar sole, providing adequate damping properties. 
 

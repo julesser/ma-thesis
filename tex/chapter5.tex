@@ -22,7 +22,7 @@ We constrain the optimization based on the building blocks introduced in \cref{s
 
 Biomechanical studies have shown that the effect of arm swinging is elementary for the performance in human jumping \cite{harman1990effects}. To this end, we also include the arms in the optimization for our jumping tasks. 
 In order to account for the dynamic nature of the movements, it turns out to be useful to reduce the integration step size. We found a higher feasibility of the jumping tasks with an integration step size of 10 ms compared to 30 ms for the bipedal walking gaits (see \cref{sec:BipedSimulation}). Since we do not use a contact planner along with this work, the contact timings had to be chosen to approximately match the physic of flight phases. 
-Highly dynamic movements are subject to higher impulse forces than is the case with walking movements. As described in \ref{sec:TheoryDDP}, \gls{DDP} relies on integration of the system dynamics in each step to obtain the states. The higher impulse forces then in turn cause numerical drifts of higher order in the contact constraints. This effect is visible as drifting of the support feet after touchdown. Through an extensive grid search, we found a set of valid Baumgarte gains, namely $\alpha,\beta=[0,100]$, that reduce these numerical drifts for highly-dynamic movements (see \cref{eqn:BaumgarteStabilization} . In case the Baumgarte stabilization is not sufficient for stabilizing the contact positions, we found that further decreasing the integration step size also reduces the numerical drifts in the holonomic constraints.
+Highly-dynamic movements are subject to higher impulse forces compared to walking movements. As described in \cref{sec:TheoryDDP}, \gls{DDP} relies on integration of the system dynamics in each step to obtain the states. The higher impulse forces then in turn cause numerical drifts of higher order in the contact constraints. This effect is visible as drifting of the support feet after touchdown. Through an extensive grid search, we found a set of valid Baumgarte gains, namely $\alpha,\beta=[0,100]$, that reduce these numerical drifts for highly-dynamic movements (see \cref{eqn:BaumgarteStabilization}). In case the Baumgarte stabilization is not sufficient for stabilizing the contact positions, we found that further decreasing the integration step size also reduces the numerical drifts in the holonomic constraints.
 
 \section{Simulation Results for Increasing Task Complexity}\label{sec:HighlySimulation}
 This section presents the simulation results for three case studies of highly-dynamic movements obtained by solving an optimization problem based on the description in the previous section. First, we study the task of vertically jumping upwards, then we investigate forward jumping and finally we explore a challenging sequence of multiple forward jumps over obstacles.
@@ -44,36 +44,36 @@ Step size:& 0.01 s 	& Regularization: 	& $\Phi_{\text{posture}}$, $\Phi_{\text{t
 \label{tab:jumpVertical}
 \end{table}
 
-The vertical jumping task (see \cref{tab:jumpVertical}) consists of five phases as depicted in \cref{fig:jumpVertical_Snaps}. From the initial position (a), a descending into the jump (b) takes place. Then, an upward motions accelerates the base until the take-off (c). The symmetrical flight phase (d) is ended with a touch down (e) followed by a pose recovery (f). 
-
 \begin{figure}
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/1x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/1x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/2x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/2x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/3x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/3x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/4x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/4x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/5x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/5x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpVertical/snaps/6x}
+	\includegraphics[width=.95\linewidth]{fig/jumpVertical/snaps/6x}
 	\caption{}
 \end{subfigure}%
 \caption[A simple vertical jump]{A simple vertical jump consisting of the locomotion phases (a) initial pose, (b) descending, (c) take-off, (d) flight phase, (e) touchdown and (f) pose recovery. \href{https://github.com/julesser/ma-thesis-simulation-results/blob/master/Jump_Vertical_10cm_NoJLims/crocoddyl_side.mp4}{[Video]}}
 \label{fig:jumpVertical_Snaps}
 \end{figure} 
+
+The vertical jumping task (see \cref{tab:jumpVertical}) consists of five phases as depicted in \cref{fig:jumpVertical_Snaps}. From the initial position (a), a descending into the jump (b) takes place. Then, an upward motions accelerates the base until the take-off (c). The symmetrical flight phase (d) is ended with a touch down (e) followed by a pose recovery (f). 
 
 \cref{fig:jumpVertical_JointState} provides insights in the dynamic nature of the motion. As can be seen, the joint positions stay within reasonable ranges. However, velocity peaks at the take-off exceed the maximum joint velocities of the body pitch and knee joints by a factor of two and four, respectively. This effect is plausible, since both the knee deflection as well as the torso swing are essential for a jump. Consequently, the short time horizon of the jump requires high peak velocities in these task-relevant joints. 
 
@@ -115,34 +115,34 @@ Step size:& 0.01 s 	& Regularization: 	& $\Phi_{\text{posture}}$, $\Phi_{\text{t
 
 \begin{figure}
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/1x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/1x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/2x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/2x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/3x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/3x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/4x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/4x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/5x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/5x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.16\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpForward/snaps/6x}
+	\includegraphics[width=.95\linewidth]{fig/jumpForward/snaps/6x}
 	\caption{}
 \end{subfigure}%
 \caption[A simple forward jump]{A simple forward jump consisting of the locomotion phases (a) initial pose, (b) descending, (c) take-off, (d) flight phase, (e) touchdown and (f) pose recovery. In contrast to the vertical jump, a natural arm swinging effect emerges to gain momentum for the forward acceleration of the body. \href{https://github.com/julesser/ma-thesis-simulation-results/blob/master/Jump_Forward_NoJLim/crocoddyl.mp4}{[Video]}}
 \label{fig:jumpForward_Snaps}
 \end{figure} 
 
-\cref{fig:jumpForward_ContactWrenches} presents an overview about the solved optimal contact wrenches. When the robot does not move, the sum of vertical forces $F_z$ for left and right foot equals the body's weight, which is about 600 N. It becomes evident that about 4000 N (7 x robot weight) are exerted to the ground at lift off and about 8000 N (14 x robot weight) at touchdown, which is reasonable according to biomechanical findings \cite{meghdari2002dynamical}.
+\cref{fig:jumpForward_ContactWrenches} presents an overview about the solved optimal contact wrenches. When the robot does not move, the sum of vertical forces $F_z$ for left and right foot equals the body's weight, which is about 600 N. It becomes evident that about 4000 N (7 \nolinebreak x robot weight) are exerted to the ground at lift off and about 8000 N (14 x robot weight) at touchdown, which is reasonable according to biomechanical findings \cite{meghdari2002dynamical}.
 \begin{figure}[h!]
 \centering	
 \includegraphics[width=1\textwidth]{fig/jumpForward/ContactWrenches}
@@ -154,7 +154,7 @@ We have shown in \cref{sec:BipedEvaluation} that the proposed motion planning ap
 \begin{figure}
 \centering	
 \includegraphics[width=.7\textwidth]{fig/jumpForward/StabilityAnalysis}
-\caption[Stability analysis of the simple forward jump]{Stability analysis of the simple forward jump shows that the motion is dynamically stable since the \gls{CoP}s lie within the \gls{SP} of the according foot. Consequently, the contact stability constrained \gls{DDP} method also holds for highly-dynamic movements. }
+\caption[Stability analysis of a simple forward jump]{Stability analysis of a simple forward jump shows that the motion is dynamically stable since the \gls{CoP}s lie within the \gls{SP} of the according foot. Consequently, the contact stability constrained \gls{DDP} method also holds for highly-dynamic movements. }
 \label{fig:jumpForward_StabilityAnalysis}
 \end{figure} 
 
@@ -180,28 +180,28 @@ Step size:& 0.01 s 	& Regularization: 	& $\Phi_{\text{posture}}$, $\Phi_{\text{t
 \begin{figure}[h!]
 \centering
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/1x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/1x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/2x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/2x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/3x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/3x}
 	\caption{}
 \end{subfigure}%
 	
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/4x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/4x}
 	\caption{}
 	\end{subfigure}%
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/5x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/5x}
 	\caption{}
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
-	\includegraphics[width=1\linewidth]{fig/jumpObstacles/snaps/7x}
+	\includegraphics[width=.95\linewidth]{fig/jumpObstacles/snaps/7x}
 	\caption{}
 \end{subfigure}%1
 \caption[Multi-phase \gls{OC} problem of forward jumping over obstacles]{Multi-phase \gls{OC} problem of forward jumping over obstacles. Image order: row-wise, from top to bottom and left to right. \href{https://github.com/julesser/ma-thesis-simulation-results/blob/master/Jump_MultipleObstacles_NoJLimsNoTLims/crocoddyl.mp4}{[Video]}}
@@ -219,16 +219,16 @@ Previously, we demonstrated that the contact stability constrained \gls{DDP} all
 \label{fig:jumpObstacles_StabilityAnalysis}
 \end{figure}
 
-Recapitulating the results for the simple forward jump, we identified that the \gls{CoP}s are located in the rear area of the foot sole during takeoff. We can draw similar conclusions for the first jump of the multi-phase \gls{OC} problem. However, the \gls{CoP}s for the second and third jump do not share this pattern. This effect can be attributed to the dynamic forces already acting on the robot while the second and second impact phase, respectively.
+Recapitulating the results for the simple forward jump, we identified that the \gls{CoP}s are located in the rear area of the foot sole during takeoff. We can draw similar conclusions for the first jump of the multi-phase \gls{OC} problem. However, the \gls{CoP}s for the second and third jump do not share this pattern. This effect can be attributed to the dynamic forces already acting on the robot while the second impact phase, respectively.
 
 
 \section{Evaluation of the System Design}\label{sec:HighlyEvaluation}
 
 This section presents an exhaustive study of the system limits of the RH5 humanoid robot based on the case studies introduced in the last section. The motivation is to form a basis of decision-making for future design iterations that allow the robot to perform highly-dynamic movements in real-world experiments.
 
-The evaluation of the system design is performed by iteratively increasing the task complexity. We conduct multiple simulations with different jumping lengths $l$ and heights $h$ for the presented vertical jump ($h=$ 1 -- 30 cm), forward jump ($l=$ 10 -- 50 cm, $h=$ 10 cm) and forward jumping task over multiple obstacles ($l=$ 60 cm, $h=$ 25 cm), respectively (see \cref{tab:systemLimits}). Of particular interest here are the system-relevant limits, namely the valid  joint position and velocity ranges as well as the according maximum  motor torques. 
+The evaluation of the system design is performed by iteratively increasing the task complexity. We conduct multiple simulations with different jumping lengths $l$ and heights $h$ for the presented vertical jump ($h=$ 1 -- 30 cm), forward jump ($l=$ 10 -- 50 cm, $h=$ 10 cm) and forward jumping task over multiple obstacles ($l=$ 60 cm, $h=$ 25 cm), respectively (see \cref{tab:systemLimits}). Of particular interest are the system-relevant limits, namely the valid  joint position and velocity ranges as well as the according maximum  motor torques. 
 
-A few notes on the used notation in \cref{tab:systemLimits}: checkmarks and crosses indicate whether the according limits are satisfied or not with the given movement. Checkmarks in brackets mean that a maximum torque needs to be applied for a period longer than 50 ms, which can not necessarily be provided by the real actuators. Underscored numbers along with the crosses depict how many joints the according limit is exceeded by.
+A few notes on the used notation in \cref{tab:systemLimits}: checkmarks and crosses indicate whether the according limits are satisfied or not with the given movement. Checkmarks in brackets mean that a maximum torque needs to be applied for a period longer than 50 , which can not necessarily be provided by the real actuators. Underscored numbers along with the crosses depict how many joints the according limit is exceeded by.
 
 In the following, the results of the study are presented in detail and design guidelines are derived based on the conducted experiments. 
 
@@ -264,4 +264,4 @@ For jumps with a height of 5 cm or above we can draw the conclusion that velocit
 \subsection{Design Guidelines derived from Forward Jumping}
 In comparison to the simple vertical jump, the forward jumping tasks involve higher dynamic forces acting on the base and hence require even faster motions. To this end, none of the forward jumping tasks turned out to be feasible with the currently implemented velocity limits. Interestingly, the ankle pitch velocity turned out to be sufficient, while the hip joint velocity limits were exceeded. This effect may be explained by the reduced impact forces in z-direction and the increased angular momentum necessary to move the base forward. 
 
-Furthermore, we can draw similar conclusions for the torque feasibility from the tasks of vertical, forward and multiple jumping over obstacles. Although the maximum torque available with the currently embedded motors are high enough, they may not be feasible with the real actuators. For the body pitch, knee and ankle pitch joints, these maximal torques have to be applied for a period longer than 50 ms. To prevent long-term damage to the system, the corresponding actuators should be redesigned with an appropriate safety factor. 
+Furthermore, we can draw similar conclusions for the torque feasibility from the tasks of vertical, forward and multiple jumping over obstacles. Although the maximum torque available with the currently embedded motors are high enough, they may not be feasible with the real actuators. For the body pitch, knee and ankle pitch joints, these maximal torques have to be applied for a period longer than 50 \nolinebreak ms. To prevent long-term damage to the system, the corresponding actuators should be redesigned with an appropriate safety factor. 

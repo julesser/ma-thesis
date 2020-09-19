@@ -13,9 +13,9 @@ Robotics research is highly motivated by the idea of creating machines with the 
 The key promise of using legs for locomotion is the improved mobility over wheeled systems. Significant advantages are gained due to the ability of using isolated footholds and active suspension, which effectively decouples the main body from the roughness of the environment and allows e.g. to step over obstacles \cite{raibert1986legged}. These benefits come at the expense of a significant increase in complexity since there is a need of ongoing, active balancing of the robot in order to avoid falling down \cite{wieber2016modeling}.
 
 Nature often plays a crucial rule and serves as source of inspiration in the design process of such systems. This is especially true for the research field of humanoid robots, which deals with robots that are generally inspired by human capabilities and share similar kinematics, sensing and behavior. Many of the objects that we interact with on a daily basis, are tailored to human form and human behavior, e.g. doors, stairs or tools. The same also applies to the environment in which we move around. Humans make use of their legs to climb stairs, lean towards difficult postures or traverse rough terrain \cite{fitzpatrick2016humanoids}. These capabilities of humanoid robots have the potential to benefit mankind. Walking robot nurses would have the ability to freely move around and interact with the elderly. In disaster scenarios, humanoids could be sent to check for rescue persons. When exploiting foreign planets, humanoid robots have the ability to collaborate with humans in an intuitive and effective way (see \cref{img:rh5_interactive}).   
-\begin{figure}[h!]
+\begin{figure}
 \centering	
-\includegraphics[width=.7\textwidth]{img/intro/rh5_interactive_16_9}
+\includegraphics[width=.7\textwidth]{img/rh5_interactive_16_9}
 \caption[Humanoid robots interact intuitively with humans]{Humanoid robots can interact with humans in a very intuitive manner since they share similar kinematics, sensing and behavior. This opens up new opportunities for the cooperation needed, e.g. when assembling and installing infrastructure on foreign planets \cite{img:rh5_interactive}.}
 \label{img:rh5_interactive}
 \end{figure} 
@@ -51,8 +51,8 @@ Previously we already discovered, why locomotion synthesis for legged robots is 
 
 \begin{figure}
 \centering	
-\includegraphics[width=1\textwidth]{img/intro/traditional_locomotion_planner}
-\caption[Traditional Legged Locomotion Planning]{Traditional Legged Locomotion Planning \cite{giraud2020motion}. The motion planning problem decomposed into subproblems that are solved sequentially: first, a contact planner solves for feasible foothold positions, then a feasible base motion is generated and finally a consistent whole-body trajectory is derived.}
+\includegraphics[width=1\textwidth]{img/traditional_locomotion_planner_bw}
+\caption[Traditional Legged Locomotion Planning]{Traditional Legged Locomotion Planning \cite{giraud2020motion}. The motion planning problem is decomposed into subproblems that are solved sequentially: first, a contact planner solves for feasible foothold positions, then a feasible base motion is generated and finally a consistent whole-body trajectory is derived.}
 \label{img:traditional_locomotion_planner}
 \end{figure} 
  
@@ -66,7 +66,7 @@ The first limitation comes from the underlying assumptions of the \gls{LIP} mode
 \subsection{Trajectory Optimization}
 Generating motion plans for dynamic systems is subject to \gls{TO} algorithms that belong to the broader research field of \gls{OC}. 
 
-\gls{TO} is a numerical optimization technique with the goal of finding a state-control sequence, which locally minimizes a predefined cost function given a set of constraints. The approach allows to specify the behavior of a robot directly in the task space, e.g. a desired end-effector trajectory, while reducing the amount of hand-crafted components. 
+\gls{TO} is a numerical optimization technique with the goal of finding a state-control sequence, which locally minimizes a predefined cost function given a set of constraints. This approach allows to specify the behavior of a robot directly in the task space, e.g. a desired end-effector trajectory, while reducing the amount of hand-crafted components. 
 
 There are existing different methods to formulate a \gls{TO}, namely \textit{direct} and \textit{indirect} methods. Unlike \textit{direct} methods which explicitly represent the state, \textit{indirect} methods only represent the control inputs while the state is obtained from forward simulation of the system. In direct methods, the \gls{OC} problem is transcribed into a \gls{SQP}, which easily handles both equality and inequality constraints and is implemented in generic off-the-shelf solvers. Consequently, the direct approaches are forced to search in a constrained optimization space which is slower but finds better optima. The indirect approaches are more sensitive to local minima but are faster and better suited for warm-starting. For a comprehensive overview and further information on \gls{TO} methods see \cite{betts1998survey, kelly2017transcription, tassa2014control}.
 
@@ -89,7 +89,7 @@ The RH5 humanoid robot (see \cref{img:rh5_robot}) is designed to mimic the human
 
 \begin{figure}[h!]
 \centering	
-\includegraphics[width=.17\textwidth]{img/intro/rh5_robot}
+\includegraphics[width=.175\textwidth]{img/rh5_robot}
 \caption[The lightweight and biologically inspired humanoid RH5]{The recently presented RH5 is a lightweight and biologically inspired humanoid used as experimental platform within this thesis.}
 \label{img:rh5_robot}
 \end{figure} 
@@ -116,13 +116,12 @@ The specific contributions of this thesis are summarized below.
 \paragraph{C4.} Identification of physical limitations for the RH5 humanoid by performing highly-dynamic movements as basis for future design iterations.   
 
 \section{Structure}
-This thesis is organized in a total of 7 chapters. 
-%Fig. XXX shows the overall outline of this thesis. 
+This thesis is organized in a total of 7 chapters (see \cref{img:structure}). 
 In the following, a summary of each chapter is provided which allows the readers to easily navigate through this document.
 
 \begin{figure}
 \centering	
-\includegraphics[width=.8\textwidth]{img/structure3}
+\includegraphics[width=.8\textwidth]{img/structure}
 \caption[Thesis structure and interconnection of chapters]{Thesis structure and interconnection of chapters.}
 \label{img:structure}
 \end{figure}

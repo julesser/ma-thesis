@@ -64,7 +64,7 @@ In contrast to the general formulation in \cref{eqn:EoMGeneral}, this expression
 
 \subsubsection{Implicit and Explicit Constraints}
 %Why constrains?
-The motion of a robot is constrained by it's kinematics structure as well as additional constraints that may arise from the environment. \cref{img:kinematic_constraints} provides a classification of kinematic constraints, which are often found in the field of robotics \cite[Ch.3]{kumar2019modular}. While equality constraints arise from permanent physical contact between two bodies, inequality constraints arise due to phenomena such as collision, bouncing or loss of contact. Equality constraints can be further divided into holonomic and non-holonomic constraints. The former constrain the position (e.g. fixed or sliding contacts), the latter constrain the velocity (e.g. rolling contacts) of multi-body systems. 
+The motion of a robot is constrained by it's kinematics structure as well as additional constraints that may arise from the environment. \cref{img:constraints} provides a classification of kinematic constraints, which are often found in the field of robotics \cite[Ch.3]{kumar2019modular}. While equality constraints arise from permanent physical contact between two bodies, inequality constraints arise due to phenomena such as collision, bouncing or loss of contact. Equality constraints can be further divided into holonomic and non-holonomic constraints. The former constrain the position (e.g. fixed or sliding contacts), the latter constrain the velocity (e.g. rolling contacts) of multi-body systems. 
 
 \begin{figure}
 \centering	
@@ -73,7 +73,7 @@ The motion of a robot is constrained by it's kinematics structure as well as add
 \label{img:constraints}
 \end{figure} 
 
-In the scope of this thesis, we focus on mobile robots that contain parallel mechanisms. In contrast to serial manipulators, two additional scleronomic (time-independent) constraints have to be actively enforced for this type of robotic systems:
+In the scope of this thesis, we focus on mobile robots that contain parallel mechanisms. In contrast to serial manipulators, two additional scleronomic constraints have to be actively enforced for this type of robotic systems:
 \begin{itemize}
 \item Internal loop closure constraints,
 \item Contact constraints.
@@ -119,7 +119,7 @@ where the robot has $n$ links and $\bp_i$ indicate the according link distances 
 The \gls{FCoM} can be used as a static stability margin, ensuring the motionless robot will not tip over or fall, if $\bp_{\text{FCoM}}$ always remains inside the \gls{SP}. Note that this criteria is also applicable in so called \textit{quasi-static} movements, where static forces are still dominating dynamic forces.
 
 \subsection{Dynamic Stability Criteria}
-In case of faster motions, dynamic forces will exceed the static forces and cannot be neglected anymore. The acting forces can be divided into contact forces and gravity / inertial forces, where the so called \gls{ZMP} is based on the former, and the \gls{CoP} on the latter. In the following, both concepts are introduced according to the description in \cite{sardain2004forces} with a nomenclature equivalent to \cite{scaronTeaching}.
+In case of faster motions, dynamic forces will exceed the static forces and cannot be neglected anymore. The acting forces can be divided into contact forces and gravity/inertial forces, where the so called \gls{ZMP} is based on the former, and the \gls{CoP} on the latter. In the following, both concepts are introduced according to the description in \cite{sardain2004forces} with a nomenclature equivalent to \cite{scaronTeaching}.
 \subsubsection{Center of Pressure (CoP)}
 The \gls{CoP} is defined as the point, where the field of pressure forces acting on the sole is equivalent to a single resulting force where the resulting moment is zero. Hence the \gls{CoP} is a local quantity that is derived from the interaction forces at the contact surface. 
 
@@ -289,7 +289,7 @@ where $\hat{\bx}_i,\hat{\bu}_i$ are the new state-control sequences. The step si
 
 
 \section{Handling Constraints With DDP}\label{sec:TheoryConstrainedDDP}
-By nature, the \gls{DDP} algorithm presented in \cref{sec:TheoryDDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the control inputs allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the Karush-Kuhn-Tucker constraint of the rigid contact model \cite{budhiraja2018differential}. 
+By nature, the \gls{DDP} algorithm presented in \cref{sec:TheoryDDP} does not take into account constraints. \citeauthor{tassa2014control} developed a control-limited \gls{DDP} \cite{tassa2014control} that takes into account box inequality constraints on the control inputs allowing the consideration of torque limits on real robotic systems. \citeauthor{budhiraja2018differential} proposed a \gls{DDP} version for the problem of multi-phase rigid contact dynamics by exploiting the \gls{KKT} constraint of the rigid contact model \cite{budhiraja2018differential}. 
 
 To begin with, this section provides details on the above mentioned approach, since physically consistent bipedal locomotion is highly dependent on making contacts with the ground. Finally, the integration of robot tasks and physical consistency as additional constraints into the \gls{OC} problem are explored. 
 
@@ -327,7 +327,7 @@ The \gls{KKT} dynamics from \cref{eqn:KKTConditions} can be expressed as a funct
 \end{align}
 where the concatenation of the configuration vector and its tangent velocity forms the state $\bx=(\bq,\bv)$, $\bu$ is the input torque vector and $\bg(\cdot)$ is the optimal solution of \cref{eqn:KKTConditions}.
 
-Supposing a sequence of predefined contacts, the cost-to-go of the \gls{DDP} backward pass and its respective Hessians (compare \cref{eqn:costToGo} and \ref{eqn:QApproxCoeff}) turn into:
+Supposing a sequence of predefined contacts, the cost-to-go of the \gls{DDP} backward pass and its respective Hessians (compare \cref{eqn:costToGo} and \cref{eqn:QApproxCoeff}) turn into:
 \begin{equation*}\label{eqn:CostToGoUpdated}
 J_i(\bx, \bu_i)=l_f(\bx_N)+\sum_{j=i}^{N-1}l(\bx_j,\bu_j,\myM{\lambda}_j)
 \end{equation*}
@@ -357,17 +357,17 @@ l_k(\bx_k,\bu_k)=\sum_{j\in \text{tasks}}\myM{w}_{j_k}\mid\mid\myM{h}_{j_k}(\bx_
 where $\myM{w}_{j_k}$ assigned to task $j$ at corresponding time $k$. The \gls{DDP} algorithm utilizes the derivatives of the regulator functions, namely computing the Jacobians and Hessians of the cost functions. 
 
 In the scope of this thesis, the following tasks are handled
-\begin{equation}
+\begin{equation*}
 \text{tasks} \subseteq \{CoM, LF_{SE(3)}, RF_{SE(3)}\}, 
-\end{equation}
+\end{equation*}
 namely the \gls{CoM} tracking $(CoM)$ and the tracking of the left- and right-foot pose $LF_{SE(3)}, RF_{SE(3)}$, respectively.
 
 \subsection{Inequality Constraints}
 Equally important for physically consistent motion planning is the consideration of boundaries, such as robot limits and stability constraints. These inequality constraints can be included into \gls{DDP}-like solvers using i.e. penalization, active-set \cite{xie2017differential} and Augmented Lagrangian \cite{howell2019altro} strategies. In Crocoddyl, the penalization approach is used to consider inequality constraints in the \gls{OC} formulation. The mathematical formulation is detailed in \cref{sec:StabilityIntegration}. 
 
 In the scope of this thesis, the following inequality constraints are utilized:
-\begin{equation}
+\begin{equation*}
 \text{inequalities} \subseteq \{\text{joint limits}, \text{friction cone}, \gls{CoP}\}.
-\end{equation}
+\end{equation*}
 
-Further details on the constraints applied to the motion planning problems in the context of this thesis are provided in \cref{sec:BipedFormulation}. In the next chapter, we will explore an approach that combines multiple inequality constraints in order to to embed contact stability into \gls{DDP}-like solvers. 
+Further details on the constraints applied to the motion planning problems in the context of this thesis are provided in \cref{sec:BipedFormulation}. In the next chapter, we explore an approach that combines multiple inequality constraints in order to embed contact stability into \gls{DDP}-like solvers. 

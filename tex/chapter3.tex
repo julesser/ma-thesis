@@ -55,8 +55,8 @@ In this section we will derive a universal set of implementable constraints that
 Recapitulate the constraints from inequality \crefrange{subeqn:stabilityCoPPitch}{subeqn:stabilityCoPRoll}. Instead of using the absolute value of $X$ and $Y$, one can also formulate the constraints as
 \begin{align}
 \begin{split}
--X \leq C_x \leq X,\\
--Y \leq C_y \leq Y.
+-X &\leq C_x \leq X,\\
+-Y &\leq C_y \leq Y.
 \end{split}
 \end{align}
 Based on this formulation it becomes evident that the \gls{CoP} is constrained to lie inside the foot geometry visualized in \cref{img:contact_surface}. In fact, these conditions can be represented via four single inequality equations as
@@ -138,7 +138,7 @@ The residual vector depicted in \cref{eqn:costResidual} typically contains non-z
 \begin{equation}\label{eqn:CoPCostComputation}
 \Phi_{CoP}=
 \begin{cases}
-\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} = \myM{r} = \text{ub} \\[10pt]
+\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} > \myM{r} > \text{ub} \\[10pt]
 \quad 0 &\mid \text{lb} \leq \myM{r} \leq \text{ub}.
 \end{cases}
 \end{equation}

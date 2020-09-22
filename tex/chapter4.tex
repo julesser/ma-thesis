@@ -55,7 +55,7 @@ As detailed in \cref{c3} with the concept of contact stability constrained \gls{
 \begin{equation*}
 \Phi_{\text{CoP}}=
 \begin{cases}
-\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} = \myM{r} = \text{ub} \\[10pt]
+\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} > \myM{r} > \text{ub} \\[10pt]
 \quad 0 &\mid \text{lb} \leq \myM{r} \leq \text{ub},
 \end{cases}
 \end{equation*}
@@ -64,7 +64,7 @@ In the same manner friction cone constraints along with the unilaterality are co
 \begin{equation*}
 \Phi_{\text{friction}}=
 \begin{cases}
-\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} = \myM{r} = \text{ub} \\[10pt]
+\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} > \myM{r} > \text{ub} \\[10pt]
 \quad 0 &\mid \text{lb} \leq \myM{r} \leq \text{ub},
 \end{cases}
 \end{equation*}
@@ -75,7 +75,7 @@ Physical boundaries of the joints must not be exceeded to avoid damage to the sy
 \begin{equation*}
 \Phi_{\text{joints}}=
 \begin{cases}
-\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} = \myM{r} = \text{ub} \\[10pt]
+\quad\dfrac{1}{2}\myM{r}^T\myM{r} &\mid \text{lb} > \myM{r} > \text{ub} \\[10pt]
 \quad 0 &\mid \text{lb} \leq \myM{r} \leq \text{ub},
 \end{cases}
 \end{equation*}
